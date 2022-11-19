@@ -1,5 +1,6 @@
 package com.example.epamfinalproject.Entities;
 
+import com.example.epamfinalproject.Entities.Enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Route {
-    private long id;
-    private String departure;
-    private String destination;
-    private int distance;
-    private int transitTime;
-
+public class Order {
+    private long shipID;
+    private long userID;
+    private Status status;
 }

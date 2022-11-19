@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="EpamFinalProject:war exploded">
+  <artifact type="exploded-war" name="EpamFinalProject">
     <output-path>$PROJECT_DIR$/target/EpamFinalProject-1.0-SNAPSHOT</output-path>
     <properties id="maven-jee-properties">
       <options>
@@ -14,7 +14,14 @@
           <element id="module-output" name="EpamFinalProject" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.mockito:mockito-core:4.8.0" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.12.14" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy-agent:1.12.14" />
+          <element id="library" level="project" name="Maven: org.objenesis:objenesis:3.2" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.10" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.5.0" />
+          <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:3.5.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

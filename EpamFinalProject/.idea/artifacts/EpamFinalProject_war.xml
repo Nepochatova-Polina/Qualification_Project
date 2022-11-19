@@ -8,7 +8,7 @@
       </options>
     </properties>
     <root id="archive" name="EpamFinalProject-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="EpamFinalProject:war exploded" />
+      <element id="artifact" artifact-name="EpamFinalProject" />
     </root>
   </artifact>
 </component>

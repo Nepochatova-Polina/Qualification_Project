@@ -1,26 +1,31 @@
 package com.example.epamfinalproject;
 
-import java.io.*;
+import com.example.epamfinalproject.Database.Implementations.User_Implementation;
+import com.example.epamfinalproject.Entities.Enums.UserRole;
+import com.example.epamfinalproject.Entities.User;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
+
+@WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
-    private String message;
 
-    public void init() {
-        message = "Hello World!";
-    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
-
-        // Hello
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
-        out.println("</body></html>");
+        User_Implementation implementation = new User_Implementation();
+        User user1 = new User.UserBuilder()
+                .firstName("Ivav")
+                .lastName("ivanov")
+                .login("Ivan_Ivanov")
+                .role(UserRole.PASSENGER)
+                .build();
+//        List<User> user = implementation.getPassengerUsers();
+        User user2 = implementation.getUser("hooks","jfikwhfj");
+        System.out.println(user2.getId());
     }
 
     public void destroy() {
