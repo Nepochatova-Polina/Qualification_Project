@@ -55,10 +55,10 @@ public class User_Implementation implements UserDAO {
             if (prepareStatement.executeUpdate() <= 0) {
                 log.warning("Cannot register user.");
             }
-            connectionDB.stop();
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException ignored){}
         }
     }
 
@@ -82,10 +82,10 @@ public class User_Implementation implements UserDAO {
                         .role(getRoleValue(resultSet.getInt(6)))
                         .build();
             }
-            connectionDB.stop();
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return user;
     }
@@ -111,10 +111,10 @@ public class User_Implementation implements UserDAO {
                 users.add(user);
             }
             log.info("List of Passengers created and filled with " + users.size() + " users");
-            connectionDB.stop();
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return users;
     }
@@ -139,11 +139,11 @@ public class User_Implementation implements UserDAO {
                         .build();
                 users.add(user);
             }
-            connectionDB.stop();
             log.info("List of Staff created and filled with " + users.size() + "users");
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return users;
     }
@@ -168,10 +168,10 @@ public class User_Implementation implements UserDAO {
                         .build();
                 users.add(user);
             }
-            connectionDB.stop();
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return users;
     }
@@ -195,10 +195,10 @@ public class User_Implementation implements UserDAO {
                         .build();
             }
             log.info("User was found");
-            connectionDB.stop();
         } catch (SQLException e) {
-            log.warning("Problems with connection");
-            log.warning(e.toString());
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return user;
     }
@@ -208,7 +208,6 @@ public class User_Implementation implements UserDAO {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
-
             PreparedStatement prepareStatement = connection.prepareStatement(EDIT_USER_QUERY);
             prepareStatement.setString(1, user.getFirstName());
             prepareStatement.setString(2, user.getLastName());
@@ -216,18 +215,18 @@ public class User_Implementation implements UserDAO {
             int role_id = getRoleID(user.getRole().toString());
             if (role_id != 0)
                 prepareStatement.setInt(4, role_id);
-            prepareStatement.setInt(5, user.getId());
-
+            prepareStatement.setLong(5, user.getId());
             if (prepareStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warning("Error while committing. User won't be updated");
             }
             connection.commit();
             connection.setAutoCommit(true);
-            connectionDB.stop();
             log.info("All changes committed");
         } catch (SQLException e) {
-            log.warning("Problems with connection");
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
     }
 
@@ -237,7 +236,7 @@ public class User_Implementation implements UserDAO {
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             PreparedStatement prepareStatement = connection.prepareStatement(DELETE_USER_QUERY);
-            prepareStatement.setInt(1, user.getId());
+            prepareStatement.setLong(1, user.getId());
             if (prepareStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warning("Error while committing. User won't be deleted");
@@ -247,7 +246,9 @@ public class User_Implementation implements UserDAO {
             connectionDB.stop();
             log.info("All changes committed");
         } catch (SQLException e) {
-            log.warning("Problems with connection");
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
     }
 
@@ -266,7 +267,9 @@ public class User_Implementation implements UserDAO {
                 return UserRole.STAFF;
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection");
+            log.warning("Problems with connection:" + e);
+        }finally {
+            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
         }
         return UserRole.PASSENGER;
     }

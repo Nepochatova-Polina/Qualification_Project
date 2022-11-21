@@ -8,18 +8,17 @@ import java.util.logging.Logger;
 public class ConnectionDB {
     private static final ConnectionDB connectionDB = new ConnectionDB();
     private static Connection connection;
-    private static Logger log;
+    private static final String url = "jdbc:postgresql://localhost:15435/postgres";
+    private static final String login = "user";
+    private static final String password = "password";
 
     private ConnectionDB() {
-        String url = "jdbc:postgresql://localhost:15435/postgres";
-        String login = "user";
-        String password = "password";
-        log = Logger.getLogger(ConnectionDB.class.getName());
+
+        Logger log = Logger.getLogger(ConnectionDB.class.getName());
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             log.warning("PostgreSQL JDBC Driver is not found. Include it in your library path ");
-            e.printStackTrace();
             return;
         }
         log.info("PostgreSQL JDBC Driver successfully connected");
@@ -37,10 +36,14 @@ public class ConnectionDB {
         }
     }
 
-    public  Connection getConnection() {return connection;}
+    public Connection getConnection() throws SQLException {
+        if(connection.isClosed()){
+            connection = DriverManager.getConnection(url, login, password);
+        }
+        return connection;
+    }
 
-    public static  ConnectionDB getConnectionDB() {
-        if(connectionDB == null)return new ConnectionDB();
+    public static ConnectionDB getConnectionDB() {
         return connectionDB;
     }
 
@@ -48,21 +51,4 @@ public class ConnectionDB {
         connection.close();
     }
 
-    public void commitAndClose() {
-        try {
-            connection.commit();
-            connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void rollbackAndClose() {
-        try {
-            connection.rollback();
-            connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
 }

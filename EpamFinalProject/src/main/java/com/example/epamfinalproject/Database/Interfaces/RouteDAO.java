@@ -2,6 +2,8 @@ package com.example.epamfinalproject.Database.Interfaces;
 
 import com.example.epamfinalproject.Entities.Route;
 
+import java.util.List;
+
 public interface RouteDAO {
     void createRoute(Route route);
 
@@ -11,9 +13,13 @@ public interface RouteDAO {
 
     Route findRouteByID(long id);
 
-    Route findRouteByDeparture(String departure);
+    List<Route>  findRouteByDeparture(String departure);
 
-    Route findRouteByDestination(String destination);
+    List<Route> findRouteByDestination(String destination);
 
-    Route findRouteByTransitTime(int transitTime);
+    List<Route> findRouteByTransitTime(int transitTime);
+
+    List<Route> findRouteByDepartureAndDestination(String departure,String destination);
+
+
 }

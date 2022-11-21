@@ -16,4 +16,10 @@ public class Route {
     private int distance;
     private int transitTime;
 
+    public Route(String departure, String destination, int distance, int transitTime) {
+        this.departure = departure;
+        this.destination = destination;
+        this.distance = distance;
+        this.transitTime = transitTime;
+    }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CruiseShip {
+    private long id;
     private int passengerCapacity;
     private Route route;
     private int numberOfPorts;
