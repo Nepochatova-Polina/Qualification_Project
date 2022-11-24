@@ -14,23 +14,15 @@ import java.util.logging.Logger;
 
 public class Route_Implementation implements RouteDAO {
     private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
-
     private static PreparedStatement preparedStatement;
 
     private static final String ROUTE_BY_ID_QUERY = "select * from route where route.id = ?";
-
     private static final String CREATE_ROUTE_QUERY = "insert into route(departure, destination, distance, transit_time) values (?,?,?,?)";
-
     private static final String UPDATE_ROUTE_QUERY = "update route set departure = ?,destination = ?,distance = ?,transit_time= ? where id = ?";
-
     private static final String DELETE_ROUTE_QUERY = "delete from route where id = ?";
-
     private static final String FIND_ROUTE_BY_DEPARTURE_QUERY = "select * from route where departure = ?";
-
     private static final String FIND_ROUTE_BY_DESTINATION_QUERY = "select * from route where destination = ?";
-
     private static final String FIND_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY = "select * from route where departure = ? and destination = ?";
-
     private static final String FIND_ROUTE_BY_TRANSIT_TIME_QUERY = "select * from route where transit_time = ?";
 
     @Override

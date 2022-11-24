@@ -12,6 +12,10 @@ public interface OrderDAO {
 
     void deleteOrderByID(long id);
 
+    void deleteOrderByUserID(long id);
+
+    void deleteOrderByShipID(long id);
+
     Order findOrderByID(long id);
 
     Order findOrderByUserID(long id);
@@ -21,6 +25,7 @@ public interface OrderDAO {
     long findStatusID(String status);
 
     String findStatusByID(long id);
+
 //    List<Order> findOrdersByStatus(long id);
 //    List<Order> findOrdersByStatus(String status);
 }

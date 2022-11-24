@@ -9,7 +9,7 @@ alter table user_role
 insert into user_role(role)
 values ('passenger');
 insert into user_role(role)
-values ('staff');
+values ('administrator');
 
 create table status
 (

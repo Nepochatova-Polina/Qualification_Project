@@ -16,29 +16,19 @@ import java.util.logging.Logger;
 
 public class User_Implementation implements UserDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
-
     private static PreparedStatement preparedStatement;
 
     private static final String USER_BY_ID_QUERY = "select * from users where users.id = ?";
-
     private static final String ROLE_BY_ID_QUERY = "select role from user_role where user_role.id = ?";
-
     private static final String ROLE_BY_VALUE_QUERY = "select id from user_role where user_role.role = ?";
-
     private static final String USER_BY_ROLE_PASSENGER_QUERY =
             "select * from users inner join user_role ur on ur.id = users.role_id where role = 'passenger'";
-
     private static final String USER_BY_ROLE_STAFF_QUERY = "" +
             "select * from users inner join user_role ur on ur.id = users.role_id where role = 'staff'";
-
     private static final String GET_ALL_USERS_QUERY = "select * from users";
-
     private static final String CHECK_USER_QUERY = "select * from users where users.login = ? and users.password = ?";
-
     private static final String ADD_USER_QUERY = "insert into users(first_name, last_name, login, password, role_id) values (?,?,?,?,?);";
-
     private static final String EDIT_USER_QUERY = "update users set first_name =?, last_name=?, login = ?, role_id = ? where id = ?";
-
     private static final String DELETE_USER_QUERY = "delete from users where id = ?";
 
     @Override

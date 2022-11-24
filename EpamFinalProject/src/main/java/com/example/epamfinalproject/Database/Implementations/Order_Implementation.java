@@ -15,23 +15,17 @@ import java.util.logging.Logger;
 
 public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
-
     PreparedStatement preparedStatement;
 
     private static final String CREATE_ORDER_QUERY = "insert into orders(ship_id, user_id, status_id) values (?,?,?)";
-
     private static final String FIND_ORDER_BY_ID = "select * from orders where id = ?";
-
     private static final String FIND_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
-
     private static final String FIND_ORDER_BY_SHIP_ID = "select * from orders where ship_id = ?";
-
     private static final String UPDATE_ORDER_BY_ID_QUERY = "update orders set ship_id = ?,user_id = ?,status_id = ? where id = ?";
-
     private static final String DELETE_ORDER_BY_ID_QUERY = " delete from orders where id = ?";
-
+    private static final String DELETE_ORDER_BY_USER_ID_QUERY = " delete from orders where user_id = ?";
+    private static final String DELETE_ORDER_BY_SHIP_ID_QUERY = " delete from orders where ship_id = ?";
     private static final String FIND_STATUS_ID_QUERY = "select id from status where status.status = ? ";
-
     private static final String FIND_STATUS_BY_ID_QUERY = "select status from status where id = ? ";
 
 
@@ -94,6 +88,56 @@ public class Order_Implementation implements OrderDAO {
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_ID_QUERY);
+            preparedStatement.setLong(1, id);
+            if (preparedStatement.executeUpdate() <= 0) {
+                connection.rollback();
+                log.warning("Cannot update order information.");
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            log.warning("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
+        }
+    }
+
+    @Override
+    public void deleteOrderByUserID(long id) {
+        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
+        try (Connection connection = connectionDB.getConnection()) {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_USER_ID_QUERY);
+            preparedStatement.setLong(1, id);
+            if (preparedStatement.executeUpdate() <= 0) {
+                connection.rollback();
+                log.warning("Cannot update order information.");
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            log.warning("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
+        }
+    }
+
+    @Override
+    public void deleteOrderByShipID(long id) {
+        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
+        try (Connection connection = connectionDB.getConnection()) {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();

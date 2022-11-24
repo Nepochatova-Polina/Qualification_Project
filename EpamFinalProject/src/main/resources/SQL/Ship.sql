@@ -1,5 +1,5 @@
-drop table users;
-drop table ships;
+-- drop table users cascade ;
+drop table ships cascade ;
 
 create table ships
 (
@@ -8,7 +8,8 @@ create table ships
     constraint route
         foreign key (route_id)
             REFERENCES route (id),
-    number_Of_Ports integer,
+    number_of_ports integer,
+    passenger_capacity integer,
     start_Date      date,
     end_Date        date
 );

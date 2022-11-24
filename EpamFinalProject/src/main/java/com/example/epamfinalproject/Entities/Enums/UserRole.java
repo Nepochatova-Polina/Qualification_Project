@@ -1,8 +1,8 @@
 package com.example.epamfinalproject.Entities.Enums;
 
 public enum UserRole {
-    PASSENGER("Passenger"),
-    STAFF("Staff");
+    PASSENGER("passenger"),
+    ADMINISTRATOR("administrator");
 
     private final String text;
 
