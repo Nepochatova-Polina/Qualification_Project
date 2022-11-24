@@ -1,8 +1,8 @@
 create table route
 (
     id           serial primary key,
-    departure     varchar(255),
-    destination  varchar(255),
+    departure     varchar(255) not null ,
+    destination  varchar(255) not null ,
     distance     integer,
     transit_time integer
 );

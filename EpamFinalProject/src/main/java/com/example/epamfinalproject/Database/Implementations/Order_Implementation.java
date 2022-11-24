@@ -1,8 +1,9 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionDB;
-import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
-import com.example.epamfinalproject.Entities.Route;
+import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
+import com.example.epamfinalproject.Entities.Enums.Status;
+import com.example.epamfinalproject.Entities.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,38 +13,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Route_Implementation implements RouteDAO {
-    private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
+public class Order_Implementation implements OrderDAO {
+    private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
 
-    private static PreparedStatement preparedStatement;
+    PreparedStatement preparedStatement;
 
-    private static final String ROUTE_BY_ID_QUERY = "select * from route where route.id = ?";
+    private static final String CREATE_ORDER_QUERY = "insert into orders(ship_id, user_id, status_id) values (?,?,?)";
 
-    private static final String CREATE_ROUTE_QUERY = "insert into route(departure, destination, distance, transit_time) values (?,?,?,?)";
+    private static final String FIND_ORDER_BY_ID = "select * from orders where id = ?";
 
-    private static final String UPDATE_ROUTE_QUERY = "update route set departure = ?,destination = ?,distance = ?,transit_time= ? where id = ?";
+    private static final String FIND_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
 
-    private static final String DELETE_ROUTE_QUERY = "delete from route where id = ?";
+    private static final String FIND_ORDER_BY_SHIP_ID = "select * from orders where ship_id = ?";
 
-    private static final String FIND_ROUTE_BY_DEPARTURE_QUERY = "select * from route where departure = ?";
+    private static final String UPDATE_ORDER_BY_ID_QUERY = "update orders set ship_id = ?,user_id = ?,status_id = ? where id = ?";
 
-    private static final String FIND_ROUTE_BY_DESTINATION_QUERY = "select * from route where destination = ?";
+    private static final String DELETE_ORDER_BY_ID_QUERY = " delete from orders where id = ?";
 
-    private static final String FIND_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY = "select * from route where departure = ? and destination = ?";
+    private static final String FIND_STATUS_ID_QUERY = "select id from status where status.status = ? ";
 
-    private static final String FIND_ROUTE_BY_TRANSIT_TIME_QUERY = "select * from route where transit_time = ?";
+    private static final String FIND_STATUS_BY_ID_QUERY = "select status from status where id = ? ";
+
 
     @Override
-    public void createRoute(Route route) {
+    public void createOrder(Order order) {
+        long statusID = findStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(CREATE_ROUTE_QUERY);
-            preparedStatement.setString(1, route.getDeparture());
-            preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getDistance());
-            preparedStatement.setInt(4, route.getTransitTime());
+            preparedStatement = connection.prepareStatement(CREATE_ORDER_QUERY);
+            preparedStatement.setLong(1, order.getShipID());
+            preparedStatement.setLong(2, order.getUserID());
+            preparedStatement.setLong(3, statusID);
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warning("Cannot create route.");
+                log.warning("Cannot add order information.");
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
@@ -55,29 +57,27 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-
     }
 
     @Override
-    public void updateRouteByID(long id, Route route) {
+    public void updateOrderByID(Order order, long id) {
+        long statusID = findStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(UPDATE_ROUTE_QUERY);
-            preparedStatement.setString(1, route.getDeparture());
-            preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getDistance());
-            preparedStatement.setInt(4, route.getTransitTime());
+            preparedStatement = connection.prepareStatement(UPDATE_ORDER_BY_ID_QUERY);
+            preparedStatement.setLong(1, order.getShipID());
+            preparedStatement.setLong(2, order.getUserID());
+            preparedStatement.setLong(3, statusID);
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update route information.");
+                log.warning("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-            log.warning(e.toString());
         } finally {
             try {
                 preparedStatement.close();
@@ -89,15 +89,15 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public void deleteRouteByID(long id) {
+    public void deleteOrderByID(long id) {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(DELETE_ROUTE_QUERY);
+            preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot delete route information.");
+                log.warning("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
@@ -114,23 +114,21 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public Route findRouteByID(long id) {
-        Route route = new Route();
+    public Order findOrderByID(long id) {
+        Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(ROUTE_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                route.setId(resultSet.getInt(1));
-                route.setDeparture(resultSet.getString(2));
-                route.setDestination(resultSet.getString(3));
-                route.setDistance(resultSet.getInt(4));
-                route.setTransitTime(resultSet.getInt(5));
+                order.setId(resultSet.getLong(1));
+                order.setShipID(resultSet.getLong(2));
+                order.setUserID(resultSet.getLong(3));
+                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-            throw new RuntimeException(e);
         } finally {
             try {
                 preparedStatement.close();
@@ -139,18 +137,23 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-        return route;
+        return order;
     }
 
     @Override
-    public List<Route> findRouteByDeparture(String departure) {
-        List<Route> routeList = new ArrayList<>();
+    public Order findOrderByUserID(long id) {
+        Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DEPARTURE_QUERY);
-            preparedStatement.setString(1, departure);
+            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_USER_ID);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            if (resultSet.next()) {
+                order.setId(resultSet.getLong(1));
+                order.setShipID(resultSet.getLong(2));
+                order.setUserID(resultSet.getLong(3));
+                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
+            }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
         } finally {
@@ -161,18 +164,25 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-        return routeList;
+        return order;
     }
 
     @Override
-    public List<Route> findRouteByDestination(String destination) {
-        List<Route> routeList = new ArrayList<>();
+    public List<Order> findOrdersByShipID(long id) {
+        List<Order> orderList = new ArrayList<>();
+        Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DESTINATION_QUERY);
-            preparedStatement.setString(1, destination);
+            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_SHIP_ID);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            if (resultSet.next()) {
+                order.setId(resultSet.getLong(1));
+                order.setShipID(resultSet.getLong(2));
+                order.setUserID(resultSet.getLong(3));
+                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
         } finally {
@@ -183,18 +193,19 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-        return routeList;
+        return orderList;
     }
 
     @Override
-    public List<Route> findRouteByTransitTime(int transitTime) {
-        List<Route> routeList = new ArrayList<>();
+    public long findStatusID(String status) {
+        long id = 0;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_TRANSIT_TIME_QUERY);
-            preparedStatement.setInt(1, transitTime);
+            preparedStatement = connection.prepareStatement(FIND_STATUS_ID_QUERY);
+            preparedStatement.setString(1, status);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            if (resultSet.next())
+                id = resultSet.getLong(1);
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
         } finally {
@@ -205,19 +216,19 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-        return routeList;
+        return id;
     }
 
     @Override
-    public List<Route> findRouteByDepartureAndDestination(String departure, String destination) {
-        List<Route> routeList = new ArrayList<>();
+    public String findStatusByID(long id) {
+        String status = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY);
-            preparedStatement.setString(1, departure);
-            preparedStatement.setString(2, destination);
+            preparedStatement = connection.prepareStatement(FIND_STATUS_BY_ID_QUERY);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            if (resultSet.next())
+                status = resultSet.getString(1);
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
         } finally {
@@ -228,22 +239,6 @@ public class Route_Implementation implements RouteDAO {
                 log.warning("Error closing connection");
             }
         }
-        return routeList;
+        return status;
     }
-
-    private List<Route> collectData(ResultSet resultSet) throws SQLException {
-        List<Route> routeList = new ArrayList<>();
-        Route route = new Route();
-        if (resultSet.next()) {
-            route.setId(resultSet.getLong(1));
-            route.setDeparture(resultSet.getString(2));
-            route.setDestination(resultSet.getString(3));
-            route.setDistance(resultSet.getInt(4));
-            route.setTransitTime(resultSet.getInt(5));
-            routeList.add(route);
-        }
-        log.info("List of Routes was created and filled");
-        return routeList;
-    }
-
 }

@@ -4,7 +4,7 @@ drop table ships;
 create table ships
 (
     id              serial primary key,
-    route_id           bigint,
+    route_id           bigint not null,
     constraint route
         foreign key (route_id)
             REFERENCES route (id),

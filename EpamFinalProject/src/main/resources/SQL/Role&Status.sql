@@ -23,15 +23,15 @@ values ('pending');
 insert into status(status)
 values ('paid');
 
-create table order_status(
-    order_id bigint,
-    status_id bigint,
-    constraint orders
-        foreign key (order_id)
-            REFERENCES orders (id),
-    constraint status
-        foreign key (status_id)
-            REFERENCES status (id)
-);
-alter table order_status
-owner to "user";
+-- create table order_status(
+--     order_id bigint,
+--     status_id bigint,
+--     constraint orders
+--         foreign key (order_id)
+--             REFERENCES orders (id),
+--     constraint status
+--         foreign key (status_id)
+--             REFERENCES status (id)
+-- );
+-- alter table order_status
+-- owner to "user";

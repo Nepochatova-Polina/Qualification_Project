@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionDB;
+import com.example.epamfinalproject.Database.Encryptor;
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
@@ -15,6 +16,8 @@ import java.util.logging.Logger;
 
 public class User_Implementation implements UserDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
+
+    private static PreparedStatement preparedStatement;
 
     private static final String USER_BY_ID_QUERY = "select * from users where users.id = ?";
 
@@ -42,23 +45,28 @@ public class User_Implementation implements UserDAO {
     public void registerUser(User user) {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(ADD_USER_QUERY);
-            prepareStatement.setString(1, user.getFirstName());
-            prepareStatement.setString(2, user.getLastName());
-            prepareStatement.setString(3, user.getLogin());
-            prepareStatement.setString(4, user.getPassword());
+            preparedStatement = connection.prepareStatement(ADD_USER_QUERY);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLogin());
+            preparedStatement.setString(4, Encryptor.hashPassword(user.getPassword()));
             if (user.getRole() == UserRole.PASSENGER) {
-                prepareStatement.setInt(5, 1);
+                preparedStatement.setInt(5, 1);
             } else {
-                prepareStatement.setInt(5, 2);
+                preparedStatement.setInt(5, 2);
             }
-            if (prepareStatement.executeUpdate() <= 0) {
+            if (preparedStatement.executeUpdate() <= 0) {
                 log.warning("Cannot register user.");
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException ignored){}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
     }
 
@@ -67,10 +75,10 @@ public class User_Implementation implements UserDAO {
         User user = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(CHECK_USER_QUERY);
-            prepareStatement.setString(1, login);
-            prepareStatement.setString(2, password);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(CHECK_USER_QUERY);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
@@ -84,8 +92,13 @@ public class User_Implementation implements UserDAO {
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return user;
     }
@@ -96,8 +109,8 @@ public class User_Implementation implements UserDAO {
         User user;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(USER_BY_ROLE_PASSENGER_QUERY);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(USER_BY_ROLE_PASSENGER_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
@@ -113,8 +126,13 @@ public class User_Implementation implements UserDAO {
             log.info("List of Passengers created and filled with " + users.size() + " users");
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return users;
     }
@@ -125,8 +143,8 @@ public class User_Implementation implements UserDAO {
         User user;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(USER_BY_ROLE_STAFF_QUERY);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(USER_BY_ROLE_STAFF_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
@@ -142,8 +160,13 @@ public class User_Implementation implements UserDAO {
             log.info("List of Staff created and filled with " + users.size() + "users");
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return users;
     }
@@ -154,8 +177,8 @@ public class User_Implementation implements UserDAO {
         User user;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(GET_ALL_USERS_QUERY);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(GET_ALL_USERS_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
@@ -170,8 +193,13 @@ public class User_Implementation implements UserDAO {
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return users;
     }
@@ -181,9 +209,9 @@ public class User_Implementation implements UserDAO {
         User user = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(USER_BY_ID_QUERY);
-            prepareStatement.setInt(1, id);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(USER_BY_ID_QUERY);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
@@ -197,26 +225,31 @@ public class User_Implementation implements UserDAO {
             log.info("User was found");
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return user;
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUserByID(User user, long id) {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
-            PreparedStatement prepareStatement = connection.prepareStatement(EDIT_USER_QUERY);
-            prepareStatement.setString(1, user.getFirstName());
-            prepareStatement.setString(2, user.getLastName());
-            prepareStatement.setString(3, user.getLogin());
+            preparedStatement = connection.prepareStatement(EDIT_USER_QUERY);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getLogin());
             int role_id = getRoleID(user.getRole().toString());
             if (role_id != 0)
-                prepareStatement.setInt(4, role_id);
-            prepareStatement.setLong(5, user.getId());
-            if (prepareStatement.executeUpdate() <= 0) {
+                preparedStatement.setInt(4, role_id);
+            preparedStatement.setLong(5, id);
+            if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warning("Error while committing. User won't be updated");
             }
@@ -225,8 +258,13 @@ public class User_Implementation implements UserDAO {
             log.info("All changes committed");
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
     }
 
@@ -235,9 +273,9 @@ public class User_Implementation implements UserDAO {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
-            PreparedStatement prepareStatement = connection.prepareStatement(DELETE_USER_QUERY);
-            prepareStatement.setLong(1, user.getId());
-            if (prepareStatement.executeUpdate() <= 0) {
+            preparedStatement = connection.prepareStatement(DELETE_USER_QUERY);
+            preparedStatement.setLong(1, user.getId());
+            if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warning("Error while committing. User won't be deleted");
             }
@@ -247,8 +285,13 @@ public class User_Implementation implements UserDAO {
             log.info("All changes committed");
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
     }
 
@@ -256,20 +299,22 @@ public class User_Implementation implements UserDAO {
         String role;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(ROLE_BY_ID_QUERY);
-            prepareStatement.setInt(1, id);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(ROLE_BY_ID_QUERY);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 role = resultSet.getString(1);
-                if (role.equalsIgnoreCase(UserRole.PASSENGER.toString())) {
-                    return UserRole.PASSENGER;
-                }
-                return UserRole.STAFF;
+                    return UserRole.fromString(role);
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
-        }finally {
-            try {connectionDB.stop();}catch (SQLException e){log.warning("Error closing connection");}
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return UserRole.PASSENGER;
     }
@@ -278,15 +323,23 @@ public class User_Implementation implements UserDAO {
         int id = 0;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(ROLE_BY_VALUE_QUERY);
-            prepareStatement.setString(1, role);
-            ResultSet resultSet = prepareStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(ROLE_BY_VALUE_QUERY);
+            preparedStatement.setString(1, role);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
             log.warning("Problems with connection");
+        }finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
         }
         return id;
     }
+
 }
