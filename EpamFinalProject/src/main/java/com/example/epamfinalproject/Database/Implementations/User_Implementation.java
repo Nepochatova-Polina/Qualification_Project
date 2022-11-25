@@ -257,12 +257,12 @@ public class User_Implementation implements UserDAO {
     }
 
     @Override
-    public void deleteUserByID(User user) {
+    public void deleteUserByID(long id) {
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_USER_QUERY);
-            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warning("Error while committing. User won't be deleted");
