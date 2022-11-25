@@ -17,5 +17,5 @@ public interface StaffDAO {
 
     List<Staff> getAllStaff();
 
-    List<Staff> getAllStaffByShipID();
+    List<Staff> getAllStaffByShipID(long id);
 }

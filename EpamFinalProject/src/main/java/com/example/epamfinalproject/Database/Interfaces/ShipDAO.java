@@ -7,18 +7,18 @@ import java.util.List;
 
 public interface ShipDAO {
 
-    void createShip(Ship ship);
-
-    Ship findShipByID(long id);
+    void registerShip(Ship ship);
 
     void updateShipByID(Ship ship,long id);
 
     void deleteShipByID(long id);
 
-    List<Ship> findShipsByRouteID(long id);
+    Ship getShipByID(long id);
 
-    List<Ship> findShipsByStartDate(LocalDate startDate);
+    List<Ship> getShipsByRouteID(long id);
 
-    List<Ship> findShipsByEndDate(LocalDate endDate);
+    List<Ship> getShipsByStartDate(LocalDate startDate);
+
+    List<Ship> getShipsByEndDate(LocalDate endDate);
 
 }

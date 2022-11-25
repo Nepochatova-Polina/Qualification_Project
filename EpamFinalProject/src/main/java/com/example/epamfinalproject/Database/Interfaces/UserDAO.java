@@ -7,6 +7,10 @@ import java.util.List;
 public interface UserDAO {
     void registerUser(User user);
 
+    void deleteUserByID(User user);
+
+    void updateUserByID(User user, long id);
+
     User getUserByName(String name, String password);
 
     User getUserByID(long id);
@@ -16,8 +20,4 @@ public interface UserDAO {
     List<User> getAdministratorUsers();
 
     List<User> getAllUsers();
-
-    void deleteUserByID(User user);
-
-    void updateUserByID(User user, long id);
 }

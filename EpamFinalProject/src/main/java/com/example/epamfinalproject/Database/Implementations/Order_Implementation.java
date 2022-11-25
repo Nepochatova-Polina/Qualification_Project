@@ -18,20 +18,20 @@ public class Order_Implementation implements OrderDAO {
     PreparedStatement preparedStatement;
 
     private static final String CREATE_ORDER_QUERY = "insert into orders(ship_id, user_id, status_id) values (?,?,?)";
-    private static final String FIND_ORDER_BY_ID = "select * from orders where id = ?";
-    private static final String FIND_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
-    private static final String FIND_ORDER_BY_SHIP_ID = "select * from orders where ship_id = ?";
     private static final String UPDATE_ORDER_BY_ID_QUERY = "update orders set ship_id = ?,user_id = ?,status_id = ? where id = ?";
     private static final String DELETE_ORDER_BY_ID_QUERY = " delete from orders where id = ?";
     private static final String DELETE_ORDER_BY_USER_ID_QUERY = " delete from orders where user_id = ?";
     private static final String DELETE_ORDER_BY_SHIP_ID_QUERY = " delete from orders where ship_id = ?";
-    private static final String FIND_STATUS_ID_QUERY = "select id from status where status.status = ? ";
-    private static final String FIND_STATUS_BY_ID_QUERY = "select status from status where id = ? ";
+    private static final String GET_ORDER_BY_ID = "select * from orders where id = ?";
+    private static final String GET_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
+    private static final String GET_ORDER_BY_SHIP_ID = "select * from orders where ship_id = ?";
+    private static final String GET_STATUS_ID_QUERY = "select id from status where status.status = ? ";
+    private static final String GET_STATUS_BY_ID_QUERY = "select status from status where id = ? ";
 
 
     @Override
     public void createOrder(Order order) {
-        long statusID = findStatusID(order.getStatus().toString());
+        long statusID = getStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             preparedStatement = connection.prepareStatement(CREATE_ORDER_QUERY);
@@ -55,7 +55,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void updateOrderByID(Order order, long id) {
-        long statusID = findStatusID(order.getStatus().toString());
+        long statusID = getStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
@@ -158,18 +158,18 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public Order findOrderByID(long id) {
+    public Order getOrderByID(long id) {
         Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_ID);
+            preparedStatement = connection.prepareStatement(GET_ORDER_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
@@ -185,18 +185,18 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public Order findOrderByUserID(long id) {
+    public Order getOrderByUserID(long id) {
         Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_USER_ID);
+            preparedStatement = connection.prepareStatement(GET_ORDER_BY_USER_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
@@ -212,19 +212,19 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public List<Order> findOrdersByShipID(long id) {
+    public List<Order> getOrdersByShipID(long id) {
         List<Order> orderList = new ArrayList<>();
         Order order = new Order();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ORDER_BY_SHIP_ID);
+            preparedStatement = connection.prepareStatement(GET_ORDER_BY_SHIP_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(findStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
                 orderList.add(order);
             }
         } catch (SQLException e) {
@@ -241,11 +241,11 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public long findStatusID(String status) {
+    public long getStatusID(String status) {
         long id = 0;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_STATUS_ID_QUERY);
+            preparedStatement = connection.prepareStatement(GET_STATUS_ID_QUERY);
             preparedStatement.setString(1, status);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
@@ -264,11 +264,11 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public String findStatusByID(long id) {
+    public String getStatusByID(long id) {
         String status = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_STATUS_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(GET_STATUS_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())

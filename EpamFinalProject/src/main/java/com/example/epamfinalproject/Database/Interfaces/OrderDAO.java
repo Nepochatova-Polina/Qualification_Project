@@ -16,15 +16,15 @@ public interface OrderDAO {
 
     void deleteOrderByShipID(long id);
 
-    Order findOrderByID(long id);
+    Order getOrderByID(long id);
 
-    Order findOrderByUserID(long id);
+    Order getOrderByUserID(long id);
 
-    List<Order> findOrdersByShipID(long id);
+    List<Order> getOrdersByShipID(long id);
 
-    long findStatusID(String status);
+    long getStatusID(String status);
 
-    String findStatusByID(long id);
+    String getStatusByID(long id);
 
 //    List<Order> findOrdersByStatus(long id);
 //    List<Order> findOrdersByStatus(String status);

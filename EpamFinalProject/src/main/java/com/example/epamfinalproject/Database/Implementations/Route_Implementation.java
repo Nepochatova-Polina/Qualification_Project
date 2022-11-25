@@ -16,14 +16,14 @@ public class Route_Implementation implements RouteDAO {
     private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
 
-    private static final String ROUTE_BY_ID_QUERY = "select * from route where route.id = ?";
     private static final String CREATE_ROUTE_QUERY = "insert into route(departure, destination, distance, transit_time) values (?,?,?,?)";
     private static final String UPDATE_ROUTE_QUERY = "update route set departure = ?,destination = ?,distance = ?,transit_time= ? where id = ?";
     private static final String DELETE_ROUTE_QUERY = "delete from route where id = ?";
-    private static final String FIND_ROUTE_BY_DEPARTURE_QUERY = "select * from route where departure = ?";
-    private static final String FIND_ROUTE_BY_DESTINATION_QUERY = "select * from route where destination = ?";
-    private static final String FIND_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY = "select * from route where departure = ? and destination = ?";
-    private static final String FIND_ROUTE_BY_TRANSIT_TIME_QUERY = "select * from route where transit_time = ?";
+    private static final String GET_ROUTE_BY_ID_QUERY = "select * from route where route.id = ?";
+    private static final String GET_ROUTE_BY_DEPARTURE_QUERY = "select * from route where departure = ?";
+    private static final String GET_ROUTE_BY_DESTINATION_QUERY = "select * from route where destination = ?";
+    private static final String GET_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY = "select * from route where departure = ? and destination = ?";
+    private static final String GET_ROUTE_BY_TRANSIT_TIME_QUERY = "select * from route where transit_time = ?";
 
     @Override
     public void createRoute(Route route) {
@@ -106,11 +106,11 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public Route findRouteByID(long id) {
+    public Route getRouteByID(long id) {
         Route route = new Route();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(ROUTE_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(GET_ROUTE_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -135,11 +135,11 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> findRouteByDeparture(String departure) {
+    public List<Route> getRouteByDeparture(String departure) {
         List<Route> routeList = new ArrayList<>();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DEPARTURE_QUERY);
+            preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DEPARTURE_QUERY);
             preparedStatement.setString(1, departure);
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
@@ -157,11 +157,11 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> findRouteByDestination(String destination) {
+    public List<Route> getRouteByDestination(String destination) {
         List<Route> routeList = new ArrayList<>();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DESTINATION_QUERY);
+            preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DESTINATION_QUERY);
             preparedStatement.setString(1, destination);
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
@@ -179,11 +179,11 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> findRouteByTransitTime(int transitTime) {
+    public List<Route> getRouteByTransitTime(int transitTime) {
         List<Route> routeList = new ArrayList<>();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_TRANSIT_TIME_QUERY);
+            preparedStatement = connection.prepareStatement(GET_ROUTE_BY_TRANSIT_TIME_QUERY);
             preparedStatement.setInt(1, transitTime);
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
@@ -201,11 +201,11 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> findRouteByDepartureAndDestination(String departure, String destination) {
+    public List<Route> getRouteByDepartureAndDestination(String departure, String destination) {
         List<Route> routeList = new ArrayList<>();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(FIND_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY);
+            preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY);
             preparedStatement.setString(1, departure);
             preparedStatement.setString(2, destination);
             ResultSet resultSet = preparedStatement.executeQuery();

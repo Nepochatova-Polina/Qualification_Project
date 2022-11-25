@@ -11,15 +11,15 @@ public interface RouteDAO {
 
     void deleteRouteByID(long id);
 
-    Route findRouteByID(long id);
+    Route getRouteByID(long id);
 
-    List<Route>  findRouteByDeparture(String departure);
+    List<Route> getRouteByDeparture(String departure);
 
-    List<Route> findRouteByDestination(String destination);
+    List<Route> getRouteByDestination(String destination);
 
-    List<Route> findRouteByTransitTime(int transitTime);
+    List<Route> getRouteByTransitTime(int transitTime);
 
-    List<Route> findRouteByDepartureAndDestination(String departure,String destination);
+    List<Route> getRouteByDepartureAndDestination(String departure, String destination);
 
 
 }
