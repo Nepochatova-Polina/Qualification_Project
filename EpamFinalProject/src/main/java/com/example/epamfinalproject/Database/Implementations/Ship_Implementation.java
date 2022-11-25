@@ -3,17 +3,13 @@ package com.example.epamfinalproject.Database.Implementations;
 import com.example.epamfinalproject.Database.ConnectionDB;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Entities.Ship;
-import com.example.epamfinalproject.Entities.Staff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -93,8 +89,8 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setLong(1,ship.getRoute_id());
             preparedStatement.setInt(2,ship.getNumberOfPorts());
             preparedStatement.setInt(3,ship.getPassengerCapacity());
-            preparedStatement.setString(4,ship.getStartOfTheCruise().toString());
-            preparedStatement.setString(5,ship.getEndOfTheCruise().toString());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(ship.getStartOfTheCruise()));
+            preparedStatement.setDate(5, java.sql.Date.valueOf(ship.getEndOfTheCruise()));
             preparedStatement.setLong(6,id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -172,14 +168,14 @@ public class Ship_Implementation implements ShipDAO {
     }
 
     @Override
-    public List<Ship> findShipsByStartDate(Date startDate) {
+    public List<Ship> findShipsByStartDate(LocalDate startDate) {
         List<Ship> shipList = new ArrayList<>();
         Ship ship = new Ship();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(FIND_SHIPS_BY_START_DATE_QUERY);
-            preparedStatement.setString(1,startDate.toString());
+            preparedStatement.setDate(1,java.sql.Date.valueOf(startDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));
@@ -204,14 +200,14 @@ public class Ship_Implementation implements ShipDAO {
     }
 
     @Override
-    public List<Ship> findShipsByEndDate(Date endDate) {
+    public List<Ship> findShipsByEndDate(LocalDate endDate) {
         List<Ship> shipList = new ArrayList<>();
         Ship ship = new Ship();
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(FIND_SHIPS_BY_END_DATE_QUERY);
-            preparedStatement.setString(1,endDate.toString());
+            preparedStatement.setDate(1,java.sql.Date.valueOf(endDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));

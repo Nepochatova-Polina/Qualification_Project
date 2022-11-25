@@ -7,13 +7,13 @@ import java.util.List;
 public interface UserDAO {
     void registerUser(User user);
 
-    User getUser(String name, String password);
+    User getUserByName(String name, String password);
 
-    User getUser(int id);
+    User getUserByID(long id);
 
     List<User> getPassengerUsers();
 
-    List<User> getStaffUsers();
+    List<User> getAdministratorUsers();
 
     List<User> getAllUsers();
 

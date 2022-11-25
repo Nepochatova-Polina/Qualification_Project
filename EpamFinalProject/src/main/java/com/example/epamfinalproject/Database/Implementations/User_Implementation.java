@@ -23,8 +23,8 @@ public class User_Implementation implements UserDAO {
     private static final String ROLE_BY_VALUE_QUERY = "select id from user_role where user_role.role = ?";
     private static final String USER_BY_ROLE_PASSENGER_QUERY =
             "select * from users inner join user_role ur on ur.id = users.role_id where role = 'passenger'";
-    private static final String USER_BY_ROLE_STAFF_QUERY = "" +
-            "select * from users inner join user_role ur on ur.id = users.role_id where role = 'staff'";
+    private static final String USER_BY_ROLE_ADMIN_QUERY = "" +
+            "select * from users inner join user_role ur on ur.id = users.role_id where role = 'administrator'";
     private static final String GET_ALL_USERS_QUERY = "select * from users";
     private static final String CHECK_USER_QUERY = "select * from users where users.login = ? and users.password = ?";
     private static final String ADD_USER_QUERY = "insert into users(first_name, last_name, login, password, role_id) values (?,?,?,?,?);";
@@ -61,7 +61,7 @@ public class User_Implementation implements UserDAO {
     }
 
     @Override
-    public User getUser(String login, String password) {
+    public User getUserByName(String login, String password) {
         User user = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
@@ -128,12 +128,12 @@ public class User_Implementation implements UserDAO {
     }
 
     @Override
-    public List<User> getStaffUsers() {
+    public List<User> getAdministratorUsers() {
         List<User> users = new ArrayList<>();
         User user;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(USER_BY_ROLE_STAFF_QUERY);
+            preparedStatement = connection.prepareStatement(USER_BY_ROLE_ADMIN_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
@@ -195,12 +195,12 @@ public class User_Implementation implements UserDAO {
     }
 
     @Override
-    public User getUser(int id) {
+    public User getUserByID(long id) {
         User user = null;
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             preparedStatement = connection.prepareStatement(USER_BY_ID_QUERY);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User

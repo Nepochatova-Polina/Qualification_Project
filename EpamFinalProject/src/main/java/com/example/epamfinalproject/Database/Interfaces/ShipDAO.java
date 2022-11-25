@@ -2,7 +2,7 @@ package com.example.epamfinalproject.Database.Interfaces;
 
 import com.example.epamfinalproject.Entities.Ship;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ShipDAO {
@@ -17,8 +17,8 @@ public interface ShipDAO {
 
     List<Ship> findShipsByRouteID(long id);
 
-    List<Ship> findShipsByStartDate(Date startDate);
+    List<Ship> findShipsByStartDate(LocalDate startDate);
 
-    List<Ship> findShipsByEndDate(Date endDate);
+    List<Ship> findShipsByEndDate(LocalDate endDate);
 
 }
