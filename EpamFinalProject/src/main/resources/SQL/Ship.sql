@@ -1,13 +1,7 @@
--- drop table users cascade ;
-drop table ships cascade ;
-
-create table ships
+create table if not exists ships
 (
     id              serial primary key,
-    route_id           bigint not null,
-    constraint route
-        foreign key (route_id)
-            REFERENCES route (id),
+    route_id           bigint not null references route(id) on delete cascade,
     number_of_ports integer,
     passenger_capacity integer,
     start_Date      date,

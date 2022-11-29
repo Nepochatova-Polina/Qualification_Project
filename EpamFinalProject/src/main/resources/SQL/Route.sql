@@ -1,8 +1,8 @@
-create table route
+create table if not exists route
 (
     id           serial primary key,
-    departure     varchar(255) not null ,
-    destination  varchar(255) not null ,
+    departure     varchar(255) not null,
+    destination  varchar(255) not null,
     distance     integer,
     transit_time integer
 );

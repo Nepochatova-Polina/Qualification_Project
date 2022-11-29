@@ -1,5 +1,4 @@
-drop table user_role;
-create table user_role
+create table if not exists user_role
 (
     id   serial primary key,
     role varchar(255)
@@ -11,7 +10,7 @@ values ('passenger');
 insert into user_role(role)
 values ('administrator');
 
-create table status
+create table if not exists status
 (
     id     serial primary key,
     status varchar(255)
@@ -23,15 +22,3 @@ values ('pending');
 insert into status(status)
 values ('paid');
 
--- create table order_status(
---     order_id bigint,
---     status_id bigint,
---     constraint orders
---         foreign key (order_id)
---             REFERENCES orders (id),
---     constraint status
---         foreign key (status_id)
---             REFERENCES status (id)
--- );
--- alter table order_status
--- owner to "user";

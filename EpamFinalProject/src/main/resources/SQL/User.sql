@@ -1,15 +1,11 @@
--- drop table users;
-create table users
+create table if not exists users
 (
     id         serial primary key,
     first_name varchar(255),
     last_name  varchar(255),
-    login  varchar(255),
+    login  varchar(255) unique,
     password   varchar(255),
-    role_id    bigint,
-    constraint role
-        foreign key (role_id)
-            REFERENCES user_role (id)
+    role_id    bigint references user_role(id) on delete cascade
 );
 alter table users
     owner to "user";

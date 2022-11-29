@@ -1,13 +1,9 @@
-drop table staff;
-create table staff
+create table if not exists staff
 (
     id         serial primary key,
     first_name varchar(255),
     last_name  varchar(255),
-    ship_id    bigint,
-    constraint role
-        foreign key (ship_id)
-            REFERENCES ships (id)
+    ship_id    bigint references ships (id) on delete cascade
 );
 alter table staff
     owner to "user";
