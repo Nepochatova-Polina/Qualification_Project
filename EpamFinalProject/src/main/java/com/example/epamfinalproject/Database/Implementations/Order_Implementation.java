@@ -38,6 +38,7 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, order.getShipID());
             preparedStatement.setLong(2, order.getUserID());
             preparedStatement.setLong(3, statusID);
+//            TODO Image Blob processing
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warning("Cannot add order information.");
             }

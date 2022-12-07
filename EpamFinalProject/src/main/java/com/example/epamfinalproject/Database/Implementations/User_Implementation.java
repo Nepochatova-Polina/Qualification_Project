@@ -37,7 +37,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());
-            preparedStatement.setString(4, Encryptor.hashPassword(user.getPassword()));
+            preparedStatement.setString(4, Encryptor.encrypt(user.getPassword()));
             if (user.getRole() == UserRole.PASSENGER) {
                 preparedStatement.setInt(5, 1);
             } else {
