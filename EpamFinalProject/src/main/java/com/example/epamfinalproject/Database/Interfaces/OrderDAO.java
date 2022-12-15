@@ -22,10 +22,6 @@ public interface OrderDAO {
 
     List<Order> getOrdersByShipID(long id);
 
-    long getStatusID(String status);
-
-    String getStatusByID(long id);
-
 //    List<Order> findOrdersByStatus(long id);
 //    List<Order> findOrdersByStatus(String status);
 }

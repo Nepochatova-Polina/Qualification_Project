@@ -6,10 +6,8 @@ import com.example.epamfinalproject.Database.Interfaces.UserDAO;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.InputStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,15 +17,15 @@ public class User_Implementation implements UserDAO {
     private static PreparedStatement preparedStatement;
 
     private static final String GET_USER_BY_ID_QUERY = "select * from users where users.id = ?";
-    private static final String GET_ROLE_BY_ID_QUERY = "select role from user_role where user_role.id = ?";
-    private static final String GET_ROLE_BY_VALUE_QUERY = "select id from user_role where user_role.role = ?";
-    private static final String GET_USER_BY_ROLE_PASSENGER_QUERY ="select * from users inner join user_role ur on ur.id = users.role_id where role = 'passenger'";
-    private static final String GET_USER_BY_ROLE_ADMIN_QUERY = "select * from users inner join user_role ur on ur.id = users.role_id where role = 'administrator'";
+    private static final String GET_USER_BY_ROLE_PASSENGER_QUERY = "select * from users where role = 'passenger'";
+    private static final String GET_USER_BY_ROLE_ADMIN_QUERY = "select * from users  where role = 'administrator'";
     private static final String GET_ALL_USERS_QUERY = "select * from users";
     private static final String CHECK_USER_QUERY = "select * from users where users.login = ? and users.password = ?";
-    private static final String REGISTER_USER_QUERY = "insert into users(first_name, last_name, login, password, role_id) values (?,?,?,?,?);";
-    private static final String UPDATE_USER_QUERY = "update users set first_name =?, last_name=?, login = ?, role_id = ? where id = ?";
+    private static final String REGISTER_USER_QUERY = "insert into users(first_name, last_name, login, password, role) values (?,?,?,?,?);";
+    private static final String UPDATE_USER_QUERY = "update users set first_name =?, last_name=?, login = ?, role = ? where id = ?";
+    private static final String UPDATE_USER_PASSPORT_QUERY = "update users set passport_img = ? where id = ?";
     private static final String DELETE_USER_QUERY = "delete from users where id = ?";
+    private static final String GET_USER_PASSPORT_QUERY = "select passport_img from users where id = ?";
 
     @Override
     public void registerUser(User user) {
@@ -38,11 +36,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, Encryptor.encrypt(user.getPassword()));
-            if (user.getRole() == UserRole.PASSENGER) {
-                preparedStatement.setInt(5, 1);
-            } else {
-                preparedStatement.setInt(5, 2);
-            }
+            preparedStatement.setString(5, user.getRole().toString());
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warning("Cannot register user.");
             }
@@ -65,7 +59,7 @@ public class User_Implementation implements UserDAO {
         try (Connection connection = connectionDB.getConnection()) {
             preparedStatement = connection.prepareStatement(CHECK_USER_QUERY);
             preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(2, Encryptor.encrypt(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User
@@ -75,7 +69,7 @@ public class User_Implementation implements UserDAO {
                         .lastName(resultSet.getString(3))
                         .login(resultSet.getString(4))
                         .password(resultSet.getString(5))
-                        .role(getRoleValue(resultSet.getInt(6)))
+                        .role(UserRole.valueOf(resultSet.getString(6)))
                         .build();
             }
         } catch (SQLException e) {
@@ -106,7 +100,7 @@ public class User_Implementation implements UserDAO {
                         .firstName(resultSet.getString(2))
                         .lastName(resultSet.getString(3))
                         .login(resultSet.getString(4))
-                        .role(getRoleValue(resultSet.getInt(6)))
+                        .role(UserRole.valueOf(resultSet.getString(6)))
                         .build();
 
                 users.add(user);
@@ -141,7 +135,7 @@ public class User_Implementation implements UserDAO {
                         .lastName(resultSet.getString(3))
                         .login(resultSet.getString(4))
                         .password(resultSet.getString(5))
-                        .role(getRoleValue(resultSet.getInt(6)))
+                        .role(UserRole.valueOf(resultSet.getString(6)))
                         .build();
                 users.add(user);
             }
@@ -175,7 +169,7 @@ public class User_Implementation implements UserDAO {
                         .lastName(resultSet.getString(3))
                         .login(resultSet.getString(4))
                         .password(resultSet.getString(5))
-                        .role(getRoleValue(resultSet.getInt(6)))
+                        .role(UserRole.valueOf(resultSet.getString(6)))
                         .build();
                 users.add(user);
             }
@@ -207,7 +201,7 @@ public class User_Implementation implements UserDAO {
                         .firstName(resultSet.getString(2))
                         .lastName(resultSet.getString(3))
                         .login(resultSet.getString(4))
-                        .role(getRoleValue(resultSet.getInt(6)))
+                        .role(UserRole.valueOf(resultSet.getString(6)))
                         .build();
             }
             log.info("User was found");
@@ -233,9 +227,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());
-            int role_id = getRoleID(user.getRole().toString());
-            if (role_id != 0)
-                preparedStatement.setInt(4, role_id);
+            preparedStatement.setString(4, user.getRole().toString());
             preparedStatement.setLong(5, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -254,6 +246,57 @@ public class User_Implementation implements UserDAO {
                 log.warning("Error closing connection");
             }
         }
+    }
+
+    @Override
+    public void updateUserPassport(long id, InputStream image, long length) {
+        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
+        try (Connection connection = connectionDB.getConnection()) {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(UPDATE_USER_PASSPORT_QUERY);
+            preparedStatement.setBinaryStream(1, image, length);
+            preparedStatement.setLong(2, id);
+            if (preparedStatement.executeUpdate() <= 0) {
+                connection.rollback();
+                log.warning("Error while committing. Image won't be updated");
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+            log.info("All changes committed");
+        } catch (SQLException e) {
+            log.warning("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
+        }
+    }
+
+    public Blob getPassport(long id) {
+        Blob blob = null;
+        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
+        try (Connection connection = connectionDB.getConnection()) {
+            preparedStatement = connection.prepareStatement(GET_USER_PASSPORT_QUERY);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                blob = resultSet.getBlob(1);
+            }
+            log.info("All changes committed");
+        } catch (SQLException e) {
+            log.warning("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warning("Error closing connection");
+            }
+        }
+        return blob;
     }
 
     @Override
@@ -282,52 +325,4 @@ public class User_Implementation implements UserDAO {
             }
         }
     }
-
-    public UserRole getRoleValue(int id) {
-        String role;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_ROLE_BY_ID_QUERY);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                role = resultSet.getString(1);
-                    return UserRole.fromString(role);
-            }
-        } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-                connectionDB.stop();
-            } catch (SQLException e) {
-                log.warning("Error closing connection");
-            }
-        }
-        return UserRole.PASSENGER;
-    }
-
-    public int getRoleID(String role) {
-        int id = 0;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_ROLE_BY_VALUE_QUERY);
-            preparedStatement.setString(1, role);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                id = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            log.warning("Problems with connection");
-        }finally {
-            try {
-                preparedStatement.close();
-                connectionDB.stop();
-            } catch (SQLException e) {
-                log.warning("Error closing connection");
-            }
-        }
-        return id;
-    }
-
 }

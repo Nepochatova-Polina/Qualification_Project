@@ -8,6 +8,15 @@
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="hello">Hello Servlet</a>
+<a href="multiPartServlet">Hello Servlet</a>
+<form method="post" action="multiPartServlet" enctype="multipart/form-data">
+    Choose a file: <input type="file" name="file" accept="image/jpeg"/>
+    <input type="submit" value="Upload" />
+</form>
+<a href="login.jsp">Login page</a>
+<br>
+<a href="logout.jsp">Logout page</a>
+<br>
+<a href="registration.jsp">Registration page</a>
 </body>
 </html>

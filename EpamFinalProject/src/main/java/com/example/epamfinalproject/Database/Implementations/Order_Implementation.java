@@ -17,27 +17,24 @@ public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
     PreparedStatement preparedStatement;
 
-    private static final String CREATE_ORDER_QUERY = "insert into orders(ship_id, user_id, status_id) values (?,?,?)";
-    private static final String UPDATE_ORDER_BY_ID_QUERY = "update orders set ship_id = ?,user_id = ?,status_id = ? where id = ?";
+    private static final String CREATE_ORDER_QUERY = "insert into orders(ship_id, user_id, status) values (?,?,?)";
+    private static final String UPDATE_ORDER_BY_ID_QUERY = "update orders set ship_id = ?,user_id = ?,status = ? where id = ?";
     private static final String DELETE_ORDER_BY_ID_QUERY = " delete from orders where id = ?";
     private static final String DELETE_ORDER_BY_USER_ID_QUERY = " delete from orders where user_id = ?";
     private static final String DELETE_ORDER_BY_SHIP_ID_QUERY = " delete from orders where ship_id = ?";
     private static final String GET_ORDER_BY_ID = "select * from orders where id = ?";
     private static final String GET_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
     private static final String GET_ORDER_BY_SHIP_ID = "select * from orders where ship_id = ?";
-    private static final String GET_STATUS_ID_QUERY = "select id from status where status.status = ? ";
-    private static final String GET_STATUS_BY_ID_QUERY = "select status from status where id = ? ";
 
 
     @Override
     public void createOrder(Order order) {
-        long statusID = getStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             preparedStatement = connection.prepareStatement(CREATE_ORDER_QUERY);
             preparedStatement.setLong(1, order.getShipID());
             preparedStatement.setLong(2, order.getUserID());
-            preparedStatement.setLong(3, statusID);
+            preparedStatement.setString(3, order.getStatus().toString());
 //            TODO Image Blob processing
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warning("Cannot add order information.");
@@ -56,14 +53,13 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void updateOrderByID(Order order, long id) {
-        long statusID = getStatusID(order.getStatus().toString());
         ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
         try (Connection connection = connectionDB.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, order.getShipID());
             preparedStatement.setLong(2, order.getUserID());
-            preparedStatement.setLong(3, statusID);
+            preparedStatement.setString(3, order.getStatus().toString());
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -170,7 +166,7 @@ public class Order_Implementation implements OrderDAO {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(resultSet.getString(4)));
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
@@ -197,7 +193,7 @@ public class Order_Implementation implements OrderDAO {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(resultSet.getString(4)));
             }
         } catch (SQLException e) {
             log.warning("Problems with connection:" + e);
@@ -225,7 +221,7 @@ public class Order_Implementation implements OrderDAO {
                 order.setId(resultSet.getLong(1));
                 order.setShipID(resultSet.getLong(2));
                 order.setUserID(resultSet.getLong(3));
-                order.setStatus(Status.fromString(getStatusByID(resultSet.getLong(4))));
+                order.setStatus(Status.fromString(resultSet.getString(4)));
                 orderList.add(order);
             }
         } catch (SQLException e) {
@@ -239,51 +235,5 @@ public class Order_Implementation implements OrderDAO {
             }
         }
         return orderList;
-    }
-
-    @Override
-    public long getStatusID(String status) {
-        long id = 0;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_STATUS_ID_QUERY);
-            preparedStatement.setString(1, status);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                id = resultSet.getLong(1);
-        } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-                connectionDB.stop();
-            } catch (SQLException e) {
-                log.warning("Error closing connection");
-            }
-        }
-        return id;
-    }
-
-    @Override
-    public String getStatusByID(long id) {
-        String status = null;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_STATUS_BY_ID_QUERY);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                status = resultSet.getString(1);
-        } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-                connectionDB.stop();
-            } catch (SQLException e) {
-                log.warning("Error closing connection");
-            }
-        }
-        return status;
     }
 }

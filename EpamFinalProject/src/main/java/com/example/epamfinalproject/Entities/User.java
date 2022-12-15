@@ -15,6 +15,7 @@ public class User {
     private String login;
     private String password;
     private UserRole role;
+    private byte[] passport;
 
     private User(UserBuilder builder) {
         this.id = builder.id;
@@ -23,6 +24,7 @@ public class User {
         this.login = builder.login;
         this.password = builder.password;
         this.role = builder.role;
+        this.passport = builder.passport;
     }
 
     public static class UserBuilder {
@@ -32,6 +34,7 @@ public class User {
         private String login;
         private String password;
         private UserRole role;
+        private byte[] passport;
 
         public UserBuilder() {}
 
@@ -63,15 +66,14 @@ public class User {
             return this;
         }
 
-        public User build() {
-            //            validateUserObject(user);
-            return new User(this);
+        public UserBuilder passport(byte[] passport) {
+            this.passport = passport;
+            return this;
         }
 
-//        private void validateUserObject(User user) {
-//            Do some basic validations to check
-            //if user object does not break any assumption of system
-//        }
+        public User build() {
+            return new User(this);
+        }
     }
 }
 

@@ -19,8 +19,8 @@ public class Staff_Implementation implements StaffDAO {
     private static final String UPDATE_STAFF_BY_ID_QUERY = "update staff set first_name = ?,last_name = ?,ship_id = ? where id = ?";
     private static final String DELETE_STAFF_BY_ID_QUERY = "delete from staff where id = ?";
     private static final String DELETE_STAFF_BY_SHIP_ID_QUERY = "delete from staff where ship_id = ?";
-    private static final String GET_STAFF_BY_ID_QUERY = "";
-    private static final String GET_STAFF_BY_SHIP_ID_QUERY = "";
+    private static final String GET_STAFF_BY_ID_QUERY = "select * from staff where id = ?";
+    private static final String GET_STAFF_BY_SHIP_ID_QUERY = "select * from staff where ship_id = ?";
     private static final String GET_ALL_STAFF_QUERY = "select * from staff";
 
 

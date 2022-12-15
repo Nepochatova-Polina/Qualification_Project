@@ -5,8 +5,8 @@ create table if not exists users
     last_name  varchar(255),
     login  varchar(255) unique,
     password   varchar(255),
-    role_id    bigint references user_role(id) on delete cascade,
-    passportImg   bytea
+    role varchar(255),
+    passport_img   bytea
 );
 alter table users
     owner to "user";
