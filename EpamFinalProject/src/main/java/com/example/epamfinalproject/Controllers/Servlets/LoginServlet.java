@@ -22,7 +22,8 @@ public class LoginServlet extends HttpServlet {
         if (response == null || request == null) {
             throw new IllegalArgumentException("Response/request must not be null.");
         }
-        response.sendRedirect("login.jsp");
+        request.setAttribute("message", "Error?  maybe");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     @Override

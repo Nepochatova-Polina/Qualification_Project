@@ -13,7 +13,7 @@
     Choose a file: <input type="file" name="file" accept="image/jpeg"/>
     <input type="submit" value="Upload" />
 </form>
-<a href="login.jsp">Login page</a>
+<a href="login">Login page</a>
 <br>
 <a href="logout.jsp">Logout page</a>
 <br>

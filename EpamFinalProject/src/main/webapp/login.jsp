@@ -39,29 +39,16 @@
                                 required
                                 class="form-control col">
                     </div>
-                    <div class= form-group" style="margin-top: 30px">
-                        <button type="submit" id="login-submit" class="btn btn-warning col" > Log in </button>
+                    <div id="message" name="message" style="color:red;"></div>
+                    <div class=form-group" style="margin-top: 30px">
+                        <button type="submit" id="login-submit" class="btn btn-warning col"> Log in</button>
                     </div>
-                    <p class="text-center" >Misclicked? <a href="index.jsp" style="color: orange">Come back</a></p>
+                    <p class="text-center">Misclicked? <a href="index.jsp" style="color: orange">Come back</a></p>
                 </form>
             </article>
         </div>
     </div>
 
-    <div class="modal fade" id="failureModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger">Login Failure</h5>
-                </div>
-                <div class="modal-body">
-                    <p id="failureModalText"></p>
-                </div>
-                <div class="modal-footer" id="failureModalFooter">
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>
