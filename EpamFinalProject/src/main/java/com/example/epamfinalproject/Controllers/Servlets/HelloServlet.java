@@ -32,7 +32,7 @@ public class HelloServlet extends HttpServlet {
         ui.registerUser(new User.UserBuilder()
                 .firstName("Anna")
                 .lastName("Olsef")
-                .role(UserRole.PASSENGER)
+                .role(UserRole.CLIENT)
                 .login("anna_olsef")
                 .password("olga12656")
                 .build());

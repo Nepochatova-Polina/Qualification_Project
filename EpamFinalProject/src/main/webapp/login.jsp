@@ -43,7 +43,7 @@
                     <div class=form-group" style="margin-top: 30px">
                         <button type="submit" id="login-submit" class="btn btn-warning col"> Log in</button>
                     </div>
-                    <p class="text-center">Misclicked? <a href="index.jsp" style="color: orange">Come back</a></p>
+                    <p class="text-center">Misclicked? <a href="registration.jsp" style="color: orange">Come back</a></p>
                 </form>
             </article>
         </div>
