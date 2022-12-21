@@ -29,13 +29,14 @@ public class HelloServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User_Implementation ui = new User_Implementation();
-        ui.registerUser(new User.UserBuilder()
-                .firstName("Anna")
-                .lastName("Olsef")
-                .role(UserRole.CLIENT)
-                .login("anna_olsef")
-                .password("olga12656")
-                .build());
+//        ui.registerUser(new User.UserBuilder()
+//                .firstName("Anna")
+//                .lastName("Olsef")
+//                .role(UserRole.CLIENT)
+//                .login("anna_olsef")
+//                .password("olga12656")
+//                .build());
+        ui.getClientUsers();
 //        Blob blob = new
 //        ui.updateUserPassport(1,Blo );
 //        request.setAttribute("message", "<script>alert('Hello gold')</script>");

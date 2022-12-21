@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style><%@include file="/WEB-INF/Styles/index.css"%></style>
+
     <title>JSP - Hello World</title>
+
 </head>
 <body>
 <h1><%= "Hello World!" %>
@@ -15,8 +18,6 @@
 </form>
 <a href="login">Login page</a>
 <br>
-<a href="logout.jsp">Logout page</a>
-<br>
-<a href="registration.jsp">Registration page</a>
+ <a href="registration.jsp">Registration page</a>
 </body>
 </html>

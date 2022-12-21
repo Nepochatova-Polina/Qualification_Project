@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Route_Implementation implements RouteDAO {
     private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
@@ -35,16 +35,16 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement.setInt(3, route.getDistance());
             preparedStatement.setInt(4, route.getTransitTime());
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warning("Cannot create route.");
+                log.warn("Cannot create route.");
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
 
@@ -63,19 +63,19 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update route information.");
+                log.warn("Cannot update route information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
-            log.warning(e.toString());
+            log.warn("Problems with connection:" + e);
+            log.warn(e.toString());
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -89,18 +89,18 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot delete route information.");
+                log.warn("Cannot delete route information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -121,14 +121,14 @@ public class Route_Implementation implements RouteDAO {
                 route.setTransitTime(resultSet.getInt(5));
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
             throw new RuntimeException(e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return route;
@@ -144,13 +144,13 @@ public class Route_Implementation implements RouteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return routeList;
@@ -166,13 +166,13 @@ public class Route_Implementation implements RouteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return routeList;
@@ -188,13 +188,13 @@ public class Route_Implementation implements RouteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return routeList;
@@ -211,13 +211,13 @@ public class Route_Implementation implements RouteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             routeList = collectData(resultSet);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return routeList;

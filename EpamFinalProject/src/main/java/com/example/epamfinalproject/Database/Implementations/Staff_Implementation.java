@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Staff_Implementation implements StaffDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
@@ -33,16 +33,16 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setString(2, staff.getLastName());
             preparedStatement.setLong(3, staff.getShip_id());
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warning("Cannot register staff.");
+                log.warn("Cannot register staff.");
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -59,18 +59,18 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update staff.");
+                log.warn("Cannot update staff.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -84,18 +84,18 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot delete staff.");
+                log.warn("Cannot delete staff.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -109,18 +109,18 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot delete staff.");
+                log.warn("Cannot delete staff.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -140,13 +140,13 @@ public class Staff_Implementation implements StaffDAO {
                 staff.setShip_id(resultSet.getLong(4));
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return staff;
@@ -168,13 +168,13 @@ public class Staff_Implementation implements StaffDAO {
                 staffList.add(staff);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return staffList;
@@ -197,13 +197,13 @@ public class Staff_Implementation implements StaffDAO {
                 staffList.add(staff);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return staffList;

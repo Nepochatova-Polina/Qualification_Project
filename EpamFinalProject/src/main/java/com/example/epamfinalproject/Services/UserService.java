@@ -39,7 +39,7 @@ public class UserService {
 
     public static List<User> getPassengerUsers() {
         UserDAO userDAO = new User_Implementation();
-        return userDAO.getPassengerUsers();
+        return userDAO.getClientUsers();
     }
 
     public static List<User> getAdministratorUsers() {

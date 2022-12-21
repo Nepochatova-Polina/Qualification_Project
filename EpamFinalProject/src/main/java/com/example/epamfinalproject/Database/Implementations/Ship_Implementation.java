@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Ship_Implementation implements ShipDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
@@ -36,16 +36,16 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setDate(4, java.sql.Date.valueOf(ship.getStartOfTheCruise()));
             preparedStatement.setDate(5, java.sql.Date.valueOf(ship.getEndOfTheCruise()));
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warning("Cannot register ship.");
+                log.warn("Cannot register ship.");
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -67,13 +67,13 @@ public class Ship_Implementation implements ShipDAO {
                 ship.setEndOfTheCruise(LocalDate.parse(resultSet.getString(6)));
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return ship;
@@ -93,18 +93,18 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setLong(6,id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update ship.");
+                log.warn("Cannot update ship.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -118,18 +118,18 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setLong(1,id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot delete ship.");
+                log.warn("Cannot delete ship.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -154,13 +154,13 @@ public class Ship_Implementation implements ShipDAO {
                 shipList.add(ship);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return shipList;
@@ -186,13 +186,13 @@ public class Ship_Implementation implements ShipDAO {
                 shipList.add(ship);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return shipList;
@@ -219,13 +219,13 @@ public class Ship_Implementation implements ShipDAO {
                 shipList.add(ship);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return shipList;

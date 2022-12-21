@@ -18,7 +18,7 @@ public interface UserDAO {
 
     User getUserByID(long id);
 
-    List<User> getPassengerUsers();
+    List<User> getClientUsers();
 
     List<User> getAdministratorUsers();
 

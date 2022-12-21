@@ -25,7 +25,7 @@ public class ConnectionDB {
         try {
             connection = DriverManager.getConnection(url, login, password);
         } catch (SQLException e) {
-            log.warning("Connection Failed");
+            log.warning("ConnectionPool Failed");
             e.printStackTrace();
             return;
         }

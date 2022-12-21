@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
@@ -37,16 +37,16 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setString(3, order.getStatus().toString());
 //            TODO Image Blob processing
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warning("Cannot add order information.");
+                log.warn("Cannot add order information.");
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -63,18 +63,18 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update order information.");
+                log.warn("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -88,18 +88,18 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update order information.");
+                log.warn("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -113,18 +113,18 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update order information.");
+                log.warn("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -138,18 +138,18 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warning("Cannot update order information.");
+                log.warn("Cannot update order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
     }
@@ -169,13 +169,13 @@ public class Order_Implementation implements OrderDAO {
                 order.setStatus(Status.fromString(resultSet.getString(4)));
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return order;
@@ -196,13 +196,13 @@ public class Order_Implementation implements OrderDAO {
                 order.setStatus(Status.fromString(resultSet.getString(4)));
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return order;
@@ -225,13 +225,13 @@ public class Order_Implementation implements OrderDAO {
                 orderList.add(order);
             }
         } catch (SQLException e) {
-            log.warning("Problems with connection:" + e);
+            log.warn("Problems with connection:" + e);
         } finally {
             try {
                 preparedStatement.close();
                 connectionDB.stop();
             } catch (SQLException e) {
-                log.warning("Error closing connection");
+                log.warn("Error closing connection");
             }
         }
         return orderList;

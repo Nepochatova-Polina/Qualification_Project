@@ -6,6 +6,7 @@
     <title>Sign In</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style><%@include file="/WEB-INF/Styles/auth.css"%></style>
 </head>
 <body style="background-color: #5ca17f">
 <div class="container" id="container">
@@ -14,7 +15,7 @@
         <h2 class="text-center" style="margin-top: 50px; color: aliceblue">Sign In Form</h2>
         <hr style="background-color: aliceblue">
 
-        <div class="card text-white bg-dark mx-auto" style="max-width: 600px;margin-top: 30px">
+        <div class="card text-white bg-dark mx-auto">
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center">Fill the fields!</h3>
                 <br>
