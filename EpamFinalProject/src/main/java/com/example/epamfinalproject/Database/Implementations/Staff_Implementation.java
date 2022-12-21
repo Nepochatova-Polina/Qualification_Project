@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionDB;
+import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
 import com.example.epamfinalproject.Entities.Staff;
 
@@ -26,8 +27,7 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public void registerStaff(Staff staff) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(REGISTER_STAFF_QUERY);
             preparedStatement.setString(1, staff.getFirstName());
             preparedStatement.setString(2, staff.getLastName());
@@ -40,7 +40,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -49,8 +48,7 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public void updateStaffByID(Staff staff, long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_STAFF_BY_ID_QUERY);
             preparedStatement.setString(1, staff.getFirstName());
@@ -68,7 +66,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -77,8 +74,7 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public void deleteStaffByID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_STAFF_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
@@ -93,7 +89,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -102,8 +97,7 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public void deleteStaffByShipID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_STAFF_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
@@ -118,7 +112,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -128,8 +121,7 @@ public class Staff_Implementation implements StaffDAO {
     @Override
     public Staff getStaffByID(long id) {
         Staff staff = new Staff();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_STAFF_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -144,7 +136,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -156,8 +147,7 @@ public class Staff_Implementation implements StaffDAO {
     public List<Staff> getAllStaff() {
         Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ALL_STAFF_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -172,7 +162,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -184,8 +173,7 @@ public class Staff_Implementation implements StaffDAO {
     public List<Staff> getAllStaffByShipID(long id) {
         Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_STAFF_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -201,7 +189,6 @@ public class Staff_Implementation implements StaffDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }

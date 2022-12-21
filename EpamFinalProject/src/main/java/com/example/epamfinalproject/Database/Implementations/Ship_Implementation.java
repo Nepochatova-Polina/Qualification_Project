@@ -1,8 +1,9 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionDB;
+import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Entities.Ship;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class Ship_Implementation implements ShipDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
@@ -27,8 +27,7 @@ public class Ship_Implementation implements ShipDAO {
 
     @Override
     public void registerShip(Ship ship) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(REGISTER_SHIP_QUERY);
             preparedStatement.setLong(1, ship.getRoute_id());
             preparedStatement.setInt(2, ship.getNumberOfPorts());
@@ -43,7 +42,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -53,8 +51,7 @@ public class Ship_Implementation implements ShipDAO {
     @Override
     public Ship getShipByID(long id) {
         Ship ship = new Ship();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_SHIP_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -71,7 +68,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -81,16 +77,15 @@ public class Ship_Implementation implements ShipDAO {
 
     @Override
     public void updateShipByID(Ship ship, long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_SHIP_BY_ID_QUERY);
-            preparedStatement.setLong(1,ship.getRoute_id());
-            preparedStatement.setInt(2,ship.getNumberOfPorts());
-            preparedStatement.setInt(3,ship.getPassengerCapacity());
+            preparedStatement.setLong(1, ship.getRoute_id());
+            preparedStatement.setInt(2, ship.getNumberOfPorts());
+            preparedStatement.setInt(3, ship.getPassengerCapacity());
             preparedStatement.setDate(4, java.sql.Date.valueOf(ship.getStartOfTheCruise()));
             preparedStatement.setDate(5, java.sql.Date.valueOf(ship.getEndOfTheCruise()));
-            preparedStatement.setLong(6,id);
+            preparedStatement.setLong(6, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update ship.");
@@ -102,7 +97,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -111,11 +105,10 @@ public class Ship_Implementation implements ShipDAO {
 
     @Override
     public void deleteShipByID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_SHIP_BY_ID_QUERY);
-            preparedStatement.setLong(1,id);
+            preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot delete ship.");
@@ -127,7 +120,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -138,11 +130,10 @@ public class Ship_Implementation implements ShipDAO {
     public List<Ship> getShipsByRouteID(long id) {
         List<Ship> shipList = new ArrayList<>();
         Ship ship = new Ship();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(GET_SHIPS_BY_ROUTE_ID_QUERY);
-            preparedStatement.setLong(1,id);
+            preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));
@@ -158,7 +149,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -170,11 +160,10 @@ public class Ship_Implementation implements ShipDAO {
     public List<Ship> getShipsByStartDate(LocalDate startDate) {
         List<Ship> shipList = new ArrayList<>();
         Ship ship = new Ship();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(GET_SHIPS_BY_START_DATE_QUERY);
-            preparedStatement.setDate(1,java.sql.Date.valueOf(startDate));
+            preparedStatement.setDate(1, java.sql.Date.valueOf(startDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));
@@ -190,7 +179,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -202,11 +190,10 @@ public class Ship_Implementation implements ShipDAO {
     public List<Ship> getShipsByEndDate(LocalDate endDate) {
         List<Ship> shipList = new ArrayList<>();
         Ship ship = new Ship();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(GET_SHIPS_BY_END_DATE_QUERY);
-            preparedStatement.setDate(1,java.sql.Date.valueOf(endDate));
+            preparedStatement.setDate(1, java.sql.Date.valueOf(endDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));
@@ -223,7 +210,6 @@ public class Ship_Implementation implements ShipDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }

@@ -30,8 +30,7 @@ public class User_Implementation implements UserDAO {
 
     @Override
     public void registerUser(User user) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(REGISTER_USER_QUERY);
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
@@ -46,7 +45,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -56,8 +54,7 @@ public class User_Implementation implements UserDAO {
     @Override
     public User getUserByName(String login, String password) {
         User user = null;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CHECK_USER_QUERY);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, Encryptor.encrypt(password));
@@ -78,7 +75,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -122,8 +118,7 @@ public class User_Implementation implements UserDAO {
     public List<User> getAdministratorUsers() {
         List<User> users = new ArrayList<>();
         User user;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_USER_BY_ROLE_ADMIN_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -144,7 +139,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -156,8 +150,7 @@ public class User_Implementation implements UserDAO {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         User user;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ALL_USERS_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -177,7 +170,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -188,8 +180,7 @@ public class User_Implementation implements UserDAO {
     @Override
     public User getUserByID(long id) {
         User user = null;
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_USER_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -209,7 +200,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -219,8 +209,7 @@ public class User_Implementation implements UserDAO {
 
     @Override
     public void updateUserByID(User user, long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_USER_QUERY);
             preparedStatement.setString(1, user.getFirstName());
@@ -240,7 +229,6 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -249,8 +237,7 @@ public class User_Implementation implements UserDAO {
 
     @Override
     public void updateUserPassport(long id, InputStream image, long length) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_USER_PASSPORT_QUERY);
             preparedStatement.setBinaryStream(1, image, length);
@@ -267,7 +254,30 @@ public class User_Implementation implements UserDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+    }
+
+    @Override
+    public void deleteUserByID(long id) {
+        try (Connection connection = ConnectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(DELETE_USER_QUERY);
+            preparedStatement.setLong(1, id);
+            if (preparedStatement.executeUpdate() <= 0) {
+                connection.rollback();
+                log.warn("Error while committing. User won't be deleted");
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+            log.info("All changes committed");
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -296,32 +306,5 @@ public class User_Implementation implements UserDAO {
             }
         }
         return blob;
-    }
-
-    @Override
-    public void deleteUserByID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
-            connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(DELETE_USER_QUERY);
-            preparedStatement.setLong(1, id);
-            if (preparedStatement.executeUpdate() <= 0) {
-                connection.rollback();
-                log.warn("Error while committing. User won't be deleted");
-            }
-            connection.commit();
-            connection.setAutoCommit(true);
-            connectionDB.stop();
-            log.info("All changes committed");
-        } catch (SQLException e) {
-            log.warn("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-                connectionDB.stop();
-            } catch (SQLException e) {
-                log.warn("Error closing connection");
-            }
-        }
     }
 }

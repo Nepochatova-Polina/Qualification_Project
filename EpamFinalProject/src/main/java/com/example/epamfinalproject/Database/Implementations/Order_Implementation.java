@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionDB;
+import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Entities.Enums.Status;
 import com.example.epamfinalproject.Entities.Order;
@@ -29,8 +30,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void createOrder(Order order) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CREATE_ORDER_QUERY);
             preparedStatement.setLong(1, order.getShipID());
             preparedStatement.setLong(2, order.getUserID());
@@ -44,7 +44,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -53,8 +52,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void updateOrderByID(Order order, long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, order.getShipID());
@@ -72,7 +70,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -81,8 +78,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void deleteOrderByID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
@@ -97,7 +93,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -106,8 +101,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void deleteOrderByUserID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_USER_ID_QUERY);
             preparedStatement.setLong(1, id);
@@ -122,7 +116,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -131,8 +124,7 @@ public class Order_Implementation implements OrderDAO {
 
     @Override
     public void deleteOrderByShipID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ORDER_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
@@ -147,7 +139,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -157,8 +148,7 @@ public class Order_Implementation implements OrderDAO {
     @Override
     public Order getOrderByID(long id) {
         Order order = new Order();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ORDER_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -173,7 +163,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -184,8 +173,7 @@ public class Order_Implementation implements OrderDAO {
     @Override
     public Order getOrderByUserID(long id) {
         Order order = new Order();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ORDER_BY_USER_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -200,7 +188,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -212,8 +199,7 @@ public class Order_Implementation implements OrderDAO {
     public List<Order> getOrdersByShipID(long id) {
         List<Order> orderList = new ArrayList<>();
         Order order = new Order();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ORDER_BY_SHIP_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -229,7 +215,6 @@ public class Order_Implementation implements OrderDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }

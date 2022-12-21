@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionDB;
+import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
 import com.example.epamfinalproject.Entities.Route;
 
@@ -27,8 +28,7 @@ public class Route_Implementation implements RouteDAO {
 
     @Override
     public void createRoute(Route route) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CREATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
             preparedStatement.setString(2, route.getDestination());
@@ -42,7 +42,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -52,8 +51,7 @@ public class Route_Implementation implements RouteDAO {
 
     @Override
     public void updateRouteByID(long id, Route route) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UPDATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
@@ -73,7 +71,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -82,8 +79,7 @@ public class Route_Implementation implements RouteDAO {
 
     @Override
     public void deleteRouteByID(long id) {
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(DELETE_ROUTE_QUERY);
             preparedStatement.setLong(1, id);
@@ -98,7 +94,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -108,8 +103,7 @@ public class Route_Implementation implements RouteDAO {
     @Override
     public Route getRouteByID(long id) {
         Route route = new Route();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ROUTE_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -126,7 +120,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -137,8 +130,7 @@ public class Route_Implementation implements RouteDAO {
     @Override
     public List<Route> getRouteByDeparture(String departure) {
         List<Route> routeList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DEPARTURE_QUERY);
             preparedStatement.setString(1, departure);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -148,7 +140,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -159,8 +150,7 @@ public class Route_Implementation implements RouteDAO {
     @Override
     public List<Route> getRouteByDestination(String destination) {
         List<Route> routeList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DESTINATION_QUERY);
             preparedStatement.setString(1, destination);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -170,7 +160,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -181,8 +170,7 @@ public class Route_Implementation implements RouteDAO {
     @Override
     public List<Route> getRouteByTransitTime(int transitTime) {
         List<Route> routeList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ROUTE_BY_TRANSIT_TIME_QUERY);
             preparedStatement.setInt(1, transitTime);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -192,7 +180,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
@@ -203,8 +190,7 @@ public class Route_Implementation implements RouteDAO {
     @Override
     public List<Route> getRouteByDepartureAndDestination(String departure, String destination) {
         List<Route> routeList = new ArrayList<>();
-        ConnectionDB connectionDB = ConnectionDB.getConnectionDB();
-        try (Connection connection = connectionDB.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(GET_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY);
             preparedStatement.setString(1, departure);
             preparedStatement.setString(2, destination);
@@ -215,7 +201,6 @@ public class Route_Implementation implements RouteDAO {
         } finally {
             try {
                 preparedStatement.close();
-                connectionDB.stop();
             } catch (SQLException e) {
                 log.warn("Error closing connection");
             }
