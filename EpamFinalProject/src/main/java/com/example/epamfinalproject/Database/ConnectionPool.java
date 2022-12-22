@@ -12,9 +12,6 @@ public class ConnectionPool {
     private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
 
     private static final ComboPooledDataSource cpds = new ComboPooledDataSource();
-    private static final String url = "jdbc:postgresql://localhost:15435/postgres";
-    private static final String login = "user";
-    private static final String password = "password";
     static {
         try {
             cpds.setDriverClass("org.postgresql.Driver");

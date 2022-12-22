@@ -2,6 +2,7 @@ package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
+import com.example.epamfinalproject.Database.Queries.ShipQueries;
 import com.example.epamfinalproject.Entities.Ship;
 import org.apache.log4j.Logger;
 
@@ -17,18 +18,11 @@ public class Ship_Implementation implements ShipDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
 
-    private static final String REGISTER_SHIP_QUERY = "insert into ships(route_id, number_of_ports,passenger_capacity, start_date, end_date) values (?,?,?,?,?)";
-    private static final String GET_SHIP_BY_ID_QUERY = "select * from ships where id = ?";
-    private static final String UPDATE_SHIP_BY_ID_QUERY = "update ships set route_id = ?,number_of_ports=?,passenger_capacity=?,start_date=?,end_date=? where id = ?";
-    private static final String DELETE_SHIP_BY_ID_QUERY = "delete from ships where id = ? ";
-    private static final String GET_SHIPS_BY_ROUTE_ID_QUERY = "select * from ships where route_id = ?";
-    private static final String GET_SHIPS_BY_START_DATE_QUERY = "select * from ships where start_date = ?";
-    private static final String GET_SHIPS_BY_END_DATE_QUERY = "select * from ships where end_date = ?";
 
     @Override
     public void registerShip(Ship ship) {
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(REGISTER_SHIP_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.REGISTER_SHIP_QUERY);
             preparedStatement.setLong(1, ship.getRoute_id());
             preparedStatement.setInt(2, ship.getNumberOfPorts());
             preparedStatement.setInt(3, ship.getPassengerCapacity());
@@ -52,7 +46,7 @@ public class Ship_Implementation implements ShipDAO {
     public Ship getShipByID(long id) {
         Ship ship = new Ship();
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_SHIP_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIP_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -79,7 +73,7 @@ public class Ship_Implementation implements ShipDAO {
     public void updateShipByID(Ship ship, long id) {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(UPDATE_SHIP_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.UPDATE_SHIP_BY_ID_QUERY);
             preparedStatement.setLong(1, ship.getRoute_id());
             preparedStatement.setInt(2, ship.getNumberOfPorts());
             preparedStatement.setInt(3, ship.getPassengerCapacity());
@@ -107,7 +101,7 @@ public class Ship_Implementation implements ShipDAO {
     public void deleteShipByID(long id) {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(DELETE_SHIP_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.DELETE_SHIP_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -132,7 +126,7 @@ public class Ship_Implementation implements ShipDAO {
         Ship ship = new Ship();
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(GET_SHIPS_BY_ROUTE_ID_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_ROUTE_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -162,7 +156,7 @@ public class Ship_Implementation implements ShipDAO {
         Ship ship = new Ship();
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(GET_SHIPS_BY_START_DATE_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_START_DATE_QUERY);
             preparedStatement.setDate(1, java.sql.Date.valueOf(startDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -192,7 +186,7 @@ public class Ship_Implementation implements ShipDAO {
         Ship ship = new Ship();
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(GET_SHIPS_BY_END_DATE_QUERY);
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_END_DATE_QUERY);
             preparedStatement.setDate(1, java.sql.Date.valueOf(endDate));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

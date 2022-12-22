@@ -37,7 +37,7 @@ public class UserService {
         return userDAO.getAllUsers();
     }
 
-    public static List<User> getPassengerUsers() {
+    public static List<User> geClientUsers() {
         UserDAO userDAO = new User_Implementation();
         return userDAO.getClientUsers();
     }
@@ -46,5 +46,8 @@ public class UserService {
         UserDAO userDAO = new User_Implementation();
         return userDAO.getAdministratorUsers();
     }
-
+    public static User getUserByUsername(String name){
+        UserDAO userDAO = new User_Implementation();
+        return userDAO.getUserByUsername(name);
+    }
 }

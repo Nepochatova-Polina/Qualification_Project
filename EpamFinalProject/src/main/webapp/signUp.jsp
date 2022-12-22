@@ -41,7 +41,7 @@
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="username">Nickname</label>
+                        <label for="username">Username:</label>
                         <input
                                 type="text"
                                 name="username"
@@ -50,6 +50,7 @@
                                 required
                                 class="form-control col">
                     </div>
+                    <div id="usernameError" style="color:red;">${usernameError}</div>
                     <div class="form-group">
                         <label for="password">Password:</label>
                         <input
@@ -60,6 +61,17 @@
                                 required
                                 class="form-control col">
                     </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password:</label>
+                        <input
+                                type="password"
+                                name="confirmPassword"
+                                id="confirmPassword"
+                                placeholder="Password"
+                                required
+                                class="form-control col">
+                    </div>
+                    <div id="passwordError" style="color:red;">${passwordError}</div>
                     <div class=form-group" style="margin-top: 30px">
                         <button type="submit" id="login-submit" class="btn btn-warning col"> Sign in</button>
                     </div>
@@ -69,20 +81,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="failureModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger">Login Failure</h5>
-                </div>
-                <div class="modal-body">
-                    <p id="failureModalText"></p>
-                </div>
-                <div class="modal-footer" id="failureModalFooter">
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

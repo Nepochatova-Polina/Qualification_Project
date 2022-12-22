@@ -18,6 +18,6 @@
 </form>
 <a href="login">Login page</a>
 <br>
- <a href="registration.jsp">Registration page</a>
+ <a href="signUp.jsp">Registration page</a>
 </body>
 </html>

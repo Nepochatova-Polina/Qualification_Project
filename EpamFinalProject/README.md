@@ -19,3 +19,6 @@ The application is automatically "completed" upon the end of the cruise.
 > DB Manager class designed as SINGLETON
 > 
 > User class designed as Builder Pattern
+> 
+
+[//]: # (> Used PRG&#40;Post/Redirect/Get&#41; Pattern)

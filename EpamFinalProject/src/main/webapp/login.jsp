@@ -22,8 +22,9 @@
                 <h3 class="card-title mt-3 text-center">Fill the fields!</h3>
                 <br>
                 <form id="login-form" method="post" action="login">
+                    <div id="loginError" style="color:red;">${loginError}</div>
                     <div class="form-group">
-                        <label for="username">Nickname</label>
+                        <label for="username">Username</label>
                         <input
                                 type="text"
                                 name="username"
@@ -42,11 +43,10 @@
                                 required
                                 class="form-control col">
                     </div>
-                    <div id="message" style="color:red;"></div>
                     <div class=form-group" style="margin-top: 30px">
                         <button type="submit" id="login-submit" class="btn btn-warning col"> Log in</button>
                     </div>
-                    <p class="text-center">Misclicked? <a href="registration.jsp" style="color: orange">Come back</a>
+                    <p class="text-center">Misclicked? <a href="signUp.jsp" style="color: orange">Come back</a>
                     </p>
                 </form>
             </article>

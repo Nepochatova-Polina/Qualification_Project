@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 @WebServlet(value = "/login", name = "loginServlet")
 public class LoginServlet extends HttpServlet {
@@ -33,18 +31,12 @@ public class LoginServlet extends HttpServlet {
         if (response == null || request == null) {
             throw new IllegalArgumentException("Response/request must not be null.");
         }
-        log.info("Received data from the registration.");
+        log.info("Received data from the login form.");
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Map<String, String> messages = new HashMap<>();
-        if (username == null || username.isEmpty()) {
-            messages.put("username", "Please enter username");
-        } else if (password == null || password.isEmpty()) {
-            messages.put("password", "Please enter password");
-        }
 //        Gson gson = new Gson();
-        if (messages.isEmpty()) {
-            User user = UserService.getUserByName(request.getParameter("username"), request.getParameter("password"));
+            User user = UserService.getUserByName(username, password);
             if (user != null) {
                 log.info("Received info about the user in the servlet.");
                 Cookie loginCookie = new Cookie("user", user.getLogin());
@@ -67,8 +59,8 @@ public class LoginServlet extends HttpServlet {
             } else {
                 log.info("User doesn't exist");
             }
-        }
-        request.setAttribute("messages", messages);
+
+        request.setAttribute("loginError", "Wrong Username or Password");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 }

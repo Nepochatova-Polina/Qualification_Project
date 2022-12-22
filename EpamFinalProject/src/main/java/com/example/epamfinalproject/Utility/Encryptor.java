@@ -1,4 +1,4 @@
-package com.example.epamfinalproject.Database;
+package com.example.epamfinalproject.Utility;
 
 import com.lambdaworks.crypto.SCryptUtil;
 

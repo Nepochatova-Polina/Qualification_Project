@@ -1,8 +1,8 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionDB;
 import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
+import com.example.epamfinalproject.Database.Queries.StaffQueries;
 import com.example.epamfinalproject.Entities.Staff;
 
 import java.sql.Connection;
@@ -16,19 +16,12 @@ import org.apache.log4j.Logger;
 public class Staff_Implementation implements StaffDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
-    private static final String REGISTER_STAFF_QUERY = "insert into staff(first_name, last_name, ship_id) values (?,?,?)";
-    private static final String UPDATE_STAFF_BY_ID_QUERY = "update staff set first_name = ?,last_name = ?,ship_id = ? where id = ?";
-    private static final String DELETE_STAFF_BY_ID_QUERY = "delete from staff where id = ?";
-    private static final String DELETE_STAFF_BY_SHIP_ID_QUERY = "delete from staff where ship_id = ?";
-    private static final String GET_STAFF_BY_ID_QUERY = "select * from staff where id = ?";
-    private static final String GET_STAFF_BY_SHIP_ID_QUERY = "select * from staff where ship_id = ?";
-    private static final String GET_ALL_STAFF_QUERY = "select * from staff";
 
 
     @Override
     public void registerStaff(Staff staff) {
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(REGISTER_STAFF_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.REGISTER_STAFF_QUERY);
             preparedStatement.setString(1, staff.getFirstName());
             preparedStatement.setString(2, staff.getLastName());
             preparedStatement.setLong(3, staff.getShip_id());
@@ -50,7 +43,7 @@ public class Staff_Implementation implements StaffDAO {
     public void updateStaffByID(Staff staff, long id) {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(UPDATE_STAFF_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.UPDATE_STAFF_BY_ID_QUERY);
             preparedStatement.setString(1, staff.getFirstName());
             preparedStatement.setString(2, staff.getLastName());
             preparedStatement.setLong(3, staff.getShip_id());
@@ -76,7 +69,7 @@ public class Staff_Implementation implements StaffDAO {
     public void deleteStaffByID(long id) {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(DELETE_STAFF_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.DELETE_STAFF_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -99,7 +92,7 @@ public class Staff_Implementation implements StaffDAO {
     public void deleteStaffByShipID(long id) {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(DELETE_STAFF_BY_SHIP_ID_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.DELETE_STAFF_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
@@ -122,7 +115,7 @@ public class Staff_Implementation implements StaffDAO {
     public Staff getStaffByID(long id) {
         Staff staff = new Staff();
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_STAFF_BY_ID_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.GET_STAFF_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -148,7 +141,7 @@ public class Staff_Implementation implements StaffDAO {
         Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_ALL_STAFF_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.GET_ALL_STAFF_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 staff.setId(resultSet.getLong(1));
@@ -174,7 +167,7 @@ public class Staff_Implementation implements StaffDAO {
         Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_STAFF_BY_SHIP_ID_QUERY);
+            preparedStatement = connection.prepareStatement(StaffQueries.GET_STAFF_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
