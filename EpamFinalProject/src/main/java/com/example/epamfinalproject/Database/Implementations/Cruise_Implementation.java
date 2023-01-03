@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Database.Queries.CruiseQueries;
 import com.example.epamfinalproject.Entities.Cruise;
@@ -53,7 +54,7 @@ public class Cruise_Implementation implements CruiseDAO {
             preparedStatement.setLong(2, cruise.getRoute().getId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(cruise.getStartOfTheCruise()));
             preparedStatement.setDate(4, java.sql.Date.valueOf(cruise.getEndOfTheCruise()));
-            preparedStatement.setLong(4, id);
+            preparedStatement.setLong(5, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update order information.");
@@ -103,27 +104,24 @@ public class Cruise_Implementation implements CruiseDAO {
             preparedStatement = connection.prepareStatement(CruiseQueries.GET_CRUISE_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            String x = "";
             if (resultSet.next()) {
 
-                cruise.setId(resultSet.getLong(1));
-                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(4)));
-                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(5))));
+                cruise.setId(resultSet.getLong(FieldKey.ID));
+                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.LEAVING)));
+                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.ARRIVING))));
 
-                route = new Route(resultSet.getLong(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        resultSet.getInt(9),
-                        resultSet.getInt(10));
+                route = new Route(resultSet.getLong(FieldKey.CRUISE_ROUTE),
+                        resultSet.getString(FieldKey.DEPARTURE),
+                        resultSet.getString(FieldKey.DESTINATION),
+                        resultSet.getInt(FieldKey.NUMBER_OF_PORTS),
+                        resultSet.getInt(FieldKey.TRANSIT_TIME));
 
-                ship = new Ship(resultSet.getLong(11),
-                        resultSet.getString(12),
-                        resultSet.getInt(13));
+                ship = new Ship(resultSet.getLong(FieldKey.SHIP_ID),
+                        resultSet.getString(FieldKey.SHIP_NAME),
+                        resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
 
                 cruise.setShip(ship);
                 cruise.setRoute(route);
-
-
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -150,24 +148,22 @@ public class Cruise_Implementation implements CruiseDAO {
             String x = "";
             if (resultSet.next()) {
 
-                cruise.setId(resultSet.getLong(1));
-                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(4)));
-                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(5))));
+                cruise.setId(resultSet.getLong(FieldKey.ID));
+                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.LEAVING)));
+                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.ARRIVING))));
 
-                route = new Route(resultSet.getLong(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8),
-                        resultSet.getInt(9),
-                        resultSet.getInt(10));
+                route = new Route(resultSet.getLong(FieldKey.CRUISE_ROUTE),
+                        resultSet.getString(FieldKey.DEPARTURE),
+                        resultSet.getString(FieldKey.DESTINATION),
+                        resultSet.getInt(FieldKey.NUMBER_OF_PORTS),
+                        resultSet.getInt(FieldKey.TRANSIT_TIME));
 
-                ship = new Ship(resultSet.getLong(11),
-                        resultSet.getString(12),
-                        resultSet.getInt(13));
+                ship = new Ship(resultSet.getLong(FieldKey.SHIP_ID),
+                        resultSet.getString(FieldKey.SHIP_NAME),
+                        resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
 
                 cruise.setShip(ship);
                 cruise.setRoute(route);
-                cruiseList.add(cruise);
-
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);

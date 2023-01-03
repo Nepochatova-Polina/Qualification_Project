@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Queries.UserQueries;
 import com.example.epamfinalproject.Utility.Encryptor;
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
@@ -52,12 +53,12 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .password(resultSet.getString(5))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
             }
         } catch (SQLException e) {
@@ -82,12 +83,12 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .password(resultSet.getString(5))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
             }
         } catch (SQLException e) {
@@ -112,11 +113,12 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
 
                 users.add(user);
@@ -144,13 +146,14 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .password(resultSet.getString(5))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
+
                 users.add(user);
             }
             log.info("List of Staff created and filled with " + users.size() + "users");
@@ -176,13 +179,14 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .password(resultSet.getString(5))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
+
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -207,11 +211,12 @@ public class User_Implementation implements UserDAO {
             if (resultSet.next()) {
                 user = new User
                         .UserBuilder()
-                        .id(resultSet.getInt(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .login(resultSet.getString(4))
-                        .role(UserRole.fromString(resultSet.getString(6)))
+                        .id(resultSet.getInt(FieldKey.ID))
+                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                        .login(resultSet.getString(FieldKey.LOGIN))
+                        .password(resultSet.getString(FieldKey.PASSWORD))
+                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
                         .build();
             }
             log.info("User was found");

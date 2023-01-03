@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
 import com.example.epamfinalproject.Database.Queries.StaffQueries;
 import com.example.epamfinalproject.Entities.Staff;
@@ -119,10 +120,10 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                staff.setId(resultSet.getLong(1));
-                staff.setFirstName(resultSet.getString(2));
-                staff.setLastName(resultSet.getString(3));
-                staff.setShip_id(resultSet.getLong(4));
+                staff.setId(resultSet.getLong(FieldKey.ID));
+                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
+                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
+                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -144,10 +145,10 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement = connection.prepareStatement(StaffQueries.GET_ALL_STAFF_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                staff.setId(resultSet.getLong(1));
-                staff.setFirstName(resultSet.getString(2));
-                staff.setLastName(resultSet.getString(3));
-                staff.setShip_id(resultSet.getLong(4));
+                staff.setId(resultSet.getLong(FieldKey.ID));
+                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
+                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
+                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
                 staffList.add(staff);
             }
         } catch (SQLException e) {
@@ -171,10 +172,10 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                staff.setId(resultSet.getLong(1));
-                staff.setFirstName(resultSet.getString(2));
-                staff.setLastName(resultSet.getString(3));
-                staff.setShip_id(resultSet.getLong(4));
+                staff.setId(resultSet.getLong(FieldKey.ID));
+                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
+                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
+                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
                 staffList.add(staff);
             }
         } catch (SQLException e) {

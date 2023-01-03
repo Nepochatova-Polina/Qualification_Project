@@ -1,11 +1,13 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
 import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.Status;
+import com.example.epamfinalproject.Entities.Enums.UserRole;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,17 +17,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.epamfinalproject.Entities.Enums.UserRole;
-import com.example.epamfinalproject.Services.CruiseService;
-import com.example.epamfinalproject.Services.UserService;
-import org.apache.log4j.Logger;
-
-import javax.management.relation.Role;
-
 public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
     PreparedStatement preparedStatement;
-    public static final String GET_ORDER_BY_ID = "select * from orders where orders.id = ?";
+
 
     @Override
     public void createOrder(Order order) {
@@ -147,21 +142,14 @@ public class Order_Implementation implements OrderDAO {
     @Override
     public Order getOrderByID(long id) {
         Order order = new Order();
-        Cruise cruise;
-        Ship ship;
-        Route route;
-        User user;
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(GET_ORDER_BY_ID);
+            preparedStatement = connection.prepareStatement(OrderQueries.GET_ORDER_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                cruise = CruiseService.getCruiseByID(resultSet.getLong(2));
-                user = UserService.getUserByID(resultSet.getLong(3));
-
                 order.setId(resultSet.getLong(1));
-                order.setCruise(cruise);
-                order.setUser(user);
+                order.setCruise(createCruise(resultSet));
+                order.setUser(createUser(resultSet));
                 order.setStatus(Status.fromString(resultSet.getString(4)));
 
             }
@@ -186,8 +174,8 @@ public class Order_Implementation implements OrderDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
-//                order.setCruiseID(resultSet.getLong(2));
-//                order.setUserID(resultSet.getLong(3));
+                order.setCruise(createCruise(resultSet));
+                order.setUser(createUser(resultSet));
                 order.setStatus(Status.fromString(resultSet.getString(4)));
             }
         } catch (SQLException e) {
@@ -212,8 +200,8 @@ public class Order_Implementation implements OrderDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
-//                order.setCruiseID(resultSet.getLong(2));
-//                order.setUserID(resultSet.getLong(3));
+                order.setCruise(createCruise(resultSet));
+                order.setUser(createUser(resultSet));
                 order.setStatus(Status.fromString(resultSet.getString(4)));
                 orderList.add(order);
             }
@@ -227,5 +215,43 @@ public class Order_Implementation implements OrderDAO {
             }
         }
         return orderList;
+    }
+
+    private Cruise createCruise(ResultSet resultSet) throws SQLException {
+        Cruise cruise = new Cruise();
+        Route route;
+        Ship ship;
+        cruise.setId(resultSet.getLong("cruise_id"));
+        cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString("start_date")));
+        cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString("end_date"))));
+
+        route = new Route(resultSet.getLong("route_id"),
+                resultSet.getString("departure"),
+                resultSet.getString("destination"),
+                resultSet.getInt("number_of_ports"),
+                resultSet.getInt("transit_time"));
+
+        ship = new Ship(resultSet.getLong("ship_id"),
+                resultSet.getString("name"),
+                resultSet.getInt("passenger_capacity"));
+
+        cruise.setShip(ship);
+        cruise.setRoute(route);
+
+        return cruise;
+    }
+
+    private User createUser(ResultSet resultSet) throws SQLException {
+        User user;
+        user = new User
+                .UserBuilder()
+                .id(resultSet.getInt(FieldKey.USER_ID))
+                .firstName(resultSet.getString(FieldKey.FIRST_NAME))
+                .lastName(resultSet.getString(FieldKey.LAST_NAME))
+                .login(resultSet.getString(FieldKey.LOGIN))
+                .password(resultSet.getString(FieldKey.PASSWORD))
+                .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
+                .build();
+        return user;
     }
 }

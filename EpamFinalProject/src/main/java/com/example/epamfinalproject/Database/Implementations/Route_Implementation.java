@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
 import com.example.epamfinalproject.Database.Queries.RouteQueries;
 import com.example.epamfinalproject.Entities.Route;
@@ -99,11 +100,11 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                route.setId(resultSet.getInt(1));
-                route.setDeparture(resultSet.getString(2));
-                route.setDestination(resultSet.getString(3));
-                route.setNumberOfPorts(resultSet.getInt(4));
-                route.setTransitTime(resultSet.getInt(5));
+                route.setId(resultSet.getInt(FieldKey.ID));
+                route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
+                route.setDestination(resultSet.getString(FieldKey.DESTINATION));
+                route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
+                route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -203,11 +204,11 @@ public class Route_Implementation implements RouteDAO {
         List<Route> routeList = new ArrayList<>();
         Route route = new Route();
         if (resultSet.next()) {
-            route.setId(resultSet.getLong(1));
-            route.setDeparture(resultSet.getString(2));
-            route.setDestination(resultSet.getString(3));
-            route.setNumberOfPorts(resultSet.getInt(4));
-            route.setTransitTime(resultSet.getInt(5));
+            route.setId(resultSet.getInt(FieldKey.ID));
+            route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
+            route.setDestination(resultSet.getString(FieldKey.DESTINATION));
+            route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
+            route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
             routeList.add(route);
         }
         log.info("List of Routes was created and filled");

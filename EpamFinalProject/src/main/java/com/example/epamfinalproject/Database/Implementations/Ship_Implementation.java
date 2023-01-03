@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Database.Queries.ShipQueries;
 import com.example.epamfinalproject.Entities.Ship;
@@ -28,11 +29,11 @@ public class Ship_Implementation implements ShipDAO {
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
-//            try {
-//                preparedStatement.close();
-//            } catch (SQLException e) {
-//                log.warn("Error closing connection");
-//            }
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
         }
     }
 
@@ -44,9 +45,9 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                ship.setId(resultSet.getLong(1));
-                ship.setName(resultSet.getString(2));
-                ship.setPassengerCapacity(resultSet.getInt(3));
+                ship.setId(resultSet.getLong(FieldKey.ID));
+                ship.setName(resultSet.getString(FieldKey.SHIP_NAME));
+                ship.setPassengerCapacity(resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
