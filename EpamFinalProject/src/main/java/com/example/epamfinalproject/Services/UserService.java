@@ -46,8 +46,8 @@ public class UserService {
         UserDAO userDAO = new User_Implementation();
         return userDAO.getAdministratorUsers();
     }
-    public static User getUserByUsername(String name){
+    public static User getUserByLogin(String login){
         UserDAO userDAO = new User_Implementation();
-        return userDAO.getUserByUsername(name);
+        return userDAO.getUserByLogin(login);
     }
 }

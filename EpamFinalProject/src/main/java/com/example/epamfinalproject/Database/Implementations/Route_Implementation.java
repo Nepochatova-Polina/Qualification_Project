@@ -23,7 +23,7 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement = connection.prepareStatement(RouteQueries.CREATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
             preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getDistance());
+            preparedStatement.setInt(3, route.getNumberOfPorts());
             preparedStatement.setInt(4, route.getTransitTime());
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot create route.");
@@ -47,7 +47,7 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement = connection.prepareStatement(RouteQueries.UPDATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
             preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getDistance());
+            preparedStatement.setInt(3, route.getNumberOfPorts());
             preparedStatement.setInt(4, route.getTransitTime());
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
@@ -102,7 +102,7 @@ public class Route_Implementation implements RouteDAO {
                 route.setId(resultSet.getInt(1));
                 route.setDeparture(resultSet.getString(2));
                 route.setDestination(resultSet.getString(3));
-                route.setDistance(resultSet.getInt(4));
+                route.setNumberOfPorts(resultSet.getInt(4));
                 route.setTransitTime(resultSet.getInt(5));
             }
         } catch (SQLException e) {
@@ -206,7 +206,7 @@ public class Route_Implementation implements RouteDAO {
             route.setId(resultSet.getLong(1));
             route.setDeparture(resultSet.getString(2));
             route.setDestination(resultSet.getString(3));
-            route.setDistance(resultSet.getInt(4));
+            route.setNumberOfPorts(resultSet.getInt(4));
             route.setTransitTime(resultSet.getInt(5));
             routeList.add(route);
         }

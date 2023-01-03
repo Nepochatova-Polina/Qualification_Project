@@ -1,8 +1,8 @@
 package com.example.epamfinalproject.Controllers.Servlets;
 
-import com.example.epamfinalproject.Database.Implementations.User_Implementation;
+import com.example.epamfinalproject.Database.Implementations.*;
+import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
-import com.example.epamfinalproject.Entities.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @WebServlet("/multiPartServlet")
@@ -29,6 +31,10 @@ public class HelloServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User_Implementation ui = new User_Implementation();
+        Cruise_Implementation ci = new Cruise_Implementation();
+        Order_Implementation oi = new Order_Implementation();
+//        oi.createOrder(new Order(ci.getCruiseByID(1),ui.getUserByID(1)));
+        oi.getOrderByID(1);
 //        ui.registerUser(new User.UserBuilder()
 //                .firstName("Anna")
 //                .lastName("Olsef")
@@ -36,7 +42,11 @@ public class HelloServlet extends HttpServlet {
 //                .login("anna_olsef")
 //                .password("olga12656")
 //                .build());
-        ui.getClientUsers();
+//        Staff_Implementation si = new Staff_Implementation();
+//        si.registerStaff(new Staff("Ivanov","Ivan",1));
+//        si.registerStaff(new Staff("Petrov","Piter",1));
+//        ci.getCruiseByID(1);
+//        ui.getClientUsers();
 //        Blob blob = new
 //        ui.updateUserPassport(1,Blo );
 //        request.setAttribute("message", "<script>alert('Hello gold')</script>");

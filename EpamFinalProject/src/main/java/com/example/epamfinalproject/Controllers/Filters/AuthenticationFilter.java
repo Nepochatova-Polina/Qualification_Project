@@ -1,8 +1,7 @@
 package com.example.epamfinalproject.Controllers.Filters;
 
-import com.example.epamfinalproject.Controllers.Commands.MessageKeys;
-import com.example.epamfinalproject.Controllers.Commands.Paths;
-import com.example.epamfinalproject.Entities.User;
+import com.example.epamfinalproject.Controllers.MessageKeys;
+import com.example.epamfinalproject.Controllers.Paths;
 import jakarta.servlet.annotation.WebFilter;
 import org.apache.log4j.Logger;
 

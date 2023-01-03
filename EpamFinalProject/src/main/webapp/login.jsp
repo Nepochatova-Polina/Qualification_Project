@@ -1,9 +1,11 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Log In</title>
+    <title><fmt:message key="login.title"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
@@ -14,39 +16,43 @@
 <div class="container" id="container">
     <div class="container align-content-center">
         <br>
-        <h2 class="text-center" style="margin-top: 50px; color: aliceblue">Log In Form</h2>
+        <h2 class="text-center" style="margin-top: 50px; color: aliceblue"><fmt:message key="header.login"/></h2>
         <hr style="background-color: aliceblue">
 
         <div class="card text-white bg-dark mx-auto">
             <article class="card-body mx-auto" style="max-width: 400px;">
-                <h3 class="card-title mt-3 text-center">Fill the fields!</h3>
+                <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
                 <form id="login-form" method="post" action="login">
-                    <div id="loginError" style="color:red;">${loginError}</div>
+                    <c:if test="${sessionScope.message != null}">
+                        <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
+                    </c:if>
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="login"><fmt:message key="user.label.login"/></label>
                         <input
                                 type="text"
-                                name="username"
-                                id="username"
-                                placeholder="User name"
+                                name="login"
+                                id="login"
+                                placeholder="<fmt:message key="login.login.placeholder"/>"
                                 required
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password:</label>
+                        <label for="password"><fmt:message key="user.label.password"/></label>
                         <input
                                 type="password"
                                 name="password"
                                 id="password"
-                                placeholder="Password"
+                                placeholder="<fmt:message key="login.password.placeholder"/>"
                                 required
                                 class="form-control col">
                     </div>
                     <div class=form-group" style="margin-top: 30px">
-                        <button type="submit" id="login-submit" class="btn btn-warning col"> Log in</button>
+                        <button type="submit" id="login-submit" class="btn btn-warning col"><fmt:message key="button.login"/> </button>
                     </div>
-                    <p class="text-center">Misclicked? <a href="signUp.jsp" style="color: orange">Come back</a>
+                    <p class="text-center">
+                    <fmt:message key="form.label.misclicked"/>
+                    <a href="signUp.jsp" style="color: orange"><fmt:message key="button.signUp"/></a>
                     </p>
                 </form>
             </article>

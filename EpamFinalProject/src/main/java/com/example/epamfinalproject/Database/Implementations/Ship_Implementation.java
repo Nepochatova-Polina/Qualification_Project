@@ -10,9 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Ship_Implementation implements ShipDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
@@ -23,22 +20,19 @@ public class Ship_Implementation implements ShipDAO {
     public void registerShip(Ship ship) {
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(ShipQueries.REGISTER_SHIP_QUERY);
-            preparedStatement.setLong(1, ship.getRoute_id());
-            preparedStatement.setInt(2, ship.getNumberOfPorts());
-            preparedStatement.setInt(3, ship.getPassengerCapacity());
-            preparedStatement.setDate(4, java.sql.Date.valueOf(ship.getStartOfTheCruise()));
-            preparedStatement.setDate(5, java.sql.Date.valueOf(ship.getEndOfTheCruise()));
+            preparedStatement.setString(1, ship.getName());
+            preparedStatement.setInt(2, ship.getPassengerCapacity());
             if (preparedStatement.executeUpdate() <= 0) {
-                log.warn("Cannot register ship.");
+                log.warn("Cannot register shipDTO.");
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
-            try {
-                preparedStatement.close();
-            } catch (SQLException e) {
-                log.warn("Error closing connection");
-            }
+//            try {
+//                preparedStatement.close();
+//            } catch (SQLException e) {
+//                log.warn("Error closing connection");
+//            }
         }
     }
 
@@ -51,11 +45,8 @@ public class Ship_Implementation implements ShipDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 ship.setId(resultSet.getLong(1));
-                ship.setRoute_id(resultSet.getLong(2));
-                ship.setNumberOfPorts(resultSet.getInt(3));
-                ship.setPassengerCapacity(resultSet.getInt(4));
-                ship.setStartOfTheCruise(LocalDate.parse(resultSet.getString(5)));
-                ship.setEndOfTheCruise(LocalDate.parse(resultSet.getString(6)));
+                ship.setName(resultSet.getString(2));
+                ship.setPassengerCapacity(resultSet.getInt(3));
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -74,12 +65,9 @@ public class Ship_Implementation implements ShipDAO {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(ShipQueries.UPDATE_SHIP_BY_ID_QUERY);
-            preparedStatement.setLong(1, ship.getRoute_id());
-            preparedStatement.setInt(2, ship.getNumberOfPorts());
-            preparedStatement.setInt(3, ship.getPassengerCapacity());
-            preparedStatement.setDate(4, java.sql.Date.valueOf(ship.getStartOfTheCruise()));
-            preparedStatement.setDate(5, java.sql.Date.valueOf(ship.getEndOfTheCruise()));
-            preparedStatement.setLong(6, id);
+            preparedStatement.setString(1, ship.getName());
+            preparedStatement.setInt(2, ship.getPassengerCapacity());
+            preparedStatement.setLong(3, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update ship.");
@@ -120,94 +108,4 @@ public class Ship_Implementation implements ShipDAO {
         }
     }
 
-    @Override
-    public List<Ship> getShipsByRouteID(long id) {
-        List<Ship> shipList = new ArrayList<>();
-        Ship ship = new Ship();
-        try (Connection connection = ConnectionPool.getConnection()) {
-            connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_ROUTE_ID_QUERY);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                ship.setId(resultSet.getLong(1));
-                ship.setRoute_id(resultSet.getLong(2));
-                ship.setNumberOfPorts(resultSet.getInt(3));
-                ship.setPassengerCapacity(resultSet.getInt(4));
-                ship.setStartOfTheCruise(LocalDate.parse(resultSet.getString(5)));
-                ship.setEndOfTheCruise(LocalDate.parse(resultSet.getString(6)));
-                shipList.add(ship);
-            }
-        } catch (SQLException e) {
-            log.warn("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-            } catch (SQLException e) {
-                log.warn("Error closing connection");
-            }
-        }
-        return shipList;
-    }
-
-    @Override
-    public List<Ship> getShipsByStartDate(LocalDate startDate) {
-        List<Ship> shipList = new ArrayList<>();
-        Ship ship = new Ship();
-        try (Connection connection = ConnectionPool.getConnection()) {
-            connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_START_DATE_QUERY);
-            preparedStatement.setDate(1, java.sql.Date.valueOf(startDate));
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                ship.setId(resultSet.getLong(1));
-                ship.setRoute_id(resultSet.getLong(2));
-                ship.setNumberOfPorts(resultSet.getInt(3));
-                ship.setPassengerCapacity(resultSet.getInt(4));
-                ship.setStartOfTheCruise(LocalDate.parse(resultSet.getString(5)));
-                ship.setEndOfTheCruise(LocalDate.parse(resultSet.getString(6)));
-                shipList.add(ship);
-            }
-        } catch (SQLException e) {
-            log.warn("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-            } catch (SQLException e) {
-                log.warn("Error closing connection");
-            }
-        }
-        return shipList;
-    }
-
-    @Override
-    public List<Ship> getShipsByEndDate(LocalDate endDate) {
-        List<Ship> shipList = new ArrayList<>();
-        Ship ship = new Ship();
-        try (Connection connection = ConnectionPool.getConnection()) {
-            connection.setAutoCommit(false);
-            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_END_DATE_QUERY);
-            preparedStatement.setDate(1, java.sql.Date.valueOf(endDate));
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                ship.setId(resultSet.getLong(1));
-                ship.setRoute_id(resultSet.getLong(2));
-                ship.setNumberOfPorts(resultSet.getInt(3));
-                ship.setPassengerCapacity(resultSet.getInt(4));
-                ship.setStartOfTheCruise(LocalDate.parse(resultSet.getString(5)));
-                ship.setEndOfTheCruise(LocalDate.parse(resultSet.getString(6)));
-//                List<Staff> staff =
-                shipList.add(ship);
-            }
-        } catch (SQLException e) {
-            log.warn("Problems with connection:" + e);
-        } finally {
-            try {
-                preparedStatement.close();
-            } catch (SQLException e) {
-                log.warn("Error closing connection");
-            }
-        }
-        return shipList;
-    }
 }

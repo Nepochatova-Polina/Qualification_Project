@@ -73,11 +73,11 @@ public class User_Implementation implements UserDAO {
     }
 
     @Override
-    public User getUserByUsername(String name) {
+    public User getUserByLogin(String login) {
         User user = null;
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_USERNAME_QUERY);
-            preparedStatement.setString(1, name);
+            preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_LOGIN_QUERY);
+            preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User

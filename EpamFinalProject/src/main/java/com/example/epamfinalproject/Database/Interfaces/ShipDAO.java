@@ -9,16 +9,10 @@ public interface ShipDAO {
 
     void registerShip(Ship ship);
 
-    void updateShipByID(Ship ship,long id);
+    void updateShipByID(Ship ship, long id);
 
     void deleteShipByID(long id);
 
     Ship getShipByID(long id);
-
-    List<Ship> getShipsByRouteID(long id);
-
-    List<Ship> getShipsByStartDate(LocalDate startDate);
-
-    List<Ship> getShipsByEndDate(LocalDate endDate);
 
 }

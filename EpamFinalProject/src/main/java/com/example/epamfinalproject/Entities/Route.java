@@ -13,13 +13,13 @@ public class Route {
     private long id;
     private String departure;
     private String destination;
-    private int distance;
+    private int numberOfPorts;
     private int transitTime;
 
-    public Route(String departure, String destination, int distance, int transitTime) {
+    public Route(String departure, String destination, int numberOfPorts, int transitTime) {
         this.departure = departure;
         this.destination = destination;
-        this.distance = distance;
+        this.numberOfPorts = numberOfPorts;
         this.transitTime = transitTime;
     }
 }

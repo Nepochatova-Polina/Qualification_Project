@@ -1,4 +1,4 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers;
 
 /**
  * Keys corresponds messages, which are placed in resources
@@ -14,5 +14,4 @@ public final class MessageKeys {
     public static final String SIGN_UP_EXISTS = "message.signUp.exists";
     public static final String SIGN_UP_INVALID = "message.signUp.invalid";
 
-    public static final String SUBMISSION_INVALID = "message.submission.invalid";
 }

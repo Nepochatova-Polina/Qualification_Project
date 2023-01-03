@@ -12,12 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Order {
     private long id;
-    private long shipID;
-    private long userID;
+    private Cruise cruise;
+    private User user;
     private Status status = Status.PENDING;
 
-    public Order(long shipID, long userID) {
-        this.shipID = shipID;
-        this.userID = userID;
+
+    public Order(Cruise cruise, User user) {
+        this.cruise = cruise;
+        this.user = user;
     }
 }

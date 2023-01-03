@@ -3,7 +3,7 @@ package com.example.epamfinalproject.Database.Queries;
 public class UserQueries {
     public static final String GET_USER_BY_ID_QUERY = "select * from users where users.id = ?";
 
-    public static final String GET_USER_BY_USERNAME_QUERY = "select * from users where users.login = ?";
+    public static final String GET_USER_BY_LOGIN_QUERY = "select * from users where users.login = ?";
 
     public static final String GET_USER_BY_ROLE_CLIENT_QUERY = "select * from users where role = 'client'";
 

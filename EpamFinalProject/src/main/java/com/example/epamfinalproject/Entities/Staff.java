@@ -14,4 +14,10 @@ public class Staff {
     private String firstName;
     private String lastName;
     private long ship_id;
+
+    public Staff(String firstName, String lastName, long ship_id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.ship_id = ship_id;
+    }
 }

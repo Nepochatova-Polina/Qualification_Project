@@ -1,5 +1,6 @@
 package com.example.epamfinalproject.Controllers.Servlets;
 
+import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.UserService;
@@ -22,7 +23,6 @@ public class LoginServlet extends HttpServlet {
         if (response == null || request == null) {
             throw new IllegalArgumentException("Response/request must not be null.");
         }
-        request.setAttribute("message", "Error?  maybe");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -33,10 +33,9 @@ public class LoginServlet extends HttpServlet {
         }
         log.info("Received data from the login form.");
 
-        String username = request.getParameter("username");
+        String login = request.getParameter("login");
         String password = request.getParameter("password");
-//        Gson gson = new Gson();
-            User user = UserService.getUserByName(username, password);
+            User user = UserService.getUserByName(login, password);
             if (user != null) {
                 log.info("Received info about the user in the servlet.");
                 Cookie loginCookie = new Cookie("user", user.getLogin());
@@ -60,7 +59,7 @@ public class LoginServlet extends HttpServlet {
                 log.info("User doesn't exist");
             }
 
-        request.setAttribute("loginError", "Wrong Username or Password");
+        request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 }
