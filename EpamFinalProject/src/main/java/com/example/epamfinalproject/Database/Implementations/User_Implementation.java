@@ -29,7 +29,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getLogin());
-            preparedStatement.setString(4, Encryptor.encrypt(user.getPassword()));
+            preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getRole().toString());
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot register user.");

@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-@WebServlet(name = "servlet", value = "/servlet")
-public class Servlet extends HttpServlet {
+@WebServlet(name = "controller", value = "/controller")
+public class Controller extends HttpServlet {
     private static final Map<String, Command> commands = new HashMap<>();
-    private static final Logger log = LogManager.getLogger(Servlet.class);
+    private static final Logger log = LogManager.getLogger(Controller.class);
 
     /**
      * Inits all accessible commands and loggedUsers container
@@ -45,11 +45,12 @@ public class Servlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        processRequest(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request,response);
 
     }
     private void processRequest(HttpServletRequest request, HttpServletResponse response)

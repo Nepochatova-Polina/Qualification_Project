@@ -21,26 +21,27 @@
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
-                <form id="registration-form" method="post" action="signUp">
+                <form id="registration-form" method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" value="signUp"/>
                     <c:if test="${sessionScope.message != null}">
                         <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
                     </c:if>
                     <div class="form-group">
-                        <label for="firstname"><fmt:message key="user.label.firstName"/></label>
+                        <label for="first_name"><fmt:message key="user.label.firstName"/></label>
                         <input
                                 type="text"
-                                name="firstname"
-                                id="firstname"
+                                name="first_name"
+                                id="first_name"
                                 placeholder="<fmt:message key="signUp.placeholder.firstName"/>"
                                 required
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="lastname"><fmt:message key="user.label.lastName"/></label>
+                        <label for="last_name"><fmt:message key="user.label.lastName"/></label>
                         <input
                                 type="text"
-                                name="lastname"
-                                id="lastname"
+                                name="last_name"
+                                id="last_name"
                                 placeholder="<fmt:message key="signUp.placeholder.lastName"/>"
                                 required
                                 class="form-control col">

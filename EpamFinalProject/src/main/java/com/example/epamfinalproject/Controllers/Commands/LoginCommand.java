@@ -47,12 +47,12 @@ public class LoginCommand implements Command {
                                                             routeService.getAllRoutes());
                 log.debug("Logging in as ADMINISTRATOR");
                 log.debug("Command finished");
-                return Paths.ADMIN_PAGE;
+                return Paths.ADMINISTRATOR_PAGE;
             } else {
                 SessionUtility.setUserParams(request, user, cruiseService.getAllCruises());
                 log.debug("Logging in as USER");
                 log.debug("Command Finished");
-                return Paths.USER_PAGE;
+                return Paths.CLIENT_PAGE;
             }
         } else {
             request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);

@@ -23,7 +23,8 @@
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
-                <form id="login-form" method="post" action="login">
+                <form id="login-form" method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" value="login"/>
                     <c:if test="${sessionScope.message != null}">
                         <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
                     </c:if>
