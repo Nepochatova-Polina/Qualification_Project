@@ -13,13 +13,15 @@ public interface RouteDAO {
 
     Route getRouteByID(long id);
 
-    List<Route> getRouteByDeparture(String departure);
+    List<Route> getAllRoutes();
 
-    List<Route> getRouteByDestination(String destination);
+    List<Route> getRoutesByDeparture(String departure);
 
-    List<Route> getRouteByTransitTime(int transitTime);
+    List<Route> getRoutesByDestination(String destination);
 
-    List<Route> getRouteByDepartureAndDestination(String departure, String destination);
+    List<Route> getRoutesByTransitTime(int transitTime);
+
+    List<Route> getRoutesByDepartureAndDestination(String departure, String destination);
 
 
 }

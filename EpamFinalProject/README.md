@@ -4,7 +4,7 @@
 
 The company has several cruise shipDTOS. 
 
-The shipDTO has its own passenger capacity, route, number of ports visited, start and end of the cruise, staff.
+The Ship has its own passenger capacity, route, number of ports visited, start and end of the cruise, staff.
 
 The client selects a cruise from the catalog, places an order for it, if there are free seats, uploads a scanned copy of documents and pays the full cost of the cruise, after the cruise company administrator confirmed the possibility of the tour.
 Implement the ability to choose a cruise by date and duration.
@@ -15,8 +15,6 @@ The application is automatically "completed" upon the end of the cruise.
 
 
 >App is designed corresponding to MVC template
-> 
-> DB Manager class designed as SINGLETON
 > 
 > User class designed as Builder Pattern
 > 

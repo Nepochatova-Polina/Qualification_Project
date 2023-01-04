@@ -15,4 +15,6 @@ public interface ShipDAO {
 
     Ship getShipByID(long id);
 
+    List<Ship> getAllShips();
+
 }

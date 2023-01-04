@@ -11,4 +11,5 @@ public class ShipQueries {
 
     public static final String GET_SHIPS_BY_ROUTE_ID_QUERY = "select * from ships where route_id = ?";
 
+    public static final String GET_ALL_SHIPS_QUERY = "select * from ships";
 }

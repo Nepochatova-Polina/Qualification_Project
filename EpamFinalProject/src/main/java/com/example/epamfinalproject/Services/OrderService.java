@@ -8,42 +8,47 @@ import java.util.List;
 
 public class OrderService {
 
-    public static void createOrder(Order order) {
+    public void createOrder(Order order) {
         OrderDAO orderDAO = new Order_Implementation();
         orderDAO.createOrder(order);
     }
 
-    public static void updateOrderByID(Order order, long id) {
+    public void updateOrderByID(Order order, long id) {
         OrderDAO orderDAO = new Order_Implementation();
         orderDAO.updateOrderByID(order, id);
     }
 
-    public static void deleteOrderByID(long id) {
+    public void deleteOrderByID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         orderDAO.deleteOrderByID(id);
     }
 
-    public static void deleteOrderByUserID(long id) {
+    public void deleteOrderByUserID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         orderDAO.deleteOrderByUserID(id);
     }
 
-    public static void deleteOrderByShipID(long id) {
+    public void deleteOrderByShipID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         orderDAO.deleteOrderByShipID(id);
     }
 
-    public static Order getOrderByID(long id) {
+    public Order getOrderByID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         return orderDAO.getOrderByID(id);
     }
 
-    public static Order getOrderByUserID(long id) {
+    public List<Order> getAllOrders() {
+        OrderDAO orderDAO = new Order_Implementation();
+        return orderDAO.getAllOrders();
+    }
+
+    public Order getOrderByUserID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         return orderDAO.getOrderByUserID(id);
     }
 
-    public static List<Order> getOrdersByShipID(long id) {
+    public List<Order> getOrdersByShipID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         return orderDAO.getOrdersByShipID(id);
     }

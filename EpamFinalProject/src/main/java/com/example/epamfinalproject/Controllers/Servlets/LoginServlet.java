@@ -35,7 +35,8 @@ public class LoginServlet extends HttpServlet {
 
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-            User user = UserService.getUserByName(login, password);
+        UserService userService = new UserService();
+            User user = userService.getUserByName(login, password);
             if (user != null) {
                 log.info("Received info about the user in the servlet.");
                 Cookie loginCookie = new Cookie("user", user.getLogin());

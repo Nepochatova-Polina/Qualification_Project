@@ -2,22 +2,25 @@ package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.FieldKey;
-import com.example.epamfinalproject.Database.Queries.UserQueries;
-import com.example.epamfinalproject.Utility.Encryptor;
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
+import com.example.epamfinalproject.Database.Queries.UserQueries;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
+import com.example.epamfinalproject.Database.Shaper.UserShaper;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
+import com.example.epamfinalproject.Utility.Encryptor;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 
 public class User_Implementation implements UserDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
+    DataShaper<User> userShaper = new UserShaper();
 
     @Override
     public void registerUser(User user) {
@@ -51,15 +54,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(2, Encryptor.encrypt(password));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
+                user = userShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -81,16 +76,9 @@ public class User_Implementation implements UserDAO {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
+                user = userShaper.shapeData(resultSet);
             }
+
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
@@ -106,22 +94,11 @@ public class User_Implementation implements UserDAO {
     @Override
     public List<User> getClientUsers() {
         List<User> users = new ArrayList<>();
-        User user;
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ROLE_CLIENT_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
-
-                users.add(user);
+            if (resultSet != null) {
+                users = userShaper.shapeDataToList(resultSet);
             }
             log.info("List of Passengers created and filled with " + users.size() + " users");
         } catch (SQLException e) {
@@ -143,18 +120,8 @@ public class User_Implementation implements UserDAO {
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ROLE_ADMIN_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
-
-                users.add(user);
+            if (resultSet != null) {
+                users = userShaper.shapeDataToList(resultSet);
             }
             log.info("List of Staff created and filled with " + users.size() + "users");
         } catch (SQLException e) {
@@ -176,18 +143,8 @@ public class User_Implementation implements UserDAO {
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(UserQueries.GET_ALL_USERS_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
-
-                users.add(user);
+            if (resultSet != null) {
+                users = userShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -208,16 +165,8 @@ public class User_Implementation implements UserDAO {
             preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                user = new User
-                        .UserBuilder()
-                        .id(resultSet.getInt(FieldKey.ID))
-                        .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                        .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                        .login(resultSet.getString(FieldKey.LOGIN))
-                        .password(resultSet.getString(FieldKey.PASSWORD))
-                        .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                        .build();
+            if (resultSet != null) {
+                user = userShaper.shapeData(resultSet);
             }
             log.info("User was found");
         } catch (SQLException e) {

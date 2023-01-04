@@ -20,4 +20,5 @@ public class OrderQueries {
     public static final String GET_ORDER_BY_USER_ID = "select * from orders where user_id = ?";
 
     public static final String GET_ORDER_BY_SHIP_ID = "select * from orders where cruise_id = ?";
+    public static final String GET_ALL_ORDERS_QUERY = "select * from orders";
 }

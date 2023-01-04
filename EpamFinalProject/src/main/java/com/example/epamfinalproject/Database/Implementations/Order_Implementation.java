@@ -4,23 +4,23 @@ import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
-import com.example.epamfinalproject.Entities.*;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
+import com.example.epamfinalproject.Database.Shaper.orderShaper;
 import com.example.epamfinalproject.Entities.Enums.Status;
-import com.example.epamfinalproject.Entities.Enums.UserRole;
+import com.example.epamfinalproject.Entities.Order;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
     PreparedStatement preparedStatement;
-
+    DataShaper<Order> orderShaper = new orderShaper();
 
     @Override
     public void createOrder(Order order) {
@@ -147,11 +147,7 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order.setId(resultSet.getLong(1));
-                order.setCruise(createCruise(resultSet));
-                order.setUser(createUser(resultSet));
-                order.setStatus(Status.fromString(resultSet.getString(4)));
-
+                order = orderShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -173,10 +169,7 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                order.setId(resultSet.getLong(1));
-                order.setCruise(createCruise(resultSet));
-                order.setUser(createUser(resultSet));
-                order.setStatus(Status.fromString(resultSet.getString(4)));
+                order = orderShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -193,17 +186,12 @@ public class Order_Implementation implements OrderDAO {
     @Override
     public List<Order> getOrdersByShipID(long id) {
         List<Order> orderList = new ArrayList<>();
-        Order order = new Order();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(OrderQueries.GET_ORDER_BY_SHIP_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                order.setId(resultSet.getLong(1));
-                order.setCruise(createCruise(resultSet));
-                order.setUser(createUser(resultSet));
-                order.setStatus(Status.fromString(resultSet.getString(4)));
-                orderList.add(order);
+            if (resultSet!= null) {
+                orderList = orderShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -217,41 +205,26 @@ public class Order_Implementation implements OrderDAO {
         return orderList;
     }
 
-    private Cruise createCruise(ResultSet resultSet) throws SQLException {
-        Cruise cruise = new Cruise();
-        Route route;
-        Ship ship;
-        cruise.setId(resultSet.getLong("cruise_id"));
-        cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString("start_date")));
-        cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString("end_date"))));
-
-        route = new Route(resultSet.getLong("route_id"),
-                resultSet.getString("departure"),
-                resultSet.getString("destination"),
-                resultSet.getInt("number_of_ports"),
-                resultSet.getInt("transit_time"));
-
-        ship = new Ship(resultSet.getLong("ship_id"),
-                resultSet.getString("name"),
-                resultSet.getInt("passenger_capacity"));
-
-        cruise.setShip(ship);
-        cruise.setRoute(route);
-
-        return cruise;
+    @Override
+    public List<Order> getAllOrders() {
+        List<Order> orderList = new ArrayList<>();
+        Order order = new Order();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(OrderQueries.GET_ALL_ORDERS_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet!= null) {
+                orderList = orderShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return orderList;
     }
 
-    private User createUser(ResultSet resultSet) throws SQLException {
-        User user;
-        user = new User
-                .UserBuilder()
-                .id(resultSet.getInt(FieldKey.USER_ID))
-                .firstName(resultSet.getString(FieldKey.FIRST_NAME))
-                .lastName(resultSet.getString(FieldKey.LAST_NAME))
-                .login(resultSet.getString(FieldKey.LOGIN))
-                .password(resultSet.getString(FieldKey.PASSWORD))
-                .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
-                .build();
-        return user;
-    }
 }

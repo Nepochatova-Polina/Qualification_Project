@@ -1,19 +1,17 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Database.Queries.CruiseQueries;
+import com.example.epamfinalproject.Database.Shaper.CruiseShaper;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
 import com.example.epamfinalproject.Entities.Cruise;
-import com.example.epamfinalproject.Entities.Route;
-import com.example.epamfinalproject.Entities.Ship;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +19,7 @@ import java.util.List;
 public class Cruise_Implementation implements CruiseDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
     PreparedStatement preparedStatement;
+    DataShaper<Cruise> cruiseShaper = new CruiseShaper();
 
 
     @Override
@@ -97,31 +96,13 @@ public class Cruise_Implementation implements CruiseDAO {
 
     @Override
     public Cruise getCruiseByID(long id) {
-        Cruise cruise = new Cruise();
-        Ship ship;
-        Route route;
+        Cruise cruise = null;
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CruiseQueries.GET_CRUISE_BY_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-
-                cruise.setId(resultSet.getLong(FieldKey.ID));
-                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.LEAVING)));
-                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.ARRIVING))));
-
-                route = new Route(resultSet.getLong(FieldKey.CRUISE_ROUTE),
-                        resultSet.getString(FieldKey.DEPARTURE),
-                        resultSet.getString(FieldKey.DESTINATION),
-                        resultSet.getInt(FieldKey.NUMBER_OF_PORTS),
-                        resultSet.getInt(FieldKey.TRANSIT_TIME));
-
-                ship = new Ship(resultSet.getLong(FieldKey.SHIP_ID),
-                        resultSet.getString(FieldKey.SHIP_NAME),
-                        resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
-
-                cruise.setShip(ship);
-                cruise.setRoute(route);
+                cruise = cruiseShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -138,32 +119,12 @@ public class Cruise_Implementation implements CruiseDAO {
     @Override
     public List<Cruise> getCruisesByShipID(long id) {
         List<Cruise> cruiseList = new ArrayList<>();
-        Cruise cruise = new Cruise();
-        Ship ship;
-        Route route;
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CruiseQueries.GET_CRUISE_BY_SHIP_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            String x = "";
-            if (resultSet.next()) {
-
-                cruise.setId(resultSet.getLong(FieldKey.ID));
-                cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.LEAVING)));
-                cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.ARRIVING))));
-
-                route = new Route(resultSet.getLong(FieldKey.CRUISE_ROUTE),
-                        resultSet.getString(FieldKey.DEPARTURE),
-                        resultSet.getString(FieldKey.DESTINATION),
-                        resultSet.getInt(FieldKey.NUMBER_OF_PORTS),
-                        resultSet.getInt(FieldKey.TRANSIT_TIME));
-
-                ship = new Ship(resultSet.getLong(FieldKey.SHIP_ID),
-                        resultSet.getString(FieldKey.SHIP_NAME),
-                        resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
-
-                cruise.setShip(ship);
-                cruise.setRoute(route);
+            if (resultSet != null) {
+                cruiseList = cruiseShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -176,4 +137,26 @@ public class Cruise_Implementation implements CruiseDAO {
         }
         return cruiseList;
     }
+
+    @Override
+    public List<Cruise> getAllCruises() {
+        List<Cruise> cruiseList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                cruiseList = cruiseShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return cruiseList;
+    }
+
 }

@@ -4,6 +4,8 @@ import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
 import com.example.epamfinalproject.Database.Queries.StaffQueries;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
+import com.example.epamfinalproject.Database.Shaper.StaffShaper;
 import com.example.epamfinalproject.Entities.Staff;
 
 import java.sql.Connection;
@@ -17,7 +19,7 @@ import org.apache.log4j.Logger;
 public class Staff_Implementation implements StaffDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
-
+    DataShaper<Staff> staffShaper = new StaffShaper();
 
     @Override
     public void registerStaff(Staff staff) {
@@ -120,10 +122,7 @@ public class Staff_Implementation implements StaffDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                staff.setId(resultSet.getLong(FieldKey.ID));
-                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
-                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
-                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
+                staff = staffShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -139,17 +138,12 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public List<Staff> getAllStaff() {
-        Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(StaffQueries.GET_ALL_STAFF_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                staff.setId(resultSet.getLong(FieldKey.ID));
-                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
-                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
-                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
-                staffList.add(staff);
+            if (resultSet != null) {
+                staffList = staffShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -165,18 +159,13 @@ public class Staff_Implementation implements StaffDAO {
 
     @Override
     public List<Staff> getAllStaffByShipID(long id) {
-        Staff staff = new Staff();
         List<Staff> staffList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(StaffQueries.GET_STAFF_BY_SHIP_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                staff.setId(resultSet.getLong(FieldKey.ID));
-                staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
-                staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
-                staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
-                staffList.add(staff);
+            if (resultSet != null) {
+                staffList = staffShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);

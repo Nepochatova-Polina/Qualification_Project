@@ -16,4 +16,5 @@ public class CruiseQueries {
                                                                                 "inner join routes r on r.id = cruises.route_id " +
                                                                                 "inner join ships s on s.id = cruises.ship_id " +
                                                                                 " where cruises.ship_id = ?";
+    public static final String GET_ALL_CRUISES_QUERY = "select * from cruises";
 }

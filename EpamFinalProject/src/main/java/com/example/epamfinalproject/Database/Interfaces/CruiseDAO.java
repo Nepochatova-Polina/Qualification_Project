@@ -14,4 +14,6 @@ public interface CruiseDAO {
     Cruise getCruiseByID(long id);
 
     List<Cruise> getCruisesByShipID(long id);
+
+    List<Cruise> getAllCruises();
 }

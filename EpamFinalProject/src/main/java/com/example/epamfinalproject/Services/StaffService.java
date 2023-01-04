@@ -7,37 +7,37 @@ import com.example.epamfinalproject.Entities.Staff;
 import java.util.List;
 
 public class StaffService {
-    public static void registerStaff(Staff staff) {
+    public  void registerStaff(Staff staff) {
         StaffDAO staffDAO = new Staff_Implementation();
         staffDAO.registerStaff(staff);
     }
 
-    public static void updateStaffByID(Staff staff, long id) {
+    public  void updateStaffByID(Staff staff, long id) {
         StaffDAO staffDAO = new Staff_Implementation();
         staffDAO.updateStaffByID(staff, id);
     }
 
-    public static void deleteStaffByID(long id) {
+    public  void deleteStaffByID(long id) {
         StaffDAO staffDAO = new Staff_Implementation();
         staffDAO.deleteStaffByID(id);
     }
 
-    public static void deleteStaffByShipID(long id) {
+    public  void deleteStaffByShipID(long id) {
         StaffDAO staffDAO = new Staff_Implementation();
         staffDAO.deleteStaffByShipID(id);
     }
 
-    public static Staff getStaffByID(long id) {
+    public  Staff getStaffByID(long id) {
         StaffDAO staffDAO = new Staff_Implementation();
         return staffDAO.getStaffByID(id);
     }
 
-    public static List<Staff> getAllStaff() {
+    public  List<Staff> getAllStaff() {
         StaffDAO staffDAO = new Staff_Implementation();
         return staffDAO.getAllStaff();
     }
 
-    public static List<Staff> getStaffByShipID(long id) {
+    public  List<Staff> getStaffByShipID(long id) {
         StaffDAO staffDAO = new Staff_Implementation();
         return staffDAO.getAllStaffByShipID(id);
     }

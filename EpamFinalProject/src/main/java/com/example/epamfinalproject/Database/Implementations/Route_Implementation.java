@@ -1,10 +1,12 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
 import com.example.epamfinalproject.Database.Queries.RouteQueries;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
+import com.example.epamfinalproject.Database.Shaper.RouteShaper;
 import com.example.epamfinalproject.Entities.Route;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,11 +14,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class Route_Implementation implements RouteDAO {
     private static final Logger log = Logger.getLogger(Route_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
+    DataShaper<Route> routeShaper = new RouteShaper();
 
     @Override
     public void createRoute(Route route) {
@@ -100,11 +102,7 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                route.setId(resultSet.getInt(FieldKey.ID));
-                route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
-                route.setDestination(resultSet.getString(FieldKey.DESTINATION));
-                route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
-                route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
+                route = routeShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -120,13 +118,32 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> getRouteByDeparture(String departure) {
+    public List<Route> getAllRoutes() {
+        List<Route> routeList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(RouteQueries.GET_ALL_ROUTES_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            routeList = routeShaper.shapeDataToList(resultSet);
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return routeList;
+    }
+
+    @Override
+    public List<Route> getRoutesByDeparture(String departure) {
         List<Route> routeList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_DEPARTURE_QUERY);
             preparedStatement.setString(1, departure);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            routeList = routeShaper.shapeDataToList(resultSet);
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
@@ -140,13 +157,13 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> getRouteByDestination(String destination) {
+    public List<Route> getRoutesByDestination(String destination) {
         List<Route> routeList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_DESTINATION_QUERY);
             preparedStatement.setString(1, destination);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            routeList = routeShaper.shapeDataToList(resultSet);
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
@@ -160,13 +177,13 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> getRouteByTransitTime(int transitTime) {
+    public List<Route> getRoutesByTransitTime(int transitTime) {
         List<Route> routeList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_TRANSIT_TIME_QUERY);
             preparedStatement.setInt(1, transitTime);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            routeList = routeShaper.shapeDataToList(resultSet);
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
@@ -180,14 +197,14 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
-    public List<Route> getRouteByDepartureAndDestination(String departure, String destination) {
+    public List<Route> getRoutesByDepartureAndDestination(String departure, String destination) {
         List<Route> routeList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_DEPARTURE_AND_DESTINATION_QUERY);
             preparedStatement.setString(1, departure);
             preparedStatement.setString(2, destination);
             ResultSet resultSet = preparedStatement.executeQuery();
-            routeList = collectData(resultSet);
+            routeList = routeShaper.shapeDataToList(resultSet);
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
         } finally {
@@ -200,18 +217,4 @@ public class Route_Implementation implements RouteDAO {
         return routeList;
     }
 
-    private List<Route> collectData(ResultSet resultSet) throws SQLException {
-        List<Route> routeList = new ArrayList<>();
-        Route route = new Route();
-        if (resultSet.next()) {
-            route.setId(resultSet.getInt(FieldKey.ID));
-            route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
-            route.setDestination(resultSet.getString(FieldKey.DESTINATION));
-            route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
-            route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
-            routeList.add(route);
-        }
-        log.info("List of Routes was created and filled");
-        return routeList;
-    }
 }

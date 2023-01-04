@@ -59,12 +59,13 @@ public class SignUpServlet extends HttpServlet {
         if(!result){
             request.getSession().setAttribute("message", MessageKeys.SIGN_UP_INVALID);
         }
-        User user = UserService.getUserByLogin(login);
+        UserService userService = new UserService();
+        User user = userService.getUserByLogin(login);
         if (user != null) {
                 return;
             }
 
-        UserService.registerUser(new User
+        userService.registerUser(new User
                 .UserBuilder()
                 .firstName(firsName)
                 .lastName(lastName)

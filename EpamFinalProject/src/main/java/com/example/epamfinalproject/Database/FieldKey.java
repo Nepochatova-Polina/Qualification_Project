@@ -3,7 +3,7 @@ package com.example.epamfinalproject.Database;
 public class FieldKey {
 
     //    User and Staff table fields
-    public static final String ID = "id";
+    public static final String ENTITY_ID = "id";
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
 
@@ -30,12 +30,12 @@ public class FieldKey {
 //    Order table fields
     public static final String ORDER_CRUISE = "cruise_id";
     public static final String ORDER_USER = "user_id";
-    public static final String STATUS = "status";
+    public static final String ORDER_STATUS = "status";
 
 
 //    Cruise table fields
     public static final String CRUISE_SHIP = "ship_id";
     public static final String CRUISE_ROUTE = "route_id";
-    public static final String LEAVING = "start_date";
-    public static final String ARRIVING = "end_date";
+    public static final String CRUISE_LEAVING = "start_date";
+    public static final String CRUISE_ARRIVING = "end_date";
 }

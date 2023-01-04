@@ -16,7 +16,7 @@ public class Ship {
     private long id;
     private String name;
     private int passengerCapacity;
-    List <User> staff;
+    List <Staff> staff;
 
     public Ship(String name, int passengerCapacity) {
         this.name = name;
@@ -28,4 +28,5 @@ public class Ship {
         this.name = name;
         this.passengerCapacity = passengerCapacity;
     }
+
 }

@@ -1,9 +1,10 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Database.Queries.ShipQueries;
+import com.example.epamfinalproject.Database.Shaper.DataShaper;
+import com.example.epamfinalproject.Database.Shaper.ShipShaper;
 import com.example.epamfinalproject.Entities.Ship;
 import org.apache.log4j.Logger;
 
@@ -11,10 +12,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ship_Implementation implements ShipDAO {
     private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
+    DataShaper<Ship> shipShaper = new ShipShaper();
 
 
     @Override
@@ -45,9 +49,7 @@ public class Ship_Implementation implements ShipDAO {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                ship.setId(resultSet.getLong(FieldKey.ID));
-                ship.setName(resultSet.getString(FieldKey.SHIP_NAME));
-                ship.setPassengerCapacity(resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
+                ship = shipShaper.shapeData(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -59,6 +61,27 @@ public class Ship_Implementation implements ShipDAO {
             }
         }
         return ship;
+    }
+
+    @Override
+    public List<Ship> getAllShips() {
+        List<Ship> shipList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_ALL_SHIPS_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                shipList = shipShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return shipList;
     }
 
     @Override

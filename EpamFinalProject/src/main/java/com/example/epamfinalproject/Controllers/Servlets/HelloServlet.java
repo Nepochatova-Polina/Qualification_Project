@@ -33,9 +33,10 @@ public class HelloServlet extends HttpServlet {
         User_Implementation ui = new User_Implementation();
         Cruise_Implementation ci = new Cruise_Implementation();
         Order_Implementation oi = new Order_Implementation();
-        ci.getCruiseByID(1);
+//        ci.getCruiseByID(1);
 //        oi.createOrder(new Order(ci.getCruiseByID(1),ui.getUserByID(1)));
-        oi.getOrderByID(1);
+        ui.getUserByLogin("anna_olsef");
+//        oi.getOrderByID(1);
 //        ui.registerUser(new User.UserBuilder()
 //                .firstName("Anna")
 //                .lastName("Olsef")
