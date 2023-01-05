@@ -1,5 +1,8 @@
 package com.example.epamfinalproject.Database;
-
+/**
+ * Defines fields names
+ * These names are used as rows for Database tables, and as entities parameters on JSP pages
+ */
 public class FieldKey {
 
     //    User and Staff table fields
@@ -8,14 +11,12 @@ public class FieldKey {
     public static final String LAST_NAME = "last_name";
 
     //    User fields
-    public static final String USER_ID = "user_id";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
+    public static final String CONFIRM_PASSWORD = "confirmPassword";
     public static final String ROLE = "role";
     public static final String PASSPORT = "passport_img";
 
-    //   Staff table fields
-    public static final String SHIP_ID = "ship_id";
 
     //    Ships table field
     public static final String SHIP_NAME = "name";
@@ -28,14 +29,17 @@ public class FieldKey {
     public static final String TRANSIT_TIME = "transit_time";
 
 //    Order table fields
-    public static final String ORDER_CRUISE = "cruise_id";
-    public static final String ORDER_USER = "user_id";
+    public static final String ORDER_CRUISE_ID = "cruise_id";
+    public static final String ORDER_USER_ID = "user_id";
+    public static final String ORDER_SEATS = "number_of_seats";
+    public static final String ORDER_TOTAL_PRICE = "price";
     public static final String ORDER_STATUS = "status";
 
 
 //    Cruise table fields
-    public static final String CRUISE_SHIP = "ship_id";
-    public static final String CRUISE_ROUTE = "route_id";
+    public static final String CRUISE_SHIP_ID = "ship_id";
+    public static final String CRUISE_ROUTE_ID = "route_id";
+    public static final String CRUISE_PRICE = "price";
     public static final String CRUISE_LEAVING = "start_date";
     public static final String CRUISE_ARRIVING = "end_date";
 }

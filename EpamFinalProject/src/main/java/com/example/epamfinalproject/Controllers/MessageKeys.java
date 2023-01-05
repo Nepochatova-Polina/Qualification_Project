@@ -13,5 +13,6 @@ public final class MessageKeys {
 
     public static final String SIGN_UP_EXISTS = "message.signUp.exists";
     public static final String SIGN_UP_INVALID = "message.signUp.invalid";
+    public static final String SIGN_UP_CONFIRMATION_FAILED = "message.signUp.confirmation.failed";
 
 }

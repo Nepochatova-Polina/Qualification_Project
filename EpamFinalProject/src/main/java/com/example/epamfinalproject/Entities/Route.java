@@ -16,6 +16,14 @@ public class Route {
     private int numberOfPorts;
     private int transitTime;
 
+    /**
+     * Constructor - creating new object with specific values
+     *
+     * @param departure      Place, where cruise started
+     * @param destination    Final port
+     * @param numberOfPorts  Number of visited ports
+     * @param transitTime    Total time on the ship's board
+     */
     public Route(String departure, String destination, int numberOfPorts, int transitTime) {
         this.departure = departure;
         this.destination = destination;

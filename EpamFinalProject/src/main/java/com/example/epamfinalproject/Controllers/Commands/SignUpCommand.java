@@ -18,15 +18,23 @@ public class SignUpCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         log.debug("Command Starts");
+        String password = request.getParameter(FieldKey.PASSWORD);
+        String confirmPassword = request.getParameter(FieldKey.CONFIRM_PASSWORD);
+
+        if(!password.equals(confirmPassword)){
+            request.getSession().setAttribute("message", MessageKeys.SIGN_UP_CONFIRMATION_FAILED);
+            log.trace("Password Confirmation Failed");
+        }
 
         User user = new User.UserBuilder()
                 .firstName(request.getParameter(FieldKey.FIRST_NAME))
                 .lastName(request.getParameter(FieldKey.LAST_NAME))
                 .login(request.getParameter(FieldKey.LOGIN))
-                .password(Encryptor.encrypt(request.getParameter(FieldKey.PASSWORD)))
+                .password(Encryptor.encrypt(password))
                 .role(UserRole.CLIENT)
                 .build();
         UserService userService = new UserService();
+
         if(!Validation.validateUserFields(user)){
             request.getSession().setAttribute("message", MessageKeys.SIGN_UP_INVALID);
             log.trace("Invalid User Parameters");

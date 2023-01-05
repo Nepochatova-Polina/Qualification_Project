@@ -1,9 +1,7 @@
 package com.example.epamfinalproject.Controllers;
 
-import com.example.epamfinalproject.Controllers.Commands.Command;
-import com.example.epamfinalproject.Controllers.Commands.LoginCommand;
-import com.example.epamfinalproject.Controllers.Commands.LogoutCommand;
-import com.example.epamfinalproject.Controllers.Commands.SignUpCommand;
+import com.example.epamfinalproject.Controllers.Commands.*;
+import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -34,12 +32,12 @@ public class Controller extends HttpServlet {
         commands.put("login", new LoginCommand());
         commands.put("signUp", new SignUpCommand());
         commands.put("logout", new LogoutCommand());
-//        commands.put("createCruise", new CreateOrderCommand());
+        commands.put("createOrder", new CreateOrderCommand());
 //        commands.put("deleteCruise", new DeleteFacultyCommand());
 //        commands.put("editCruise", new EditFacultyCommand());
 //        commands.put("createOrder", new CreateSubmissionCommand());
 //        commands.put("checkOrder", new CheckSubmissionCommand());
-//        commands.put("changeLocale", new ChangeLocaleCommand());
+        commands.put("changeLocale", new ChangeLocaleCommand());
 
     }
 

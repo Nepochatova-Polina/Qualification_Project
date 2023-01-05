@@ -165,7 +165,7 @@ public class User_Implementation implements UserDAO {
             preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ID_QUERY);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet != null) {
+            if (resultSet.next()) {
                 user = userShaper.shapeData(resultSet);
             }
             log.info("User was found");

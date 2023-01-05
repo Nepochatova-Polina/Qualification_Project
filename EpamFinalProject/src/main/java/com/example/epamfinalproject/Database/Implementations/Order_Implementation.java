@@ -1,12 +1,10 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
-import com.example.epamfinalproject.Database.Shaper.orderShaper;
-import com.example.epamfinalproject.Entities.Enums.Status;
+import com.example.epamfinalproject.Database.Shaper.OrderShaper;
 import com.example.epamfinalproject.Entities.Order;
 import org.apache.log4j.Logger;
 
@@ -20,7 +18,7 @@ import java.util.List;
 public class Order_Implementation implements OrderDAO {
     private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
     PreparedStatement preparedStatement;
-    DataShaper<Order> orderShaper = new orderShaper();
+    DataShaper<Order> orderShaper = new OrderShaper();
 
     @Override
     public void createOrder(Order order) {
@@ -28,7 +26,9 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement = connection.prepareStatement(OrderQueries.CREATE_ORDER_QUERY);
             preparedStatement.setLong(1, order.getCruise().getId());
             preparedStatement.setLong(2, order.getUser().getId());
-            preparedStatement.setString(3, order.getStatus().toString());
+            preparedStatement.setInt(3, order.getNumberOfSeats());
+            preparedStatement.setInt(4, order.getPrice());
+            preparedStatement.setString(5, order.getStatus().toString());
 //            TODO Image Blob processing
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot add order information.");
@@ -50,9 +50,10 @@ public class Order_Implementation implements OrderDAO {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(OrderQueries.UPDATE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, order.getCruise().getId());
-            preparedStatement.setLong(2, order.getUser().getId());
-            preparedStatement.setString(3, order.getStatus().toString());
-            preparedStatement.setLong(4, id);
+            preparedStatement.setInt(3, order.getNumberOfSeats());
+            preparedStatement.setInt(4, order.getPrice());
+            preparedStatement.setString(5, order.getStatus().toString());
+            preparedStatement.setLong(6, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update order information.");

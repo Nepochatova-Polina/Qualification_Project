@@ -1,7 +1,12 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
-<html lang="en">
+<html <fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="resources"/>
+
+<html lang="${sessionScope.locale}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,7 +21,19 @@
 <div class="container" id="container">
     <div class="container align-content-center">
         <br>
-        <h2 class="text-center" style="margin-top: 50px; color: aliceblue"><fmt:message key="header.login"/></h2>
+        <h2 class="text-center" style="margin-top: 50px; color: #000000"><fmt:message key="header.login"/></h2>
+        <div id="locale-changer" class="form-control">
+                <form method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" value="changeLocale">
+                    <input type="hidden" name="page-path" value="/login.jsp">
+                    <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale" value="ua">
+                </form>
+                <form method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" value="changeLocale">
+                    <input type="hidden" name="page-path" value="/login.jsp">
+                    <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale" value="en">
+                </form>
+        </div>
         <hr style="background-color: aliceblue">
 
         <div class="card text-white bg-dark mx-auto">

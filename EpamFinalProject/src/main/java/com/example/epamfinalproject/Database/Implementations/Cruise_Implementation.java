@@ -28,8 +28,9 @@ public class Cruise_Implementation implements CruiseDAO {
             preparedStatement = connection.prepareStatement(CruiseQueries.CREATE_CRUISE_QUERY);
             preparedStatement.setLong(1, cruise.getShip().getId());
             preparedStatement.setLong(2, cruise.getRoute().getId());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(cruise.getStartOfTheCruise()));
-            preparedStatement.setDate(4, java.sql.Date.valueOf(cruise.getEndOfTheCruise()));
+            preparedStatement.setInt(3,cruise.getPrice());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(cruise.getStartOfTheCruise()));
+            preparedStatement.setDate(5, java.sql.Date.valueOf(cruise.getEndOfTheCruise()));
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot add cruise information.");
             }
@@ -51,9 +52,10 @@ public class Cruise_Implementation implements CruiseDAO {
             preparedStatement = connection.prepareStatement(CruiseQueries.UPDATE_CRUISE_BY_ID_QUERY);
             preparedStatement.setLong(1, cruise.getShip().getId());
             preparedStatement.setLong(2, cruise.getRoute().getId());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(cruise.getStartOfTheCruise()));
-            preparedStatement.setDate(4, java.sql.Date.valueOf(cruise.getEndOfTheCruise()));
-            preparedStatement.setLong(5, id);
+            preparedStatement.setInt(3,cruise.getPrice());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(cruise.getStartOfTheCruise()));
+            preparedStatement.setDate(5, java.sql.Date.valueOf(cruise.getEndOfTheCruise()));
+            preparedStatement.setLong(6, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update order information.");

@@ -1,9 +1,9 @@
 package com.example.epamfinalproject.Database.Queries;
 
 public class CruiseQueries {
-    public static final String CREATE_CRUISE_QUERY = "insert into cruises(ship_id, route_id, start_date,end_date) values (?,?,?,?)";
+    public static final String CREATE_CRUISE_QUERY = "insert into cruises(ship_id, route_id, price, start_date,end_date) values (?,?,?,?,?)";
 
-    public static final String UPDATE_CRUISE_BY_ID_QUERY = "update cruises set ship_id =?, route_id=?, start_date=?,end_date=? where id = ?";
+    public static final String UPDATE_CRUISE_BY_ID_QUERY = "update cruises set ship_id =?, route_id=?, price = & start_date=?,end_date=? where id = ?";
 
     public static final String DELETE_CRUISE_BY_ID_QUERY = "delete from cruises where id = ?";
 

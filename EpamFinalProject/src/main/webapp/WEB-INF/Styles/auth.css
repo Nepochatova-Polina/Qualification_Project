@@ -3,3 +3,16 @@
     max-width: 600px;
     margin-top: 30px;
 }
+#locale-changer{
+    background-color: #5ca17f;
+    display: flex;
+    justify-content: flex-end;
+    border-color: #5ca17f;
+}
+#locale-changer input{
+    border-radius: 50px;
+}
+#locale-changer input:hover{
+    background-color: gray;
+    border-color:black;
+}

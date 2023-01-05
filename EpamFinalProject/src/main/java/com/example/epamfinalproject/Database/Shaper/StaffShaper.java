@@ -1,9 +1,7 @@
 package com.example.epamfinalproject.Database.Shaper;
 
 import com.example.epamfinalproject.Database.FieldKey;
-import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.Staff;
-import com.example.epamfinalproject.Entities.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +15,7 @@ public class StaffShaper implements DataShaper<Staff> {
         staff.setId(resultSet.getLong(FieldKey.ENTITY_ID));
         staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
         staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
-        staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
+        staff.setShip_id(resultSet.getLong(FieldKey.CRUISE_SHIP_ID));
         return staff;
     }
 
@@ -29,7 +27,7 @@ public class StaffShaper implements DataShaper<Staff> {
             staff.setId(resultSet.getLong(FieldKey.ENTITY_ID));
             staff.setFirstName(resultSet.getString(FieldKey.FIRST_NAME));
             staff.setLastName(resultSet.getString(FieldKey.LAST_NAME));
-            staff.setShip_id(resultSet.getLong(FieldKey.SHIP_ID));
+            staff.setShip_id(resultSet.getLong(FieldKey.CRUISE_SHIP_ID));
             staffList.add(staff);
         }
         return staffList;
