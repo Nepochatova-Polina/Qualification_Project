@@ -10,6 +10,11 @@ public enum UserRole {
         this.text = text;
     }
 
+    /**
+     * Function convert parameter text to instance of {@link UserRole}
+     * @param text String value
+     * @return instance of {@link UserRole}
+     */
     public static UserRole fromString(String text) {
         for (UserRole b : UserRole.values()) {
             if (b.text.equalsIgnoreCase(text)) {
@@ -19,6 +24,10 @@ public enum UserRole {
         return null;
     }
 
+    /**
+     *
+     * @return text value of {@link UserRole} instance
+     */
     public String toString() {
         return text;
     }

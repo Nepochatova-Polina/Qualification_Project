@@ -1,0 +1,25 @@
+body{
+    background-color: #A5C3CF;
+}
+.card{
+    border-radius: 20px !important;
+    margin-top: 30px;
+    background-color: #E59D5C;
+    color: black;
+}
+#locale-changer{
+    background-color: inherit;
+    display: flex;
+    justify-content: flex-end;
+    border:none;
+}
+#locale-changer input{
+    border-radius: 50px;
+}
+#locale-changer input:hover{
+    background-color: gray;
+    border-color:black;
+}
+.col-sm-6{
+    max-width: 500px;
+}

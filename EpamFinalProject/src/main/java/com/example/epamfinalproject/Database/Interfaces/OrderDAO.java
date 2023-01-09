@@ -18,11 +18,13 @@ public interface OrderDAO {
 
     Order getOrderByID(long id);
 
-    Order getOrderByUserID(long id);
+    List<Order> getOrdersByUserID(long id);
 
     List<Order> getOrdersByShipID(long id);
 
     List<Order> getAllOrders();
+
+    int getBookedSeatsByCruiseID(long id);
 
 //    List<Order> findOrdersByStatus(long id);
 //    List<Order> findOrdersByStatus(String status);

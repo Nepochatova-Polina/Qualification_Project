@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,5 +33,18 @@ public class Order {
         this.user = user;
         this.numberOfSeats = numberOfSeats;
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return cruise.getId() == order.cruise.getId() && user.getId() == order.user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cruise, user);
     }
 }

@@ -29,7 +29,6 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement.setInt(3, order.getNumberOfSeats());
             preparedStatement.setInt(4, order.getPrice());
             preparedStatement.setString(5, order.getStatus().toString());
-//            TODO Image Blob processing
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot add order information.");
             }
@@ -163,14 +162,14 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
-    public Order getOrderByUserID(long id) {
-        Order order = new Order();
+    public List<Order> getOrdersByUserID(long id) {
+        List<Order> orderList = null;
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(OrderQueries.GET_ORDER_BY_USER_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                order = orderShaper.shapeData(resultSet);
+            if (resultSet != null) {
+                orderList = orderShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
             log.warn("Problems with connection:" + e);
@@ -181,7 +180,7 @@ public class Order_Implementation implements OrderDAO {
                 log.warn("Error closing connection");
             }
         }
-        return order;
+        return orderList;
     }
 
     @Override
@@ -191,7 +190,7 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement = connection.prepareStatement(OrderQueries.GET_ORDER_BY_SHIP_ID);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet!= null) {
+            if (resultSet != null) {
                 orderList = orderShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
@@ -213,7 +212,7 @@ public class Order_Implementation implements OrderDAO {
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(OrderQueries.GET_ALL_ORDERS_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet!= null) {
+            if (resultSet != null) {
                 orderList = orderShaper.shapeDataToList(resultSet);
             }
         } catch (SQLException e) {
@@ -226,6 +225,27 @@ public class Order_Implementation implements OrderDAO {
             }
         }
         return orderList;
+    }
+
+    @Override
+    public int getBookedSeatsByCruiseID(long id) {
+        int result = 0;
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(OrderQueries.GET_BOOKED_SEATS_BY_CRUISE_ID_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                result =  resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return result;
     }
 
 }

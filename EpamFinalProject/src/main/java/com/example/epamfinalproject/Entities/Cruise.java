@@ -16,6 +16,7 @@ public class Cruise {
     private long id;
     private Ship ship;
     private Route route;
+    private String name;
     private int price;
     LocalDate startOfTheCruise;
     LocalDate endOfTheCruise;
@@ -23,15 +24,17 @@ public class Cruise {
     /**
      * Constructor - creating new object with specific values
      *
-     * @param ship              Cruise ship
-     * @param route             Еhe route the ship takes
-     * @param price             Price for one seat on the ship
-     * @param startOfTheCruise  Date of leaving
-     * @param endOfTheCruise    Day of arriving at destination
+     * @param ship             Cruise ship
+     * @param route            The route the ship takes
+     * @param name             Cruise title
+     * @param price            Price for one seat on the ship
+     * @param startOfTheCruise Date of leaving
+     * @param endOfTheCruise   Day of arriving at destination
      */
-    public Cruise(Ship ship, Route route, int price, LocalDate startOfTheCruise, LocalDate endOfTheCruise) {
+    public Cruise(Ship ship, Route route, String name, int price, LocalDate startOfTheCruise, LocalDate endOfTheCruise) {
         this.ship = ship;
         this.route = route;
+        this.name = name;
         this.price = price;
         this.startOfTheCruise = startOfTheCruise;
         this.endOfTheCruise = endOfTheCruise;

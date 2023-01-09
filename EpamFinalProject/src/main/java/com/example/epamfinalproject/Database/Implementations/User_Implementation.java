@@ -214,7 +214,7 @@ public class User_Implementation implements UserDAO {
         try (Connection connection = ConnectionPool.getConnection()) {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(UserQueries.UPDATE_USER_PASSPORT_QUERY);
-            preparedStatement.setBinaryStream(1, image, length);
+            preparedStatement.setBinaryStream(1, image, (int)length);
             preparedStatement.setLong(2, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();

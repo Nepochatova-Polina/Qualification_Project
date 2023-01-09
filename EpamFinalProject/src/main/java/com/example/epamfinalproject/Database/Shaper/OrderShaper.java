@@ -1,9 +1,11 @@
 package com.example.epamfinalproject.Database.Shaper;
 
 import com.example.epamfinalproject.Database.FieldKey;
-import com.example.epamfinalproject.Entities.*;
+import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Entities.Enums.Status;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
+import com.example.epamfinalproject.Entities.Order;
+import com.example.epamfinalproject.Entities.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,11 @@ import java.util.List;
 public class OrderShaper implements DataShaper<Order> {
     DataShaper<Cruise> cruiseShaper = new CruiseShaper();
 
+    /**
+     * @param resultSet result of SQL query execution
+     * @return new instance of Order class filled with resultSet data
+     * @throws SQLException if param is empty or some field does not exist
+     */
     @Override
     public Order shapeData(ResultSet resultSet) throws SQLException {
         Order order = new Order();
@@ -28,11 +35,16 @@ public class OrderShaper implements DataShaper<Order> {
         return order;
     }
 
+    /**
+     * @param resultSet result of SQL query execution
+     * @return list filled with new instances of Order class filled with resultSet data
+     * @throws SQLException if param is empty or some field does not exist
+     */
     @Override
     public List<Order> shapeDataToList(ResultSet resultSet) throws SQLException {
         List<Order> orderList = new ArrayList<>();
-        Order order = new Order();
-        if(resultSet.next()) {
+        while (resultSet.next()) {
+            Order order = new Order();
             order.setId(resultSet.getLong(FieldKey.ENTITY_ID));
             Cruise cruise = cruiseShaper.shapeData(resultSet);
             cruise.setId(resultSet.getLong(FieldKey.ORDER_CRUISE_ID));
@@ -45,6 +57,14 @@ public class OrderShaper implements DataShaper<Order> {
         }
         return orderList;
     }
+
+    /**
+     * Helper function for forming an instance of the User class.
+     *
+     * @param resultSet result of SQL query execution
+     * @return new instance of User class filled with resultSet data
+     * @throws SQLException if param is empty or some field does not exist
+     */
     public User userShaper(ResultSet resultSet) throws SQLException {
         return new User.UserBuilder()
                 .id(resultSet.getLong(FieldKey.ORDER_USER_ID))

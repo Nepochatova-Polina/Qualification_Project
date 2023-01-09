@@ -4,6 +4,7 @@ import com.example.epamfinalproject.Database.Implementations.User_Implementation
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
 import com.example.epamfinalproject.Entities.User;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class UserService {
@@ -51,4 +52,9 @@ public class UserService {
         UserDAO userDAO = new User_Implementation();
         return userDAO.getUserByLogin(login);
     }
+    public void updateUserPassport(long id, InputStream image, long length){
+        UserDAO userDAO = new User_Implementation();
+        userDAO.updateUserPassport(id, image, length);
+    }
+
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Util class to set session parameters after each command
@@ -49,34 +50,20 @@ public class  SessionUtility {
         session.setAttribute("cruises",cruises);
     }
 
-    /**
-     * Sets STAFF parameters
-     */
-    static public void setStaffParams(HttpServletRequest request, Staff staff, Ship ship){
-        HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
-        HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
-        session.setAttribute("staff",staff);
-        session.setAttribute("ship",ship);
-    }
 
     /**
      * Sets CRUISE parameters
      */
-    static public void setCruiseParams(HttpServletRequest request,List<Cruise> cruises,
-                                       List<Ship> ships, List<Staff> staff, List<Route> routes){
+    static public void setCruiseParams(HttpServletRequest request,List<Cruise> cruises){
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         session.setAttribute("cruises",cruises);
-        session.setAttribute("ships", ships);
-        session.setAttribute("staff",staff);
-        session.setAttribute("routes",routes);
     };
 
     /**
-     * Sets ORDERS with their statuses after USER created one
+     * Sets ORDER with it status after USER created one
      */
-    static public void setSubmissions(HttpServletRequest request, User user, List<Order> orders){
+    static public void setOrder(HttpServletRequest request, User user, List <Order> orders){
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
         session.setAttribute("orders", orders);
@@ -85,10 +72,10 @@ public class  SessionUtility {
     /**
      * Sets ORDERS with their statuses for ADMIN
      */
-    static public void setSubmissions(HttpServletRequest request){
+    static public void setOrders(HttpServletRequest request){
         OrderService orderService = new OrderService();
         HttpSession session = request.getSession();
-        session.setAttribute("submissions", orderService.getAllOrders());
+        session.setAttribute("orders", orderService.getAllOrders());
     }
 
 }

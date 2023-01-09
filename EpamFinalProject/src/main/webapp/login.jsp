@@ -17,11 +17,11 @@
         <%@include file="/WEB-INF/Styles/auth.css" %>
     </style>
 </head>
-<body style="background-color: #5ca17f">
+<body>
 <div class="container" id="container">
     <div class="container align-content-center">
         <br>
-        <h2 class="text-center" style="margin-top: 50px; color: #000000"><fmt:message key="header.login"/></h2>
+        <h2 class="text-center" style="margin-top: 50px; color: aliceblue"><fmt:message key="header.login"/></h2>
         <div id="locale-changer" class="form-control">
                 <form method="post" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="command" value="changeLocale">
@@ -35,8 +35,7 @@
                 </form>
         </div>
         <hr style="background-color: aliceblue">
-
-        <div class="card text-white bg-dark mx-auto">
+        <div class="card  mx-auto">
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
@@ -66,11 +65,11 @@
                                 class="form-control col">
                     </div>
                     <div class=form-group" style="margin-top: 30px">
-                        <button type="submit" id="login-submit" class="btn btn-warning col"><fmt:message key="button.login"/> </button>
+                        <button type="submit" id="login-submit" class="btn col"><fmt:message key="button.login"/> </button>
                     </div>
                     <p class="text-center">
                     <fmt:message key="form.label.misclicked"/>
-                    <a href="signUp.jsp" style="color: orange"><fmt:message key="button.signUp"/></a>
+                    <a href="signUp.jsp" style="color: green"><fmt:message key="button.signUp"/></a>
                     </p>
                 </form>
             </article>

@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-/**
- *  Creates a new instance of {@code Staff}.
- */
 public class Staff {
     private long id;
     private String firstName;

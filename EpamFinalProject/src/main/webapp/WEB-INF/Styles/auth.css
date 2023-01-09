@@ -1,18 +1,31 @@
-.card{
+body {
+    background-color: #20948B;
+}
+
+.card {
     border-radius: 150px !important;
     max-width: 600px;
     margin-top: 30px;
+    background-color: #F4CC70;
+    color: black;
 }
-#locale-changer{
-    background-color: #5ca17f;
+
+.btn {
+    background-color: #D35C37;
+}
+
+#locale-changer {
+    background-color: inherit;
     display: flex;
     justify-content: flex-end;
-    border-color: #5ca17f;
+    border: none;
 }
-#locale-changer input{
+
+#locale-changer input {
     border-radius: 50px;
 }
-#locale-changer input:hover{
+
+#locale-changer input:hover {
     background-color: gray;
-    border-color:black;
+    border-color: black;
 }

@@ -1,5 +1,6 @@
-package com.example.epamfinalproject.Controllers.Servlets;
+package com.example.epamfinalproject.Controllers;
 
+import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Database.Implementations.*;
 import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
@@ -35,9 +36,16 @@ public class HelloServlet extends HttpServlet {
         Order_Implementation oi = new Order_Implementation();
         Ship_Implementation si = new Ship_Implementation();
         Route_Implementation ri = new Route_Implementation();
-//        ci.createCruise(new Cruise(si.getShipByID(1),ri.getRouteByID(1),189,LocalDate.parse("2022-12-22"),LocalDate.parse("2022-12-25")));
+//        si.registerShip(new Ship("Свята Ольга",200));
+//        ri.createRoute(new Route("Айн-Сохна","Джидда",5,4));
+//        ci.createCruise(new Cruise(si.getShipByID(1),ri.getRouteByID(3),"Крізь хвилі за Ахілом",199,LocalDate.parse("2023-03-02"),LocalDate.parse("2023-03-06")));
 //        ci.getCruiseByID(1);
-        oi.createOrder(new Order(ci.getCruiseByID(1),ui.getUserByID(1),2,989));
+//        oi.createOrder(new Order(ci.getCruiseByID(1),ui.getUserByID(1),2,989));
+        request.getSession().setAttribute("user", ui.getUserByID(1));
+//        request.getSession().setAttribute("cruise", ci.getCruiseByID(1));
+//        response.sendRedirect("order.jsp");
+
+
 //        ui.getUserByLogin("anna_olsef");
 //        oi.getOrderByID(1);
 //        ui.registerUser(new User.UserBuilder()
@@ -67,7 +75,7 @@ public class HelloServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User_Implementation ui = new User_Implementation();
 //        Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-//        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
+//        String fileName = Path.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
 //        InputStream fileContent = filePart.getInputStream();
 //        long size = filePart.getSize();
 //        ui.updateUserPassport(1, fileContent,size);

@@ -2,7 +2,8 @@ package com.example.epamfinalproject.Entities.Enums;
 
 public enum Status {
     PENDING("pending"),
-    PAID("paid");
+    PAID("paid"),
+    FINISHED("finished");
 
     private final String text;
 
@@ -10,6 +11,11 @@ public enum Status {
         this.text = text;
     }
 
+    /**
+     * Function convert parameter text to instance of {@link Status}
+     * @param text String value
+     * @return instance of {@link Status}
+     */
     public static Status fromString(String text) {
         for (Status b : Status.values()) {
             if (b.text.equalsIgnoreCase(text)) {
@@ -19,6 +25,10 @@ public enum Status {
         return null;
     }
 
+    /**
+     *
+     * @return text value of {@link Status} instance
+     */
     public String toString() {
         return text;
     }

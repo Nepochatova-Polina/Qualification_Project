@@ -1,7 +1,8 @@
 package com.example.epamfinalproject.Controllers.Filters;
 
 import com.example.epamfinalproject.Controllers.MessageKeys;
-import com.example.epamfinalproject.Controllers.Paths;
+import com.example.epamfinalproject.Controllers.Path;
+import com.example.epamfinalproject.Entities.User;
 import jakarta.servlet.annotation.WebFilter;
 import org.apache.log4j.Logger;
 
@@ -22,8 +23,8 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.debug("Filter starts");
         final HttpServletRequest req = (HttpServletRequest) request;
-//        final User user = (User) req.getSession().getAttribute("user");
-        final String login = req.getParameter("username");
+        final User user = (User) req.getSession().getAttribute("user");
+        final String login = req.getParameter("login");
         final String password = req.getParameter("password");
         ServletContext context = request.getServletContext();
         HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
@@ -35,7 +36,7 @@ public class AuthenticationFilter implements Filter {
                 req.getSession().setAttribute("message", MessageKeys.ALREADY_LOGGED);
                 log.trace("Set the request attribute: message --> " + MessageKeys.ALREADY_LOGGED);
 
-                request.getRequestDispatcher(Paths.MAIN_PAGE)
+                request.getRequestDispatcher(Path.MAIN_PAGE)
                         .forward(request, response);
             }
         }
@@ -46,14 +47,6 @@ public class AuthenticationFilter implements Filter {
             req.getSession().removeAttribute("message");
         } else {
             req.getSession().setAttribute("message-displayed", true);
-        }
-
-        //For USER if sort was last command, div with accessible faculties will be displayed
-        if (req.getSession().getAttribute("sortDisplayed") != null &&
-                (int) req.getSession().getAttribute("sortDisplayed") == 0) {
-            req.getSession().setAttribute("sortDisplayed", 1);
-        } else {
-            req.getSession().setAttribute("sortDisplayed", 2);
         }
 
         //Set default locale if user has not been on site yet

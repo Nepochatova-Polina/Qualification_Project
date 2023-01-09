@@ -1,6 +1,6 @@
 package com.example.epamfinalproject.Controllers.Commands;
 
-import com.example.epamfinalproject.Controllers.Paths;
+import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.User;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -29,6 +29,6 @@ public class LogoutCommand implements Command{
         }
 
         log.debug("Command finished");
-        return "redirect:" + Paths.MAIN_PAGE;
+        return "redirect:" + Path.MAIN_PAGE;
     }
 }

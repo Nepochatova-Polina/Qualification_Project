@@ -1,7 +1,7 @@
 package com.example.epamfinalproject.Controllers.Commands;
 
 import com.example.epamfinalproject.Controllers.MessageKeys;
-import com.example.epamfinalproject.Controllers.Paths;
+import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
@@ -24,6 +24,7 @@ public class SignUpCommand implements Command{
         if(!password.equals(confirmPassword)){
             request.getSession().setAttribute("message", MessageKeys.SIGN_UP_CONFIRMATION_FAILED);
             log.trace("Password Confirmation Failed");
+            return "redirect:" + Path.SIGN_UP_PAGE;
         }
 
         User user = new User.UserBuilder()
@@ -38,17 +39,17 @@ public class SignUpCommand implements Command{
         if(!Validation.validateUserFields(user)){
             request.getSession().setAttribute("message", MessageKeys.SIGN_UP_INVALID);
             log.trace("Invalid User Parameters");
-            return "redirect:" + Paths.SIGN_UP_PAGE;
+            return "redirect:" + Path.SIGN_UP_PAGE;
         }
         if(userService.getUserByLogin(user.getLogin()) != null){
             request.getSession().setAttribute("message", MessageKeys.SIGN_UP_EXISTS);
             log.trace("User already exists");
-            return "redirect:" + Paths.LOGIN_PAGE;
+            return "redirect:" + Path.LOGIN_PAGE;
         }
             userService.registerUser(user);
         log.debug("Command finished");
 
-        return "redirect:" + Paths.CLIENT_PAGE;
+        return "redirect:" + Path.CLIENT_PAGE;
     }
 
 }

@@ -15,7 +15,7 @@
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style><%@include file="/WEB-INF/Styles/auth.css"%></style>
 </head>
-<body style="background-color: #5ca17f">
+<body>
 <div class="container" id="container">
     <div class="container align-content-center">
         <br>
@@ -34,7 +34,7 @@
         </div>
         <hr style="background-color: aliceblue">
 
-        <div class="card text-white bg-dark mx-auto">
+        <div class="card mx-auto">
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
@@ -52,6 +52,9 @@
                                 placeholder="<fmt:message key="signUp.placeholder.firstName"/>"
                                 required
                                 class="form-control col">
+                        <c:if test="${sessionScope.message == 'message.signUp.invalid'}">
+                            <h5 style="color: red; text-align: center"><fmt:message key="message.signUp.invalid.fName"/></h5>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="last_name"><fmt:message key="user.label.lastName"/></label>
@@ -62,6 +65,9 @@
                                 placeholder="<fmt:message key="signUp.placeholder.lastName"/>"
                                 required
                                 class="form-control col">
+                        <c:if test="${sessionScope.message == 'message.signUp.invalid'}">
+                            <h5 style="color: red; text-align: center"><fmt:message key="message.signUp.invalid.lName"/></h5>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="login"><fmt:message key="user.label.login"/></label>
@@ -72,6 +78,9 @@
                                 placeholder="<fmt:message key="signUp.placeholder.login"/>"
                                 required
                                 class="form-control col">
+                        <c:if test="${sessionScope.message == 'message.signUp.invalid'}">
+                            <h5 style="color: red; text-align: center"><fmt:message key="message.signUp.invalid.login"/></h5>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="password"><fmt:message key="user.label.password"/></label>
@@ -82,6 +91,9 @@
                                 placeholder="<fmt:message key="signUp.placeholder.password"/>"
                                 required
                                 class="form-control col">
+                        <c:if test="${sessionScope.message == 'message.signUp.invalid.password'}">
+                            <h5  style="color: red; text-align: center"><fmt:message key="message.signUp.invalid.password"/></h5>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword"><fmt:message key="user.label.confirmPassword"/></label>
@@ -98,7 +110,7 @@
                     </div>
                     <p class="text-center">
                         <fmt:message key="form.label.misclicked"/>
-                        <a href="login.jsp" style="color: orange"><fmt:message key="button.login"/></a>
+                        <a href="login.jsp" style="color: green"><fmt:message key="button.login"/></a>
                     </p>
                 </form>
             </article>

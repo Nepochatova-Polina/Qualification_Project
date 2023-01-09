@@ -1,12 +1,13 @@
 package com.example.epamfinalproject.Controllers.Commands;
 
 import com.example.epamfinalproject.Controllers.MessageKeys;
-import com.example.epamfinalproject.Controllers.Paths;
+import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Controllers.SessionUtility;
 import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Services.*;
+import com.example.epamfinalproject.Utility.Encryptor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -24,7 +25,7 @@ public class LoginCommand implements Command {
         if (login == null || login.equals("")) {
             request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);
             log.trace("Invalid User parameters");
-            return "/login/userLogin.jsp";
+            return Path.LOGIN_PAGE;
         }
 
         UserService userService = new UserService();
@@ -40,29 +41,29 @@ public class LoginCommand implements Command {
 
 
                 SessionUtility.setUserParams(request, user, userService.getAllUsers(),
-                                                            cruiseService.getAllCruises(),
+                                                            cruiseService.getAllActualCruises(),
                                                             orderService.getAllOrders(),
                                                             staffService.getAllStaff(),
                                                             shipService.getAllShips(),
                                                             routeService.getAllRoutes());
                 log.debug("Logging in as ADMINISTRATOR");
                 log.debug("Command finished");
-                return Paths.ADMINISTRATOR_PAGE;
+                return Path.ADMINISTRATOR_PAGE;
             } else {
-                SessionUtility.setUserParams(request, user, cruiseService.getAllCruises());
+                SessionUtility.setUserParams(request, user, cruiseService.getAllActualCruises());
                 log.debug("Logging in as USER");
                 log.debug("Command Finished");
-                return Paths.CLIENT_PAGE;
+                return Path.CLIENT_PAGE;
             }
         } else {
             request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);
             log.trace("Invalid User parameters");
-            return "redirect:" + Paths.LOGIN_PAGE;
+            return "redirect:" + Path.LOGIN_PAGE;
         }
     }
 
     private boolean validateUserData(User user, HttpServletRequest request) {
         return (user != null) &&
-                (request.getParameter(FieldKey.PASSWORD).equals(user.getPassword()));
+                (Encryptor.check(user.getPassword(),request.getParameter(FieldKey.PASSWORD)));
     }
 }

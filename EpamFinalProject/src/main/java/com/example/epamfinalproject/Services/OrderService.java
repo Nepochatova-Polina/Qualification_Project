@@ -43,14 +43,18 @@ public class OrderService {
         return orderDAO.getAllOrders();
     }
 
-    public Order getOrderByUserID(long id) {
+    public List<Order> getOrdersByUserID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
-        return orderDAO.getOrderByUserID(id);
+        return orderDAO.getOrdersByUserID(id);
     }
 
     public List<Order> getOrdersByShipID(long id) {
         OrderDAO orderDAO = new Order_Implementation();
         return orderDAO.getOrdersByShipID(id);
+    }
+    public int getBookedSeatsByCruiseID(long id){
+        OrderDAO orderDAO = new Order_Implementation();
+        return orderDAO.getBookedSeatsByCruiseID(id);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.epamfinalproject.Database.Interfaces;
 
 import com.example.epamfinalproject.Entities.Cruise;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CruiseDAO {
@@ -16,4 +17,21 @@ public interface CruiseDAO {
     List<Cruise> getCruisesByShipID(long id);
 
     List<Cruise> getAllCruises();
+
+    List<Cruise> getAllActualCruises();
+
+    List<Cruise> getAllCruisesByDuration(int duration);
+
+    List<Cruise> getAllCruisesAfterDate(LocalDate date);
+
+    List<Cruise> getAllCruisesBeforeDate(LocalDate date);
+
+    List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start,LocalDate end);
+
+    List<Cruise> getAllCruisesByStartAndDuration(LocalDate start,int duration);
+
+    List<Cruise> getAllCruisesByEndAndDuration(LocalDate end,int duration);
+
+    List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end,int duration);
+
 }
