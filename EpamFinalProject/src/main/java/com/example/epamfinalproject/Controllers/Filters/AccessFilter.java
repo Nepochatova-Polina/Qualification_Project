@@ -24,7 +24,7 @@ public class AccessFilter implements Filter {
     public void init(FilterConfig filterConfig) {
 
         accessMap.put("administrator", Arrays.asList("createCruise", "editCruise", "deleteCruise",
-                "checkOrder"));
+                "checkOrder", "profile"));
 
         accessMap.put("client", Arrays.asList("createOrder", "displayOrderForm", "profile"));
 

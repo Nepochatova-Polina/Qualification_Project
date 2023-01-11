@@ -4,7 +4,7 @@ import com.example.epamfinalproject.Controllers.Commands.*;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.FilterCruisesCommand;
-import com.example.epamfinalproject.Controllers.Commands.Client.UserAccountCommand;
+import com.example.epamfinalproject.Controllers.Commands.ProfileCommand;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -45,7 +45,7 @@ public class Controller extends HttpServlet {
         commands.put("displayOrderForm", new DisplayOrderFormCommand());
         commands.put("catalogue", new CatalogueCommand());
         commands.put("filterCruises", new FilterCruisesCommand());
-        commands.put("profile", new UserAccountCommand());
+        commands.put("profile", new ProfileCommand());
 //        commands.put("deleteCruise", new DeleteFacultyCommand());
 //        commands.put("editCruise", new EditFacultyCommand());
 //        commands.put("createOrder", new CreateSubmissionCommand());
