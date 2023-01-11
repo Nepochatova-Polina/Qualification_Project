@@ -5,6 +5,8 @@ package com.example.epamfinalproject.Database;
  * These names are used as rows for Database tables, and as entities parameters on JSP pages
  */
 public class FieldKey {
+    //    Static Final Values
+    public static final int PAGE_SIZE = 4;
 
     //User and Staff table fields
     public static final String ENTITY_ID = "id";
@@ -45,4 +47,5 @@ public class FieldKey {
     public static final String CRUISE_LEAVING = "start_date";
     public static final String CRUISE_ARRIVING = "end_date";
     public static final String CRUISE_DURATION = "duration";
+
 }

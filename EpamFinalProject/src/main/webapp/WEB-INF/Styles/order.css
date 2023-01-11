@@ -23,3 +23,13 @@ body{
 .col-sm-6{
     max-width: 500px;
 }
+#submit_btn{
+    align-items: center;
+    margin-top: 20px;
+}
+.passport_form{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}

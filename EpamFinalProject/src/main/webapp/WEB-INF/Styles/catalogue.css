@@ -11,8 +11,14 @@ body {
     font-size: 18px;
     margin-top: 10px;
 }
+
 .card{
-    margin: 20px;
+    display: flex;
+    margin-top: 20px;
+    margin-right: 20px;
+    text-align: center;
+    max-width: 340px !important;
+    min-width: 340px !important;
     border-radius: 50px !important;
 }
 .card-header{
@@ -21,9 +27,6 @@ body {
     font-size: 23px !important;
     padding: 30px !important;
     border-radius: 50px 50px 0 0 !important;
-}
-.card form{
-    min-width: 500px !important;
 }
 .navbar {
     overflow: hidden;
@@ -88,20 +91,25 @@ body {
     justify-content: space-between;
     text-align: center;
     justify-items: center;
-    background-color: #A5C3CF;
-    border: 2px solid #97B8C2;
+    background-color: #D6C6B9;
+    border: 2px solid #BF9A77;
 
 }
 
 .sortbar input{
     height: 40px;
-    border:2px solid #799ca6;
+    border:2px solid #BF9A77;
     border-radius: 10pc;
 }
 
 .submit-btn{
     margin-right: 50px;
     width: 100px;
+}
+.submit-btn:active{
+    background-color: #D6C6B9;
+    box-shadow: 0 5px #807d7d;
+    transform: translateY(4px);
 }
 .inpt{
     display: flex;
@@ -112,4 +120,34 @@ body {
 .inpt label{
     margin-right: 10px;
     font-size: 20px;
+}
+
+.pagination {
+    margin: 0;
+    display: inline-block;
+    border: none;
+}
+
+.pagination td {
+    cursor: pointer;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background-color: #dddddd;
+    max-width: 50px;
+    max-height: 50px;
+    text-decoration: none;
+}
+.pagination td button{
+    background-color: inherit;
+    border: none;
+}
+.pagination td:hover{
+    background-color: #D6C6B9;
+}
+.pagination td:active{
+    background-color: #D6C6B9;
+    box-shadow: 0 5px #807d7d;
+    transform: translateY(4px);
 }

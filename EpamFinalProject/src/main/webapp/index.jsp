@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>JSP - Hello World</title>
+    <title><fmt:message key="home.title"/></title>
 </head>
 <body>
 <div class="navbar row">
@@ -22,17 +22,16 @@
         <a>
             <form id="account" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.profile"/>">
-                <input type="hidden" name="command" value="Profile"/>
+                <input type="hidden" name="command" value="profile"/>
             </form>
         </a>
         <a class="active" href="index.jsp"><fmt:message key="navbar.home"/></a>
         <a>
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
-                <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalog"/>">
-                <input type="hidden" name="command" value="Catalog"/>
+                <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
+                <input type="hidden" name="command" value="catalogue"/>
             </form>
         </a>
-        <a href="#about">About</a>
     </div>
     <div class="navElements col-sm-6">
         <div id="locale-changer" class="form-control">

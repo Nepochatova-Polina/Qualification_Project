@@ -28,9 +28,14 @@ public class CruiseService {
         return cruiseDAO.getAllCruises();
     }
 
-    public List<Cruise> getAllActualCruises() {
+    public List<Cruise> getActualCruises(int limit, int offset) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllActualCruises();
+        return cruiseDAO.getActualCruises(limit,offset);
+    }
+
+    public int getNumberOfActualCruises() {
+        CruiseDAO cruiseDAO = new Cruise_Implementation();
+        return cruiseDAO.getNumberOfActualCruises();
     }
 
     public Cruise getCruiseByID(long id) {
@@ -57,20 +62,24 @@ public class CruiseService {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
         return cruiseDAO.getAllCruisesBeforeDate(date);
     }
+
     public List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesBetweenTwoDates(start,end);
+        return cruiseDAO.getAllCruisesBetweenTwoDates(start, end);
     }
+
     public List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByStartAndDuration(start,duration);
+        return cruiseDAO.getAllCruisesByStartAndDuration(start, duration);
     }
+
     public List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByEndAndDuration(end,duration);
+        return cruiseDAO.getAllCruisesByEndAndDuration(end, duration);
     }
-    public List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start,LocalDate end, int duration) {
+
+    public List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end, int duration) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByDatesAndDuration(start,end,duration);
+        return cruiseDAO.getAllCruisesByDatesAndDuration(start, end, duration);
     }
 }

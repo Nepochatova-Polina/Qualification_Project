@@ -81,7 +81,7 @@ public class Cruise_Implementation implements CruiseDAO {
             preparedStatement.setLong(1, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
-                log.warn("Cannot update order information.");
+                log.warn("Cannot delete order information.");
             }
             connection.commit();
             connection.setAutoCommit(true);
@@ -94,6 +94,27 @@ public class Cruise_Implementation implements CruiseDAO {
                 log.warn("Error closing connection");
             }
         }
+    }
+
+    @Override
+    public int getNumberOfActualCruises() {
+        int rowsCount = 0;
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(CruiseQueries.GET_NUMBER_OF_ACTUAL_CRUISES);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                rowsCount = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return rowsCount;
     }
 
     @Override
@@ -162,10 +183,12 @@ public class Cruise_Implementation implements CruiseDAO {
     }
 
     @Override
-    public List<Cruise> getAllActualCruises() {
+    public List<Cruise> getActualCruises(int limit, int offset) {
         List<Cruise> cruiseList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_QUERY);
+            preparedStatement.setLong(1, limit);
+            preparedStatement.setInt(2, offset);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 cruiseList = cruiseShaper.shapeDataToList(resultSet);

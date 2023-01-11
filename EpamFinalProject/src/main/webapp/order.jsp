@@ -37,13 +37,14 @@
             </form>
         </div>
         <hr style="background-color: aliceblue">
-        <div class="row">
-            <div class="card mx-auto col-sm-6" style="margin-right: 10px! important">
-                <article class="card-body mx-auto">
-                    <h3 class="card-title mt-3 text-center"><fmt:message key="order.info.header"/></h3>
-                    <br>
-                    <form id="order-form" method="post" action="${pageContext.request.contextPath}/controller"
-                          enctype='multipart/form-data'>
+        <form id="order-form" method="post" action="${pageContext.request.contextPath}/controller"
+              enctype='multipart/form-data'>
+
+            <div class="row">
+                <div class="card mx-auto col-sm-6" style="margin-right: 10px! important">
+                    <article class="card-body mx-auto">
+                        <h3 class="card-title mt-3 text-center"><fmt:message key="order.label.header"/></h3>
+                        <br>
                         <input type="hidden" name="command" value="createOrder"/>
                         <div id="info">
                             <c:set var="cruise" scope="session" value="${sessionScope.cruise}"/>
@@ -62,37 +63,28 @@
                                 <c:out value="${cruise.route.departure}"/>
                             <p><fmt:message key="cruise.label.destination"/>:
                                 <c:out value="${cruise.route.destination}"/>
-                </article>
-            </div>
-            <form>
-                <div class="card mx-auto col-sm-6" style="margin-left: 10px! important">
-                    <article class="card-body mx-auto">
-                        <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
-                        <br>
-                        <c:if test="${sessionScope.message != null}">
-                            <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
-                        </c:if>
-                        <div class="form-group">
-                            <label for="number_of_seats"><fmt:message key="ship.label.passenger.capacity"/></label>
-                            <input
-                                    type="number"
-                                    name="number_of_seats"
-                                    id="number_of_seats"
-                                    min="1"
-                                    max="${cruise.ship.passengerCapacity}"
-                                    required
-                                    class="form-control col">
-
-                            <fmt:message key="order.label.passport"/> <input type="file" name="passport"
-                                                                             value="<fmt:message key="button.submit"/>"
-                                                                             accept="image/jpeg"/>
-                            <input type="submit" value="<fmt:message key="button.order.create"/>"/>
                         </div>
-
                     </article>
                 </div>
-            </form>
-        </div>
+                <form>
+                    <div class="card mx-auto col-sm-6" style="margin-left: 10px! important">
+                        <article class="card-body mx-auto">
+                            <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
+                            <br>
+                            <c:if test="${sessionScope.message != null}">
+                                <h5 style="color: red; text-align: center"><fmt:message
+                                        key="${sessionScope.message}"/></h5>
+                            </c:if>
+                            <div class="passport_form">
+                                <h5><strong><fmt:message key="order.label.passport"/></strong></h5>
+                                <input type="file" placeholder="<fmt:message key="button.submit"/>" name="passport"  accept="image/jpeg"/>
+                                <input type="submit" id="submit_btn" value="<fmt:message key="button.order"/>"/>
+                            </div>
+                        </article>
+                    </div>
+                </form>
+            </div>
+        </form>
     </div>
 </div>
 </body>

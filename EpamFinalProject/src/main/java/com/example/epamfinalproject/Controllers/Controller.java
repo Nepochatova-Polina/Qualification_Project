@@ -3,7 +3,8 @@ package com.example.epamfinalproject.Controllers;
 import com.example.epamfinalproject.Controllers.Commands.*;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
-import com.example.epamfinalproject.Controllers.Commands.Client.FilterCruisesCommand;
+import com.example.epamfinalproject.Controllers.Commands.FilterCruisesCommand;
+import com.example.epamfinalproject.Controllers.Commands.Client.UserAccountCommand;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -32,7 +33,7 @@ public class Controller extends HttpServlet {
      * Inits all accessible commands and loggedUsers container
      */
     @Override
-    public void init(){
+    public void init() {
 
         this.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
@@ -41,9 +42,10 @@ public class Controller extends HttpServlet {
         commands.put("signUp", new SignUpCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("createOrder", new CreateOrderCommand());
-        commands.put("DisplayOrderForm", new DisplayOrderFormCommand());
-        commands.put("Catalog",new CatalogCommand());
-        commands.put("FilterCruises",new FilterCruisesCommand());
+        commands.put("displayOrderForm", new DisplayOrderFormCommand());
+        commands.put("catalogue", new CatalogueCommand());
+        commands.put("filterCruises", new FilterCruisesCommand());
+        commands.put("profile", new UserAccountCommand());
 //        commands.put("deleteCruise", new DeleteFacultyCommand());
 //        commands.put("editCruise", new EditFacultyCommand());
 //        commands.put("createOrder", new CreateSubmissionCommand());
@@ -54,14 +56,15 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request,response);
+        processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request,response);
+        processRequest(request, response);
 
     }
+
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -70,17 +73,17 @@ public class Controller extends HttpServlet {
         String commandName = request.getParameter("command");
         log.trace("Request parameter: command " + commandName);
 
-        Command command = commands.getOrDefault(commandName, (r)-> com.example.epamfinalproject.Controllers.Path.MAIN_PAGE);
+        Command command = commands.getOrDefault(commandName, (r) -> com.example.epamfinalproject.Controllers.Path.MAIN_PAGE);
         log.trace("Obtained command:" + command);
 
         String page = command.execute(request);
-         request.getSession().setAttribute("message-displayed", false);
+        request.getSession().setAttribute("message-displayed", false);
 
-        if(page.contains("redirect:")){
+        if (page.contains("redirect:")) {
             log.trace("Redirect: " + page);
-            log.debug("Controller finished, now go to address -- " + page);
+            log.debug("Controller finished, now go to address" + page);
             response.sendRedirect(page.replace("redirect:", request.getContextPath()));
-        }else {
+        } else {
             log.trace("Forward address: " + page);
             log.debug("Controller finished, now go to forward address: " + page);
             request.getRequestDispatcher(page).forward(request, response);

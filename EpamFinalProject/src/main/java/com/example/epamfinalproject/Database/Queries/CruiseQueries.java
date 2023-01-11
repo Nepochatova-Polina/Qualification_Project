@@ -21,15 +21,10 @@ public class CruiseQueries {
             "inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id ";
 
-    public static final String GET_ALL_ACTUAL_CRUISES_QUERY = "select * from cruises "+
-            "inner join routes r on r.id = cruises.route_id " +
-            "inner join ships s on s.id = cruises.ship_id "+
-            "where start_date >= now()";
-
     public static final String GET_ALL_CRUISES_BY_DURATION_QUERY = "select * from cruises" +
             " inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id " +
-            "where r.transit_time = ? && start_date >= now()";
+            "where r.transit_time = ? and start_date >= now()";
 
     public static final String GET_ALL_CRUISES_AFTER_DATE = "select * from cruises " +
             "inner join ships s on s.id = cruises.ship_id " +
@@ -39,7 +34,7 @@ public class CruiseQueries {
     public static final String GET_ALL_CRUISES_BEFORE_DATE = "select * from cruises " +
             "inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id " +
-            "where start_date = now() and  end_date <= ?";
+            "where start_date >= now() and  end_date <= ?";
 
     public static final String GET_ALL_CRUISES_BETWEEN_DATES_QUERY = "select * from cruises " +
             "inner join ships s on s.id = cruises.ship_id " +
@@ -60,4 +55,9 @@ public class CruiseQueries {
             "inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id " +
             "where start_date >= ? and end_date <= ? and r.transit_time = ?";
+    public static final String GET_ALL_ACTUAL_CRUISES_QUERY = "select * from cruises "+
+            "inner join routes r on r.id = cruises.route_id " +
+            "inner join ships s on s.id = cruises.ship_id "+
+            "where start_date >= now() limit ? offset ?";
+    public static final String GET_NUMBER_OF_ACTUAL_CRUISES = "select count(id) from cruises where start_date >= now()";
 }

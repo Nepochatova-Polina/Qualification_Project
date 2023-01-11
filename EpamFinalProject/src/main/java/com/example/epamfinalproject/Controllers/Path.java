@@ -6,7 +6,7 @@ package com.example.epamfinalproject.Controllers;
 public final class Path {
 
     public static final String MAIN_PAGE = "/index.jsp";
-    public static final String CATALOG_PAGE = "catalog.jsp";
+    public static final String CATALOGUE_PAGE = "/catalogue.jsp";
 
     public static final String LOGIN_PAGE = "/login.jsp";
     public static final String SIGN_UP_PAGE = "/signUp.jsp";

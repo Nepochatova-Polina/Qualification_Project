@@ -4,14 +4,17 @@ import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Controllers.SessionUtility;
 import com.example.epamfinalproject.Database.FieldKey;
-import com.example.epamfinalproject.Entities.*;
+import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
+import com.example.epamfinalproject.Entities.Order;
+import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.*;
 import com.example.epamfinalproject.Utility.Encryptor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public class LoginCommand implements Command {
     private static final Logger log = LogManager.getLogger(LoginCommand.class);
@@ -32,27 +35,26 @@ public class LoginCommand implements Command {
         User user = userService.getUserByLogin(login);
 
         if (validateUserData(user, request)) {
-            CruiseService cruiseService = new CruiseService();
-            ShipService shipService = new ShipService();
-            RouteService routeService = new RouteService();
-            StaffService staffService = new StaffService();
-            OrderService orderService = new OrderService();
+            request.getSession().setAttribute("role", user.getRole().toString());
+
             if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
 
-
-                SessionUtility.setUserParams(request, user, userService.getAllUsers(),
-                                                            cruiseService.getAllActualCruises(),
-                                                            orderService.getAllOrders(),
-                                                            staffService.getAllStaff(),
-                                                            shipService.getAllShips(),
-                                                            routeService.getAllRoutes());
                 log.debug("Logging in as ADMINISTRATOR");
                 log.debug("Command finished");
                 return Path.ADMINISTRATOR_PAGE;
             } else {
-                SessionUtility.setUserParams(request, user, cruiseService.getAllActualCruises());
                 log.debug("Logging in as USER");
                 log.debug("Command Finished");
+
+                String preCommand = (String) request.getSession().getAttribute("preCommand");
+                if (preCommand != null && preCommand.equals("displayOrderForm")) {
+                    updateSession(request, user);
+                    return Path.ORDER_PAGE;
+                }
+                CruiseService cruiseService = new CruiseService();
+                OrderService orderService = new OrderService();
+
+                SessionUtility.setParamsForClient(request,user,cruiseService.getActualCruises(FieldKey.PAGE_SIZE,0),orderService.getOrdersByUserID(user.getId()));
                 return Path.CLIENT_PAGE;
             }
         } else {
@@ -64,6 +66,20 @@ public class LoginCommand implements Command {
 
     private boolean validateUserData(User user, HttpServletRequest request) {
         return (user != null) &&
-                (Encryptor.check(user.getPassword(),request.getParameter(FieldKey.PASSWORD)));
+                (Encryptor.check(user.getPassword(), request.getParameter(FieldKey.PASSWORD)));
+    }
+
+    /**
+     * Updating data in session, set User data, selected Cruise data, availability for this cruise and all User's orders.
+     * @param request
+     * @param user logged user
+     */
+    private void updateSession(HttpServletRequest request, User user) {
+        OrderService orderService = new OrderService();
+        CruiseService cruiseService = new CruiseService();
+        Cruise cruise = cruiseService.getCruiseByID(user.getId());
+        List<Order> orders = orderService.getOrdersByUserID(user.getId());
+        int freeSeats = cruise.getShip().getPassengerCapacity() - orderService.getBookedSeatsByCruiseID(cruise.getId());
+        SessionUtility.setCruiseParamsForClient(request, user, cruise, freeSeats,orders);
     }
 }

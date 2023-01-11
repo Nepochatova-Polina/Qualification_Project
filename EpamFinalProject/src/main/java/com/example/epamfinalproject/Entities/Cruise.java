@@ -14,9 +14,9 @@ import java.time.LocalDate;
 
 public class Cruise {
     private long id;
+    private String name;
     private Ship ship;
     private Route route;
-    private String name;
     private int price;
     LocalDate startOfTheCruise;
     LocalDate endOfTheCruise;

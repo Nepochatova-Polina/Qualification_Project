@@ -59,9 +59,9 @@ public class CreateOrderCommand implements Command {
 
         userOrders = orderService.getOrdersByUserID(order.getUser().getId());
 
-        SessionUtility.setOrder(request, user, userOrders);
+        SessionUtility.setOrdersForClient(request, user, userOrders);
         log.debug("Command finished");
-        return "redirect:" + Path.CLIENT_PAGE;
+        return "redirect:" + Path.CATALOGUE_PAGE;
     }
 
     private Order shapeOrder(HttpServletRequest request) {
@@ -73,7 +73,7 @@ public class CreateOrderCommand implements Command {
         Cruise cruise = service.getCruiseByID((Long.parseLong(request.getParameter(FieldKey.ENTITY_ID))));
         order.setCruise(cruise);
         order.setNumberOfSeats(1);
-        order.setPrice(order.getNumberOfSeats() * cruise.getPrice());
+        order.setPrice(cruise.getPrice());
         return order;
     }
 

@@ -12,13 +12,15 @@ public interface CruiseDAO {
 
     void deleteCruiseByID(long id);
 
+    int getNumberOfActualCruises();
+
     Cruise getCruiseByID(long id);
 
     List<Cruise> getCruisesByShipID(long id);
 
     List<Cruise> getAllCruises();
 
-    List<Cruise> getAllActualCruises();
+    List<Cruise> getActualCruises(int limit,int offset);
 
     List<Cruise> getAllCruisesByDuration(int duration);
 
@@ -26,12 +28,12 @@ public interface CruiseDAO {
 
     List<Cruise> getAllCruisesBeforeDate(LocalDate date);
 
-    List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start,LocalDate end);
+    List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end);
 
-    List<Cruise> getAllCruisesByStartAndDuration(LocalDate start,int duration);
+    List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration);
 
-    List<Cruise> getAllCruisesByEndAndDuration(LocalDate end,int duration);
+    List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration);
 
-    List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end,int duration);
+    List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end, int duration);
 
 }
