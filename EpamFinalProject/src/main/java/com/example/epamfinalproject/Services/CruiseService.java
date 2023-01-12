@@ -28,11 +28,14 @@ public class CruiseService {
         return cruiseDAO.getAllCruises();
     }
 
-    public List<Cruise> getActualCruises(int limit, int offset) {
+    public List<Cruise> getActualCruisesForPage(int limit, int offset) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getActualCruises(limit,offset);
+        return cruiseDAO.getActualCruisesForPage(limit,offset);
     }
-
+    public List<Cruise> getActualCruises() {
+        CruiseDAO cruiseDAO = new Cruise_Implementation();
+        return cruiseDAO.getActualCruises();
+    }
     public int getNumberOfActualCruises() {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
         return cruiseDAO.getNumberOfActualCruises();

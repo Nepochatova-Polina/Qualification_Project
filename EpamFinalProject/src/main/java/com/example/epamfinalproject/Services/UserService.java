@@ -38,7 +38,7 @@ public class UserService {
         return userDAO.getAllUsers();
     }
 
-    public List<User> geClientUsers() {
+    public List<User> getClientUsers() {
         UserDAO userDAO = new User_Implementation();
         return userDAO.getClientUsers();
     }

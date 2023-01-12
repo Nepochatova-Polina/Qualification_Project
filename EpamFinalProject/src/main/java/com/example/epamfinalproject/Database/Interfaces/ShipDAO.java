@@ -17,4 +17,6 @@ public interface ShipDAO {
 
     List<Ship> getAllShips();
 
+    List<Ship> getShipsByDates(LocalDate start, LocalDate end);
+
 }

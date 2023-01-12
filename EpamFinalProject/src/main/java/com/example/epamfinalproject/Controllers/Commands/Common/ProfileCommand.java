@@ -1,5 +1,7 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
+import com.example.epamfinalproject.Controllers.Commands.Common.LoginCommand;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;

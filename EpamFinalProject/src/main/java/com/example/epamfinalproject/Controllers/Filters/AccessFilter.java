@@ -23,8 +23,8 @@ public class AccessFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
 
-        accessMap.put("administrator", Arrays.asList("createCruise", "editCruise", "deleteCruise",
-                "checkOrder", "profile"));
+        accessMap.put("administrator", Arrays.asList("profile", "createCruise", "createShip", "createRoute",
+                "filterShips", "editCruise", "deleteCruise", "checkOrder"));
 
         accessMap.put("client", Arrays.asList("createOrder", "displayOrderForm", "profile"));
 

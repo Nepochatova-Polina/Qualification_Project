@@ -1,11 +1,12 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ChangeLocaleCommand implements Command{
+public class ChangeLocaleCommand implements Command {
     private static final Logger log = LogManager.getLogger(ChangeLocaleCommand.class);
 
     @Override

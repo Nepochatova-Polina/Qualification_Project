@@ -4,6 +4,7 @@ import com.example.epamfinalproject.Database.Implementations.Ship_Implementation
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Entities.Ship;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -31,6 +32,11 @@ public class ShipService {
     public List<Ship> getAllShips() {
         ShipDAO shipDAO = new Ship_Implementation();
         return shipDAO.getAllShips();
+    }
+
+    public List<Ship> getShipsByDates(LocalDate start, LocalDate end) {
+        ShipDAO shipDAO = new Ship_Implementation();
+        return shipDAO.getShipsByDates(start, end);
     }
 
 

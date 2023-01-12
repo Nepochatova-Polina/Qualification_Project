@@ -55,9 +55,15 @@ public class CruiseQueries {
             "inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id " +
             "where start_date >= ? and end_date <= ? and r.transit_time = ?";
-    public static final String GET_ALL_ACTUAL_CRUISES_QUERY = "select * from cruises "+
+
+    public static final String GET_ALL_ACTUAL_CRUISES_FOR_PAGE_QUERY = "select * from cruises "+
             "inner join routes r on r.id = cruises.route_id " +
             "inner join ships s on s.id = cruises.ship_id "+
             "where start_date >= now() limit ? offset ?";
+
+    public static final String GET_ALL_ACTUAL_CRUISES_QUERY = "select * from cruises "+
+            "inner join routes r on r.id = cruises.route_id " +
+            "inner join ships s on s.id = cruises.ship_id "+
+            "where start_date >= now()";
     public static final String GET_NUMBER_OF_ACTUAL_CRUISES = "select count(id) from cruises where start_date >= now()";
 }

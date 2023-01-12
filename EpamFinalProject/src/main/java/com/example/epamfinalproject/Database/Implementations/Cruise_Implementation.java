@@ -183,12 +183,33 @@ public class Cruise_Implementation implements CruiseDAO {
     }
 
     @Override
-    public List<Cruise> getActualCruises(int limit, int offset) {
+    public List<Cruise> getActualCruisesForPage(int limit, int offset) {
+        List<Cruise> cruiseList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_FOR_PAGE_QUERY);
+            preparedStatement.setLong(1, limit);
+            preparedStatement.setInt(2, offset);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                cruiseList = cruiseShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return cruiseList;
+    }
+
+    @Override
+    public List<Cruise> getActualCruises() {
         List<Cruise> cruiseList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_QUERY);
-            preparedStatement.setLong(1, limit);
-            preparedStatement.setInt(2, offset);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 cruiseList = cruiseShaper.shapeDataToList(resultSet);

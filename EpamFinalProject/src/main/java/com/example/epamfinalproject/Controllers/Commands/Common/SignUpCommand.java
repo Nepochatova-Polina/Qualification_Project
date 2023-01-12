@@ -1,9 +1,10 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Controllers.SessionUtility;
-import com.example.epamfinalproject.Database.FieldKey;
+import com.example.epamfinalproject.Utility.SessionUtility;
+import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.CruiseService;
@@ -53,7 +54,7 @@ public class SignUpCommand implements Command {
         userService.registerUser(user);
 
         CruiseService cruiseService = new CruiseService();
-        SessionUtility.setParamsForClient(request, user, cruiseService.getActualCruises(FieldKey.PAGE_SIZE,0), new ArrayList<>());
+        SessionUtility.setParamsForClient(request, user, cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE,0), new ArrayList<>());
         request.getSession().setAttribute("role", user.getRole());
 
         log.debug("Command finished");

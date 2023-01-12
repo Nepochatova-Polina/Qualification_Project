@@ -1,10 +1,14 @@
 package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.*;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateRouteCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateShipCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.FilterShipsCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
-import com.example.epamfinalproject.Controllers.Commands.FilterCruisesCommand;
-import com.example.epamfinalproject.Controllers.Commands.ProfileCommand;
+import com.example.epamfinalproject.Controllers.Commands.Common.*;
+import com.example.epamfinalproject.Controllers.Commands.Common.ProfileCommand;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -46,10 +50,11 @@ public class Controller extends HttpServlet {
         commands.put("catalogue", new CatalogueCommand());
         commands.put("filterCruises", new FilterCruisesCommand());
         commands.put("profile", new ProfileCommand());
-//        commands.put("deleteCruise", new DeleteFacultyCommand());
-//        commands.put("editCruise", new EditFacultyCommand());
-//        commands.put("createOrder", new CreateSubmissionCommand());
-//        commands.put("checkOrder", new CheckSubmissionCommand());
+        commands.put("createShip", new CreateShipCommand());
+        commands.put("createRoute", new CreateRouteCommand());
+        commands.put("createCruise", new CreateCruiseCommand());
+        commands.put("filterShips", new FilterShipsCommand());
+
         commands.put("changeLocale", new ChangeLocaleCommand());
 
     }

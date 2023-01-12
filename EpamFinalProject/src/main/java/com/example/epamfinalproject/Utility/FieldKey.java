@@ -1,4 +1,4 @@
-package com.example.epamfinalproject.Database;
+package com.example.epamfinalproject.Utility;
 
 /**
  * Defines fields names<p></p>

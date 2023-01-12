@@ -1,5 +1,6 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.User;
 import org.apache.log4j.LogManager;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 
-public class LogoutCommand implements Command{
+public class LogoutCommand implements Command {
     private static final Logger log = LogManager.getLogger(LogoutCommand.class);
 
     @Override

@@ -43,4 +43,11 @@ public class Ship {
         this.passengerCapacity = passengerCapacity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ship ship = (Ship) o;
+        return this.getId() == ship.getId();
+    }
 }

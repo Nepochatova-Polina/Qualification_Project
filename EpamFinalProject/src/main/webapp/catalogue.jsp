@@ -70,12 +70,12 @@
             <input type="number" value="0" id="duration" name="duration"
                    placeholder="<fmt:message key="cruise.label.duration"/>">
         </div>
-        <input type="submit" class="submit-btn" value="<fmt:message key="button.submit"/>">
+        <input type="submit" class="submit-btn" value="<fmt:message key="button.search"/>">
     </div>
 </form>
 <h1 class="text-center"><fmt:message key="button.cruises.catalogue"/></h1>
 <div class="container">
-    <table border="1" cellpadding="5" cellspacing="5" class="pagination">
+    <table class="pagination">
         <tr>
             <c:forEach begin="1" end="${sessionScope.numOfPages}" var="i">
                 <c:choose>

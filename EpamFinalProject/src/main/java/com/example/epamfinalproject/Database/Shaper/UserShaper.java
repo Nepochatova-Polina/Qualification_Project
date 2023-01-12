@@ -1,6 +1,6 @@
 package com.example.epamfinalproject.Database.Shaper;
 
-import com.example.epamfinalproject.Database.FieldKey;
+import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 

@@ -8,10 +8,8 @@ import com.example.epamfinalproject.Database.Shaper.ShipShaper;
 import com.example.epamfinalproject.Entities.Ship;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +66,29 @@ public class Ship_Implementation implements ShipDAO {
         List<Ship> shipList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(ShipQueries.GET_ALL_SHIPS_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                shipList = shipShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return shipList;
+    }
+
+    @Override
+    public List<Ship> getShipsByDates(LocalDate start, LocalDate end) {
+        List<Ship> shipList = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIPS_BY_DATES_QUERY);
+            preparedStatement.setDate(1, Date.valueOf(start));
+            preparedStatement.setDate(2, Date.valueOf(end));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 shipList = shipShaper.shapeDataToList(resultSet);

@@ -1,9 +1,10 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Controllers.SessionUtility;
-import com.example.epamfinalproject.Database.FieldKey;
+import com.example.epamfinalproject.Utility.SessionUtility;
+import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.Order;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 
 public class LoginCommand implements Command {
     private static final Logger log = LogManager.getLogger(LoginCommand.class);
@@ -34,10 +36,25 @@ public class LoginCommand implements Command {
         UserService userService = new UserService();
         User user = userService.getUserByLogin(login);
 
+
         if (validateUserData(user, request)) {
             request.getSession().setAttribute("role", user.getRole().toString());
 
+            CruiseService cruiseService = new CruiseService();
+            OrderService orderService = new OrderService();
+            StaffService staffService = new StaffService();
+            ShipService shipService = new ShipService();
+            RouteService routeService = new RouteService();
+
             if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
+
+                SessionUtility.setParamsForAdmin(request, user,
+                        userService.getClientUsers(),
+                        cruiseService.getActualCruises(),
+                        orderService.getAllOrders(),
+                        staffService.getAllStaff(),
+                        shipService.getAllShips(),
+                        routeService.getAllRoutes());
 
                 log.debug("Logging in as ADMINISTRATOR");
                 log.debug("Command finished");
@@ -51,10 +68,11 @@ public class LoginCommand implements Command {
                     updateSession(request, user);
                     return Path.ORDER_PAGE;
                 }
-                CruiseService cruiseService = new CruiseService();
-                OrderService orderService = new OrderService();
 
-                SessionUtility.setParamsForClient(request,user,cruiseService.getActualCruises(FieldKey.PAGE_SIZE,0),orderService.getOrdersByUserID(user.getId()));
+
+                SessionUtility.setParamsForClient(request,user,
+                        cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE,0),
+                        orderService.getOrdersByUserID(user.getId()));
                 return Path.CLIENT_PAGE;
             }
         } else {
@@ -80,6 +98,6 @@ public class LoginCommand implements Command {
         Cruise cruise = cruiseService.getCruiseByID(user.getId());
         List<Order> orders = orderService.getOrdersByUserID(user.getId());
         int freeSeats = cruise.getShip().getPassengerCapacity() - orderService.getBookedSeatsByCruiseID(cruise.getId());
-        SessionUtility.setCruiseParamsForClient(request, user, cruise, freeSeats,orders);
+        SessionUtility.setCruiseParamsForClient(request, user, cruise, freeSeats);
     }
 }

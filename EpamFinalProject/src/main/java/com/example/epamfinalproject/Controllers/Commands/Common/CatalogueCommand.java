@@ -1,9 +1,10 @@
-package com.example.epamfinalproject.Controllers.Commands;
+package com.example.epamfinalproject.Controllers.Commands.Common;
 
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Controllers.SessionUtility;
-import com.example.epamfinalproject.Database.FieldKey;
+import com.example.epamfinalproject.Utility.SessionUtility;
+import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Services.CruiseService;
 import org.apache.log4j.LogManager;
@@ -25,7 +26,7 @@ public class CatalogueCommand implements Command {
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        List<Cruise> cruises = cruiseService.getActualCruises(FieldKey.PAGE_SIZE,(page - 1) * FieldKey.PAGE_SIZE);
+        List<Cruise> cruises = cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE,(page - 1) * FieldKey.PAGE_SIZE);
 
         SessionUtility.setCruisesParams(request, cruises);
         int pageCount = (int) Math.ceil(recordsCount * 1.0 / FieldKey.PAGE_SIZE);

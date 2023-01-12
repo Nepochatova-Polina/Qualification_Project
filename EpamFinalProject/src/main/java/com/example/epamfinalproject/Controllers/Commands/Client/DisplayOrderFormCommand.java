@@ -2,7 +2,7 @@ package com.example.epamfinalproject.Controllers.Commands.Client;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Database.FieldKey;
+import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Services.OrderService;

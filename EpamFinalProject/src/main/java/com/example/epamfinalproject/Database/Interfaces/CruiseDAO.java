@@ -20,7 +20,9 @@ public interface CruiseDAO {
 
     List<Cruise> getAllCruises();
 
-    List<Cruise> getActualCruises(int limit,int offset);
+    List<Cruise> getActualCruisesForPage(int limit, int offset);
+
+    List<Cruise> getActualCruises();
 
     List<Cruise> getAllCruisesByDuration(int duration);
 

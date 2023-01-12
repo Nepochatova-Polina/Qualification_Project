@@ -1,12 +1,10 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
-import com.example.epamfinalproject.Database.FieldKey;
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
 import com.example.epamfinalproject.Database.Queries.UserQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
 import com.example.epamfinalproject.Database.Shaper.UserShaper;
-import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Utility.Encryptor;
 import org.apache.log4j.Logger;
