@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class FilterShipsCommand implements Command {
-    private static final Logger log = LogManager.getLogger(LoginCommand.class);
+    private static final Logger log = LogManager.getLogger(FilterShipsCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -37,6 +37,6 @@ public class FilterShipsCommand implements Command {
         SessionUtility.setShipsParams(request, allShips);
 
         log.debug("Command Finished");
-        return "Admin/createCruise.jsp";
+        return Path.CREATE_CRUISE_PAGE;
     }
 }

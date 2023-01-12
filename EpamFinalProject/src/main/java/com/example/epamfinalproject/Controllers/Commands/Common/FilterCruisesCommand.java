@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FilterCruisesCommand implements Command {
-    private static final Logger log = LogManager.getLogger(CreateOrderCommand.class);
+    private static final Logger log = LogManager.getLogger(FilterCruisesCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {

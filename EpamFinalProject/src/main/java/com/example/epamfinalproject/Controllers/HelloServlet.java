@@ -19,6 +19,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @WebServlet("/multiPartServlet")
@@ -37,20 +38,24 @@ public class HelloServlet extends HttpServlet {
         Ship_Implementation si = new Ship_Implementation();
         Route_Implementation ri = new Route_Implementation();
 
-
-        si.registerShip(new Ship("Saint Maria",50));
-        ri.createRoute(new Route("Amariti","Amariti",2,1));
-        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Amariti Blue",49,LocalDate.parse("2023-06-02"),LocalDate.parse("2023-06-03")));
-        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Maritime Yellow",49,LocalDate.parse("2023-06-04"),LocalDate.parse("2023-06-05")));
-        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Amariti Blue",49,LocalDate.parse("2023-06-06"),LocalDate.parse("2023-06-07")));
-
-        si.registerShip(new Ship("Sea Devil",150));
-        ri.createRoute(new Route("Denvi","Alesto-Doro",4,3));
-        ci.createCruise(new Cruise(si.getShipByID(4),ri.getRouteByID(5),"Devil's Eye Cruise",109,LocalDate.parse("2023-04-12"),LocalDate.parse("2023-04-15")));
-
-        si.registerShip(new Ship("Elvis Presley",250));
-        ri.createRoute(new Route("Malaysia","Brasilia",14,10));
-        ci.createCruise(new Cruise(si.getShipByID(4),ri.getRouteByID(5),"Malaysia's Secrets",599,LocalDate.parse("2023-07-22"),LocalDate.parse("2023-08-02")));
+       List<Ship> ships =  si.getShipsByDates(LocalDate.of(2023,06,06),LocalDate.of(2023,06,07));
+        List<Ship> shipList = si.getAllShips();
+       boolean r =  shipList.removeAll(ships);
+        System.out.println(shipList);
+        System.out.println(r);
+//        si.registerShip(new Ship("Saint Maria",50));
+//        ri.createRoute(new Route("Amariti","Amariti",2,1));
+//        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Amariti Blue",49,LocalDate.parse("2023-06-02"),LocalDate.parse("2023-06-03")));
+//        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Maritime Yellow",49,LocalDate.parse("2023-06-04"),LocalDate.parse("2023-06-05")));
+//        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Amariti Blue",49,LocalDate.parse("2023-06-06"),LocalDate.parse("2023-06-07")));
+//
+//        si.registerShip(new Ship("Sea Devil",150));
+//        ri.createRoute(new Route("Denvi","Alesto-Doro",4,3));
+//        ci.createCruise(new Cruise(si.getShipByID(4),ri.getRouteByID(5),"Devil's Eye Cruise",109,LocalDate.parse("2023-04-12"),LocalDate.parse("2023-04-15")));
+//
+//        si.registerShip(new Ship("Elvis Presley",250));
+//        ri.createRoute(new Route("Malaysia","Brasilia",14,10));
+//        ci.createCruise(new Cruise(si.getShipByID(4),ri.getRouteByID(5),"Malaysia's Secrets",599,LocalDate.parse("2023-07-22"),LocalDate.parse("2023-08-02")));
 
 
 //        ci.getCruiseByID(1);

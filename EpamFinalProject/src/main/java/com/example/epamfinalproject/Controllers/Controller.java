@@ -1,10 +1,11 @@
 package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.*;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateRouteCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateShipCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.FilterShipsCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.*;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteRouteCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteShipCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteStaffCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;
@@ -45,14 +46,22 @@ public class Controller extends HttpServlet {
         commands.put("login", new LoginCommand());
         commands.put("signUp", new SignUpCommand());
         commands.put("logout", new LogoutCommand());
-        commands.put("createOrder", new CreateOrderCommand());
-        commands.put("displayOrderForm", new DisplayOrderFormCommand());
+        commands.put("profile", new ProfileCommand());
         commands.put("catalogue", new CatalogueCommand());
         commands.put("filterCruises", new FilterCruisesCommand());
-        commands.put("profile", new ProfileCommand());
-        commands.put("createShip", new CreateShipCommand());
-        commands.put("createRoute", new CreateRouteCommand());
+        commands.put("displayOrderForm", new DisplayOrderFormCommand());
+
+        commands.put("createOrder", new CreateOrderCommand());
         commands.put("createCruise", new CreateCruiseCommand());
+        commands.put("createRoute", new CreateRouteCommand());
+        commands.put("createStaff", new CreateStaffCommand());
+        commands.put("createShip", new CreateShipCommand());
+
+        commands.put("deleteCruise", new DeleteCruiseCommand());
+        commands.put("deleteRoute", new DeleteRouteCommand());
+        commands.put("deleteStaff", new DeleteStaffCommand());
+        commands.put("deleteShip", new DeleteShipCommand());
+
         commands.put("filterShips", new FilterShipsCommand());
 
         commands.put("changeLocale", new ChangeLocaleCommand());
@@ -78,7 +87,7 @@ public class Controller extends HttpServlet {
         String commandName = request.getParameter("command");
         log.trace("Request parameter: command " + commandName);
 
-        Command command = commands.getOrDefault(commandName, (r) -> com.example.epamfinalproject.Controllers.Path.MAIN_PAGE);
+        Command command = commands.getOrDefault(commandName, (r) -> Path.MAIN_PAGE);
         log.trace("Obtained command:" + command);
 
         String page = command.execute(request);

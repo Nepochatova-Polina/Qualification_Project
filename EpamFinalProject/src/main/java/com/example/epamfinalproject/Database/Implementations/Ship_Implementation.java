@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship_Implementation implements ShipDAO {
-    private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
+    private static final Logger log = Logger.getLogger(Ship_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
     DataShaper<Ship> shipShaper = new ShipShaper();
 

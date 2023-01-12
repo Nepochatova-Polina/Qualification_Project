@@ -78,11 +78,11 @@
             <h3 class="text-left"><strong><fmt:message key="admin.label.create"/></strong></h3>
             <br>
             <div class="row">
-                <a class="col-sm-3" href="#">
+                <a class="col-sm-3" href="createCruise.jsp">
                     <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
                     <p><fmt:message key="admin.description.label.create.cruise"/></p>
                 </a>
-                <a class="col-sm-3" href="#">
+                <a class="col-sm-3" href="createRoute.jsp">
                     <h5><strong><fmt:message key="admin.entity.label.route"/></strong></h5>
                     <p><fmt:message key="admin.description.label.create.route"/></p>
                 </a>
@@ -90,7 +90,7 @@
                     <h5><strong><fmt:message key="admin.entity.label.ship"/></strong></h5>
                     <p><fmt:message key="admin.description.label.create.ship"/></p>
                 </a>
-                <a class="col-sm-3" href="#">
+                <a class="col-sm-3" href="createStaff.jsp">
                     <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
                     <p><fmt:message key="admin.description.label.create.staff"/></p>
                 </a>

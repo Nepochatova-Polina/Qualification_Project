@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class CatalogueCommand implements Command {
-    private static final Logger log = LogManager.getLogger(CreateOrderCommand.class);
+    private static final Logger log = LogManager.getLogger(CatalogueCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {

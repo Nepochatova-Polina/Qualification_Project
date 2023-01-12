@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class CreateCruiseCommand implements Command {
-    private static final Logger log = LogManager.getLogger(LoginCommand.class);
+    private static final Logger log = LogManager.getLogger(CreateCruiseCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -47,11 +47,11 @@ public class CreateCruiseCommand implements Command {
             log.debug("Command Finished");
         }else {
             request.getSession().setAttribute("message", MessageKeys.CRUISE_INVALID);
-            log.trace("Invalid Route parameters");
+            log.trace("Invalid Cruise parameters");
             log.debug("Command Finished");
             return Path.CREATE_CRUISE_PAGE;
         }
-        return Path.ADMINISTRATOR_PAGE;
+        return"redirect:" + Path.ADMINISTRATOR_PAGE;
     }
     private boolean checkCruise(Cruise cruise){
         ShipService shipService = new ShipService();

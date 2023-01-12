@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class Cruise_Implementation implements CruiseDAO {
-    private static final Logger log = Logger.getLogger(Order_Implementation.class.getName());
+    private static final Logger log = Logger.getLogger(Cruise_Implementation.class.getName());
     PreparedStatement preparedStatement;
     DataShaper<Cruise> cruiseShaper = new CruiseShaper();
 

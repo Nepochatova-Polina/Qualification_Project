@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class CreateShipCommand implements Command {
-    private static final Logger log = LogManager.getLogger(LoginCommand.class);
+    private static final Logger log = LogManager.getLogger(CreateShipCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {

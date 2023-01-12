@@ -16,7 +16,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class Staff_Implementation implements StaffDAO {
-    private static final Logger log = Logger.getLogger(User_Implementation.class.getName());
+    private static final Logger log = Logger.getLogger(Staff_Implementation.class.getName());
     private static PreparedStatement preparedStatement;
     DataShaper<Staff> staffShaper = new StaffShaper();
 

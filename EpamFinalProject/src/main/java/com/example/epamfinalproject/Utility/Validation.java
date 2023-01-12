@@ -1,9 +1,6 @@
 package com.example.epamfinalproject.Utility;
 
-import com.example.epamfinalproject.Entities.Cruise;
-import com.example.epamfinalproject.Entities.Route;
-import com.example.epamfinalproject.Entities.Ship;
-import com.example.epamfinalproject.Entities.User;
+import com.example.epamfinalproject.Entities.*;
 
 import java.util.regex.Pattern;
 
@@ -13,6 +10,10 @@ public class Validation {
         return Pattern.compile(Regex.USER_LOGIN).matcher(user.getLogin()).find() &&
                 Pattern.compile(Regex.USER_FIRSTNAME).matcher(user.getFirstName()).find() &&
                 Pattern.compile(Regex.USER_LASTNAME).matcher(user.getLastName()).find();
+    }
+    public static boolean validateStaffFields(Staff staff) {
+        return Pattern.compile(Regex.USER_FIRSTNAME).matcher(staff.getFirstName()).find() &&
+                Pattern.compile(Regex.USER_LASTNAME).matcher(staff.getLastName()).find();
     }
 
     public static boolean validateShipFields(Ship ship) {

@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class DisplayOrderFormCommand implements Command {
-    private static final Logger log = LogManager.getLogger(CreateOrderCommand.class);
+    private static final Logger log = LogManager.getLogger(DisplayOrderFormCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {

@@ -1,7 +1,6 @@
 package com.example.epamfinalproject.Utility;
 
 import com.example.epamfinalproject.Entities.*;
-import com.example.epamfinalproject.Services.OrderService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +15,16 @@ import java.util.List;
 public class SessionUtility {
 
     /**
-     *Sets Session parameters for ADMINISTRATOR user
+     * Sets Session parameters for ADMINISTRATOR user
+     *
      * @param request
-     * @param user administrator info
-     * @param users list of all users in system
+     * @param user    administrator info
+     * @param users   list of all users in system
      * @param cruises all actual cruises
-     * @param orders all unconfirmed orders
-     * @param staff all staff of the Company
-     * @param ships all ships of the Company
-     * @param routes all routes of the Company
+     * @param orders  all unconfirmed orders
+     * @param staff   all staff of the Company
+     * @param ships   all ships of the Company
+     * @param routes  all routes of the Company
      */
     static public void setParamsForAdmin(HttpServletRequest request, User user, List<User> users,
                                          List<Cruise> cruises, List<Order> orders, List<Staff> staff, List<Ship> ships,
@@ -44,11 +44,12 @@ public class SessionUtility {
     }
 
     /**
-     *Sets Session parameters for CLIENT user
+     * Sets Session parameters for CLIENT user
+     *
      * @param request
-     * @param user client info
+     * @param user    client info
      * @param cruises all actual cruises
-     * @param orders all User's orders
+     * @param orders  all User's orders
      */
     static public void setParamsForClient(HttpServletRequest request, User user, List<Cruise> cruises, List<Order> orders) {
         HttpSession session = request.getSession();
@@ -63,7 +64,8 @@ public class SessionUtility {
 
 
     /**
-     *Sets Session parameter after creating new Cruise
+     * Sets Session parameter after creating new Cruise
+     *
      * @param request
      * @param cruises all actual cruises
      */
@@ -72,20 +74,36 @@ public class SessionUtility {
         ServletContext context = request.getServletContext();
         session.setAttribute("cruises", cruises);
     }
+
     /**
-     *Sets Session parameters after creating new Ship
+     * Sets Session parameters after creating new Ship
+     *
      * @param request
-     * @param ships all ships of the Company
+     * @param ships   all ships of the Company
      */
     static public void setShipsParams(HttpServletRequest request, List<Ship> ships) {
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
         session.setAttribute("ships", ships);
     }
+
     /**
-     *Sets Session parameter after creating new Route
+     * Sets Session parameters after creating new Staff
+     *
      * @param request
-     * @param routes all routes of the Company
+     * @param staff   all staff of the Company
+     */
+    static public void setStaffParams(HttpServletRequest request, List<Staff> staff) {
+        HttpSession session = request.getSession();
+        ServletContext context = request.getServletContext();
+        session.setAttribute("staff", staff);
+    }
+
+    /**
+     * Sets Session parameter after creating new Route
+     *
+     * @param request
+     * @param routes  all routes of the Company
      */
     static public void setRouteParams(HttpServletRequest request, List<Route> routes) {
         HttpSession session = request.getSession();
@@ -95,8 +113,9 @@ public class SessionUtility {
 
     /**
      * Set information about the Cruise that the user has chosen
+     *
      * @param request
-     * @param user Client info
+     * @param user    Client info
      */
     static public void setCruiseParamsForClient(HttpServletRequest request, User user, Cruise cruise, int freeSeats) {
         HttpSession session = request.getSession();
@@ -107,9 +126,10 @@ public class SessionUtility {
 
     /**
      * Sets ORDER with it status after CLIENT created one
+     *
      * @param request
-     * @param user Client info
-     * @param orders all User's orders
+     * @param user    Client info
+     * @param orders  all User's orders
      */
     static public void setOrdersForClient(HttpServletRequest request, User user, List<Order> orders) {
         HttpSession session = request.getSession();
