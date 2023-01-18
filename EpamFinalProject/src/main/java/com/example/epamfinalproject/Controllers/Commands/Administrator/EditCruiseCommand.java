@@ -1,6 +1,6 @@
-package com.example.epamfinalproject.Controllers.Commands.Administrator.Edit;
+package com.example.epamfinalproject.Controllers.Commands.Administrator;
 
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.CreateCruiseCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
@@ -55,7 +55,7 @@ public class EditCruiseCommand implements Command {
             routeService.updateRouteByID(cruise.getRoute(),cruise.getRoute().getId());
             log.debug("Route Record was updated");
 
-            SessionUtility.setCruisesParams(request,cruiseService.getActualCruises());
+            SessionUtility.setCruisesParams(request,cruiseService.getAllCruisesForPage(FieldKey.PAGE_SIZE,0));
             log.debug("Command Finished");
         } else {
             request.getSession().setAttribute("message", MessageKeys.CRUISE_INVALID);

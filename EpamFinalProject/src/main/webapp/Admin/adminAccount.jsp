@@ -8,7 +8,7 @@
 <html lang="${sessionScope.locale}">
 <head>
     <style>
-        <%@include file="/WEB-INF/Styles/adminAccount.css" %>
+        <%@include file="/Styles/adminAccount.css" %>
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
@@ -81,20 +81,29 @@
         <br>
         <br>
         <div class="text-center row">
-            <a class="col-sm-3" href="createCruise.jsp">
+            <a class="col-sm-3" href="createCruise.jsp" style="color: black">
                 <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
                 <p><fmt:message key="admin.description.label.create.cruise"/></p>
             </a>
-            <a class="col-sm-3" href="displayCruises.jsp">
-                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
-                <p><fmt:message key="admin.description.label.edit.cruise"/></p>
-            </a>
-            <a class="col-sm-3" href="deleteCruise.jsp">
-                <input type="hidden" name="command" value="deleteCruise"/>
-                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
-                <p><fmt:message key="admin.description.label.delete.cruise"/></p>
-            </a>
-            <a class="col-sm-3" href="confirmOrder.jsp">
+            <form class=" col-sm-3" method="get" action="${pageContext.request.contextPath}/controller">
+                <button type="submit" style="border: none; background-color: inherit">
+                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                    <p><fmt:message key="admin.description.label.edit.cruise"/></p>
+                    <input type="hidden" name="page" value="${1}">
+                    <input type="hidden" name="command" value="catalogue"/>
+                    <input type="hidden" name="page-path" value="/Admin/displayCruises.jsp">
+                </button>
+            </form>
+            <form class="col-sm-3" method="get" action="${pageContext.request.contextPath}/controller">
+                <button type="submit" style="border: none; background-color: inherit">
+                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                    <p><fmt:message key="admin.description.label.delete.cruise"/></p>
+                    <input type="hidden" name="page" value="${1}">
+                    <input type="hidden" name="command" value="catalogue"/>
+                    <input type="hidden" name="page-path" value="/Admin/deleteCruise.jsp">
+                </button>
+            </form>
+            <a class="col-sm-3" href="confirmOrder.jsp" style="color: black">
                 <input type="hidden" name="command" value="confirmOrder"/>
                 <h5><strong><fmt:message key="admin.entity.label.order"/></strong></h5>
                 <p><fmt:message key="admin.description.label.confirm.order"/></p>

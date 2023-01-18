@@ -2,10 +2,10 @@ package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.*;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.ConfirmOrderCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.*;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.DisplayCruiseFormCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.EditCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.CreateCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.DeleteCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.DisplayCruiseFormCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.EditCruiseCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;

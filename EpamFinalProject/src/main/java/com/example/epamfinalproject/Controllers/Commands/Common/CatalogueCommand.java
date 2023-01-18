@@ -24,8 +24,12 @@ public class CatalogueCommand implements Command {
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        List<Cruise> cruises = cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE, (page - 1) * FieldKey.PAGE_SIZE);
-
+        List<Cruise> cruises;
+        if (request.getParameter("page-path").contains("Admin")) {
+            cruises = cruiseService.getAllCruisesForPage(FieldKey.PAGE_SIZE, (page - 1) * FieldKey.PAGE_SIZE);
+        } else {
+            cruises = cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE, (page - 1) * FieldKey.PAGE_SIZE);
+        }
         SessionUtility.setCruisesParams(request, cruises);
         int pageCount = (int) Math.ceil(recordsCount * 1.0 / FieldKey.PAGE_SIZE);
         request.getSession().setAttribute("numOfPages", pageCount);

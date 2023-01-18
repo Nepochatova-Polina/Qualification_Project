@@ -1,4 +1,4 @@
-package com.example.epamfinalproject.Controllers.Commands.Administrator.Create;
+package com.example.epamfinalproject.Controllers.Commands.Administrator;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;

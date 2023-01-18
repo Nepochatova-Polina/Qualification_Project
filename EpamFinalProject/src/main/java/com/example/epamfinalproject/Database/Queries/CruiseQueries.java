@@ -18,9 +18,9 @@ public class CruiseQueries {
             "inner join ships s on s.id = cruises.ship_id " +
             " where cruises.ship_id = ?";
 
-    public static final String GET_ALL_CRUISES_QUERY = "select * from cruises " +
+    public static final String GET_ALL_CRUISES_FOR_PAGE_QUERY = "select * from cruises " +
             "inner join routes r on r.id = cruises.route_id " +
-            "inner join ships s on s.id = cruises.ship_id ";
+            "inner join ships s on s.id = cruises.ship_id limit ? offset ?";
 
     public static final String GET_ALL_CRUISES_BY_DURATION_QUERY = "select * from cruises" +
             " inner join routes r on r.id = cruises.route_id " +

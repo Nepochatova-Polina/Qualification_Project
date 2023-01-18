@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
-        <%@include file="/WEB-INF/Styles/adminForm.css" %>
+        <%@include file="/Styles/adminForm.css" %>
     </style>
 </head>
 <body>
@@ -41,15 +41,15 @@
     </div>
     <div class="navElements col-sm-6">
         <div id="locale-changer" class="form-control">
-            <form method="post" action="${pageContext.request.contextPath}/controller">
+            <form method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/editCruise.jsp">
+                <input type="hidden" name="page-path" value="/Admin/createCruise.jsp">
                 <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale"
                        value="ua">
             </form>
-            <form method="post" action="${pageContext.request.contextPath}/controller">
+            <form method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/editCruise.jsp">
+                <input type="hidden" name="page-path" value="/Admin/createCruise.jsp">
                 <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale"
                        value="en">
             </form>
@@ -165,7 +165,7 @@
                         </div>
                         <p class="text-center">
                             <fmt:message key="form.label.back"/>
-                            <a href="displayCruises.jsp" style="color: green"><fmt:message
+                            <a href="adminAccount.jsp" style="color: green"><fmt:message
                                     key="button.back"/></a>
                         </p>
                 </article>
@@ -176,6 +176,7 @@
             <div class="card  mx-auto">
                 <article class="card-body mx-auto" style="max-width: 400px">
                     <div class="form-group">
+                        <h4 class="text-center"><fmt:message key="admin.entity.label.staff"/></h4>
                         <label for="first_name1"><fmt:message key="user.label.firstName"/></label>
                         <input
                                 type="text"
@@ -200,6 +201,7 @@
             <div class="card  mx-auto">
                 <article class="card-body mx-auto" style="max-width: 400px;">
                     <div class="form-group">
+                        <h4 class="text-center"><fmt:message key="admin.entity.label.staff"/></h4>
                         <label for="first_name2"><fmt:message key="user.label.firstName"/></label>
                         <input
                                 type="text"
@@ -224,6 +226,7 @@
             <div class="card  mx-auto">
                 <article class="card-body mx-auto" style="max-width: 400px;">
                     <div class="form-group">
+                        <h4 class="text-center"><fmt:message key="admin.entity.label.staff"/></h4>
                         <label for="first_name3"><fmt:message key="user.label.firstName"/></label>
                         <input
                                 type="text"

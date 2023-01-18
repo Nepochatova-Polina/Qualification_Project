@@ -1,6 +1,6 @@
-package com.example.epamfinalproject.Controllers.Commands.Administrator.Edit;
+package com.example.epamfinalproject.Controllers.Commands.Administrator;
 
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.CreateCruiseCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;

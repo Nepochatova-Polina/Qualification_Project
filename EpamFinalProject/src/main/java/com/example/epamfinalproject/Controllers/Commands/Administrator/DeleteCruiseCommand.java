@@ -1,4 +1,4 @@
-package com.example.epamfinalproject.Controllers.Commands.Administrator.Delete;
+package com.example.epamfinalproject.Controllers.Commands.Administrator;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
@@ -30,7 +30,7 @@ public class DeleteCruiseCommand implements Command {
             log.debug("Record with id " + Integer.parseInt(param) + "was deleted");
         }
 
-        SessionUtility.setCruisesParams(request,cruiseService.getAllCruises());
+        SessionUtility.setCruisesParams(request,cruiseService.getAllCruisesForPage(FieldKey.PAGE_SIZE,0));
         log.debug("Command Finished");
         return "redirect:"+ Path.ADMINISTRATOR_PAGE;
     }

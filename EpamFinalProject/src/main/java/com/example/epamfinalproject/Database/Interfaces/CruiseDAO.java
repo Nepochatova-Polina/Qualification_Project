@@ -18,7 +18,7 @@ public interface CruiseDAO {
 
     List<Cruise> getCruisesByShipID(long id);
 
-    List<Cruise> getAllCruises();
+    List<Cruise> getAllCruisesForPage(int limit, int offset);
 
     List<Cruise> getActualCruisesForPage(int limit, int offset);
 

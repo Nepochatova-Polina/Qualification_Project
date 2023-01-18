@@ -162,10 +162,12 @@ public class Cruise_Implementation implements CruiseDAO {
     }
 
     @Override
-    public List<Cruise> getAllCruises() {
+    public List<Cruise> getAllCruisesForPage(int limit, int offset) {
         List<Cruise> cruiseList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {
-            preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_QUERY);
+            preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_FOR_PAGE_QUERY);
+            preparedStatement.setInt(1,limit);
+            preparedStatement.setInt(2,offset);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 cruiseList = cruiseShaper.shapeDataToList(resultSet);

@@ -23,9 +23,9 @@ public class CruiseService {
         cruiseDAO.deleteCruiseByID(id);
     }
 
-    public List<Cruise> getAllCruises() {
+    public List<Cruise> getAllCruisesForPage(int limit, int offset) {
         CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruises();
+        return cruiseDAO.getAllCruisesForPage(limit,offset );
     }
 
     public List<Cruise> getActualCruisesForPage(int limit, int offset) {

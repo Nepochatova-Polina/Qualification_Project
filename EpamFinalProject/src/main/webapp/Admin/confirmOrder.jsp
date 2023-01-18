@@ -9,8 +9,8 @@
 <html lang="${sessionScope.locale}">
 <head>
     <style>
-        <%@include file="/WEB-INF/Styles/adminForm.css" %>
-        <%@include file="/WEB-INF/Styles/catalogue.css" %>
+        <%@include file="/Styles/adminForm.css" %>
+        <%@include file="/Styles/catalogue.css" %>
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
@@ -27,7 +27,7 @@
                 <input type="hidden" name="command" value="profile"/>
             </form>
         </a>
-        <a class="active" href="../../index.jsp"><fmt:message key="navbar.home"/></a>
+        <a class="active" href="../index.jsp"><fmt:message key="navbar.home"/></a>
         <a>
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
@@ -38,15 +38,15 @@
     </div>
     <div class="navElements col-sm-6">
         <div id="locale-changer" class="form-control">
-            <form method="post" action="${pageContext.request.contextPath}/controller">
+            <form method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/Delete/deleteCruise.jsp">
+                <input type="hidden" name="page-path" value="/Admin/confirmOrder.jsp">
                 <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale"
                        value="ua">
             </form>
-            <form method="post" action="${pageContext.request.contextPath}/controller">
+            <form method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/Delete/deleteCruise.jsp">
+                <input type="hidden" name="page-path" value="/Admin/confirmOrder.jsp">
                 <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale"
                        value="en">
             </form>
