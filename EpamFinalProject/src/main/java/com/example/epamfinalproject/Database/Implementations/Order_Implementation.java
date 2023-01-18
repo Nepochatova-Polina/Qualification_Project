@@ -5,6 +5,7 @@ import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
 import com.example.epamfinalproject.Database.Shaper.OrderShaper;
+import com.example.epamfinalproject.Entities.Enums.Status;
 import com.example.epamfinalproject.Entities.Order;
 import org.apache.log4j.Logger;
 
@@ -26,9 +27,7 @@ public class Order_Implementation implements OrderDAO {
             preparedStatement = connection.prepareStatement(OrderQueries.CREATE_ORDER_QUERY);
             preparedStatement.setLong(1, order.getCruise().getId());
             preparedStatement.setLong(2, order.getUser().getId());
-            preparedStatement.setInt(3, order.getNumberOfSeats());
-            preparedStatement.setInt(4, order.getPrice());
-            preparedStatement.setString(5, order.getStatus().toString());
+            preparedStatement.setString(3, order.getStatus().toString());
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot add order information.");
             }
@@ -49,10 +48,9 @@ public class Order_Implementation implements OrderDAO {
             connection.setAutoCommit(false);
             preparedStatement = connection.prepareStatement(OrderQueries.UPDATE_ORDER_BY_ID_QUERY);
             preparedStatement.setLong(1, order.getCruise().getId());
-            preparedStatement.setInt(3, order.getNumberOfSeats());
-            preparedStatement.setInt(4, order.getPrice());
-            preparedStatement.setString(5, order.getStatus().toString());
-            preparedStatement.setLong(6, id);
+            preparedStatement.setLong(2, order.getUser().getId());
+            preparedStatement.setString(3, order.getStatus().toString());
+            preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();
                 log.warn("Cannot update order information.");
@@ -228,10 +226,33 @@ public class Order_Implementation implements OrderDAO {
     }
 
     @Override
+    public List<Order> getAllUnconfirmedOrders() {
+        List<Order> orderList = new ArrayList<>();
+        Order order = new Order();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(OrderQueries.GET_ALL_UNCONFIRMED_ORDERS_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                orderList = orderShaper.shapeDataToList(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return orderList;
+    }
+
+    @Override
     public int getBookedSeatsByCruiseID(long id) {
         int result = 0;
         try (Connection connection = ConnectionPool.getConnection()) {
             preparedStatement = connection.prepareStatement(OrderQueries.GET_BOOKED_SEATS_BY_CRUISE_ID_QUERY);
+            preparedStatement.setLong(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 result =  resultSet.getInt(1);
@@ -246,6 +267,29 @@ public class Order_Implementation implements OrderDAO {
             }
         }
         return result;
+    }
+
+    @Override
+    public void confirmOrderByID(long id) {
+        try (Connection connection = ConnectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+            preparedStatement = connection.prepareStatement(OrderQueries.CONFIRM_ORDER_BY_ID);
+            preparedStatement.setLong(1,id);
+            if (preparedStatement.executeUpdate() <= 0) {
+                connection.rollback();
+                log.warn("Cannot update order information.");
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
     }
 
 }

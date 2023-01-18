@@ -1,7 +1,6 @@
 package com.example.epamfinalproject.Controllers.Commands.Common;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
-import com.example.epamfinalproject.Controllers.Commands.Common.LoginCommand;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
@@ -18,12 +17,12 @@ public class ProfileCommand implements Command {
         log.debug("Command Starts");
 
         User user = (User) request.getSession().getAttribute("user");
-        if (user.getRole().equals(UserRole.ADMINISTRATOR)){
-            log.debug("Redirect to " + UserRole.ADMINISTRATOR +" page");
+        if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
+            log.debug("Redirect to " + UserRole.ADMINISTRATOR + " page");
             log.debug("Command Finished");
             return "redirect:" + Path.ADMINISTRATOR_PAGE;
         }
-        log.debug("Redirect to " + UserRole.CLIENT +" page");
+        log.debug("Redirect to " + UserRole.CLIENT + " page");
         log.debug("Command Finished");
         return Path.CLIENT_PAGE;
 

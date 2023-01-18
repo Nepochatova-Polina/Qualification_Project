@@ -55,11 +55,11 @@ public class CreateOrderCommand implements Command {
         }
 
         orderService.createOrder(order);
-        userService.updateUserPassport(1, fileContent, size);
+        userService.updateUserPassport(user.getId(), fileContent, size);
 
         userOrders = orderService.getOrdersByUserID(order.getUser().getId());
 
-        SessionUtility.setOrdersForClient(request, user, userOrders);
+        SessionUtility.setOrders(request, userOrders);
         log.debug("Command finished");
         return "redirect:" + Path.CATALOGUE_PAGE;
     }
@@ -72,8 +72,6 @@ public class CreateOrderCommand implements Command {
         CruiseService service = new CruiseService();
         Cruise cruise = service.getCruiseByID((Long.parseLong(request.getParameter(FieldKey.ENTITY_ID))));
         order.setCruise(cruise);
-        order.setNumberOfSeats(1);
-        order.setPrice(cruise.getPrice());
         return order;
     }
 

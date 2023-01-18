@@ -31,6 +31,7 @@
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
                 <input type="hidden" name="page" value="${1}">
                 <input type="hidden" name="command" value="catalogue"/>
+                <input type="hidden" name="page-path" value="/catalogue.jsp">
             </form>
         </a>
     </div>
@@ -51,7 +52,7 @@
         </div>
     </div>
 </div>
-<form id="form" method="post" action="${pageContext.request.contextPath}/controller">
+<form id="form" method="get" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="filterCruises"/>
     <c:if test="${sessionScope.message != null}">
         <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
@@ -66,8 +67,8 @@
             <input type="date" id="end_date" name="end_date" value="0">
         </div>
         <div class="inpt durInput">
-            <label for="duration"><fmt:message key="cruise.label.duration"/></label>
-            <input type="number" value="0" id="duration" name="duration"
+            <label for="transit_time"><fmt:message key="cruise.label.duration"/></label>
+            <input type="number" value="0" id="transit_time" name="transit_time"
                    placeholder="<fmt:message key="cruise.label.duration"/>">
         </div>
         <input type="submit" class="submit-btn" value="<fmt:message key="button.search"/>">
@@ -86,6 +87,7 @@
                         <td class="pageItem">
                             <form method="post" action="${pageContext.request.contextPath}/controller">
                                 <input type="hidden" name="command" value="catalogue"/>
+                                <input type="hidden" name="page-path" value="/catalogue.jsp">
                                 <input type="hidden" name="page" value="${i}">
                                 <button type="submit">${i}</button>
                             </form>
@@ -135,5 +137,7 @@
         </div>
     </c:forEach>
 </div>
+<footer class="container-fluid">
+</footer>
 </body>
 </html>

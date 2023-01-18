@@ -18,6 +18,7 @@ public class Cruise {
     private Ship ship;
     private Route route;
     private int price;
+    private String deleted;
     LocalDate startOfTheCruise;
     LocalDate endOfTheCruise;
 

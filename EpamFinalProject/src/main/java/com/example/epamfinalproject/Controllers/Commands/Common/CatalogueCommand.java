@@ -1,12 +1,10 @@
 package com.example.epamfinalproject.Controllers.Commands.Common;
 
-import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
-import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Utility.SessionUtility;
-import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Services.CruiseService;
+import com.example.epamfinalproject.Utility.FieldKey;
+import com.example.epamfinalproject.Utility.SessionUtility;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -26,7 +24,7 @@ public class CatalogueCommand implements Command {
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        List<Cruise> cruises = cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE,(page - 1) * FieldKey.PAGE_SIZE);
+        List<Cruise> cruises = cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE, (page - 1) * FieldKey.PAGE_SIZE);
 
         SessionUtility.setCruisesParams(request, cruises);
         int pageCount = (int) Math.ceil(recordsCount * 1.0 / FieldKey.PAGE_SIZE);
@@ -34,6 +32,6 @@ public class CatalogueCommand implements Command {
         request.getSession().setAttribute("currentPage", page);
 
         log.debug("Command finished");
-        return Path.CATALOGUE_PAGE;
+        return "redirect:" + request.getParameter("page-path");
     }
 }

@@ -26,8 +26,7 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement = connection.prepareStatement(RouteQueries.CREATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
             preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getNumberOfPorts());
-            preparedStatement.setInt(4, route.getTransitTime());
+            preparedStatement.setInt(3, route.getTransitTime());
             if (preparedStatement.executeUpdate() <= 0) {
                 log.warn("Cannot create route.");
             }
@@ -50,8 +49,7 @@ public class Route_Implementation implements RouteDAO {
             preparedStatement = connection.prepareStatement(RouteQueries.UPDATE_ROUTE_QUERY);
             preparedStatement.setString(1, route.getDeparture());
             preparedStatement.setString(2, route.getDestination());
-            preparedStatement.setInt(3, route.getNumberOfPorts());
-            preparedStatement.setInt(4, route.getTransitTime());
+            preparedStatement.setInt(3, route.getTransitTime());
             preparedStatement.setLong(4, id);
             if (preparedStatement.executeUpdate() <= 0) {
                 connection.rollback();

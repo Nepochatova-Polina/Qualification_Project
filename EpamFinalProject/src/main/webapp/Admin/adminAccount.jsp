@@ -30,6 +30,7 @@
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
                 <input type="hidden" name="command" value="catalogue"/>
+                <input type="hidden" name="page-path" value="/catalogue.jsp">
             </form>
         </a>
     </div>
@@ -54,7 +55,7 @@
     <div class="user col-sm-2">
         <div class="user_info row">
             <c:set var="user" scope="session" value="${sessionScope.user}"/>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <p><h5><strong><fmt:message key="user.label.login"/>:</strong></h5>
                 <c:out value="${user.login}"/>
             </div>
@@ -72,76 +73,41 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-8 commands container-fluid">
-        <div class="text-center">
-            <h2>SERVICES</h2>
-            <h3 class="text-left"><strong><fmt:message key="admin.label.create"/></strong></h3>
-            <br>
-            <div class="row">
-                <a class="col-sm-3" href="createCruise.jsp">
-                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.create.cruise"/></p>
-                </a>
-                <a class="col-sm-3" href="createRoute.jsp">
-                    <h5><strong><fmt:message key="admin.entity.label.route"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.create.route"/></p>
-                </a>
-                <a class="col-sm-3" href="createShip.jsp">
-                    <h5><strong><fmt:message key="admin.entity.label.ship"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.create.ship"/></p>
-                </a>
-                <a class="col-sm-3" href="createStaff.jsp">
-                    <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.create.staff"/></p>
-                </a>
-            </div>
-            <br>
-            <h3 class="text-left"><strong><fmt:message key="admin.label.edit"/></strong></h3>
-            <br>
-            <div class="row">
-                <a class="col-sm-3" href="#">
-                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.edit.cruise"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <h5><strong><fmt:message key="admin.entity.label.route"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.edit.route"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <h5><strong><fmt:message key="admin.entity.label.ship"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.edit.ship"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.edit.staff"/></p>
-                </a>
-            </div>
-            <br>
-            <br>
-            <h3 class="text-left"><strong><fmt:message key="admin.label.delete"/></strong></h3>
-            <br>
-            <div class="row">
-                <a class="col-sm-3" href="#">
-                    <input type="hidden" name="command" value="deleteCruise"/>
-                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.delete.cruise"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <input type="hidden" name="command" value="deleteRoute"/>
-                    <h5><strong><fmt:message key="admin.entity.label.route"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.delete.route"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <input type="hidden" name="command" value="deleteShip"/>
-                    <h5><strong><fmt:message key="admin.entity.label.ship"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.delete.ship"/></p>
-                </a>
-                <a class="col-sm-3" href="#">
-                    <input type="hidden" name="command" value="deleteStaff"/>
-                    <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
-                    <p><fmt:message key="admin.description.label.delete.staff"/></p>
-                </a>
-            </div>
+    <div class="col-sm-7 commands container-fluid">
+        <c:if test="${sessionScope.message != null}">
+            <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
+        </c:if>
+        <h2 class="text-center"><fmt:message key="admin.services"/></h2>
+        <br>
+        <br>
+        <div class="text-center row">
+            <a class="col-sm-3" href="Create/createCruise.jsp">
+                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                <p><fmt:message key="admin.description.label.create.cruise"/></p>
+            </a>
+            <a class="col-sm-3" href="Create/createStaff.jsp">
+                <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
+                <p><fmt:message key="admin.description.label.create.staff"/></p>
+            </a>
+            <a class="col-sm-3" href="Edit/displayCruises.jsp">
+                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                <p><fmt:message key="admin.description.label.edit.cruise"/></p>
+            </a>
+            <%--
+            <%--                <a class="col-sm-3" href="#">--%>
+            <%--                    <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>--%>
+            <%--                    <p><fmt:message key="admin.description.label.edit.staff"/></p>--%>
+            <%--                </a>--%>
+            <a class="col-sm-3" href="Delete/deleteCruise.jsp">
+                <input type="hidden" name="command" value="deleteCruise"/>
+                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                <p><fmt:message key="admin.description.label.delete.cruise"/></p>
+            </a>
+            <a class="col-sm-3" href="confirmOrder.jsp">
+                <input type="hidden" name="command" value="confirmOrder"/>
+                <h5><strong><fmt:message key="admin.entity.label.order"/></strong></h5>
+                <p><fmt:message key="admin.description.label.confirm.order"/></p>
+            </a>
         </div>
     </div>
 </div>

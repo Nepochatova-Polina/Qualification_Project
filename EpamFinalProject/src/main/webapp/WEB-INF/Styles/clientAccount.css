@@ -1,18 +1,21 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: #F3D3B8 !important;
 }
 
 .orders {
+    display: flex;
+    flex-direction: row;
 }
 
 .user {
-    border: 2px solid rgba(245, 202, 186, 0.75);
-    background-color: rgba(239, 165, 135, 0.75);
+    border: 2px solid #A5C3CF;
+    background-color: #A5C3CF;
     /*margin: 30px;*/
     margin-left: 30px;
     margin-top: 30px;
-    height: 280px;
+    /*height: 350px;*/
     border-radius: 20px;
 }
 
@@ -21,13 +24,17 @@ body {
 }
 
 .user_info {
-    padding: 30px;
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
 }
 
 .logout-btn {
     border-radius: 50px;
     width: 100px;
-    background-color: rgba(231, 144, 110, 0.87) !important;
+    background-color: rgba(224, 223, 213, 0.87) !important;
+    color: black !important;
 }
 
 .logout-btn:active {
@@ -38,18 +45,23 @@ body {
 
 .card {
     display: flex;
-    margin: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
     text-align: center;
-    max-width: 400px;
-    border-radius: 52px !important;
-    border: 3px solid #7e9dab !important;
+    max-width: 340px !important;
+    min-width: 340px !important;
+    border-radius: 50px !important;
 }
 
 .card-header {
     background-color: #A5C3CF !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     text-align: center;
     font-size: 23px !important;
     padding: 30px !important;
+    min-height: 130px;
     border-radius: 50px 50px 0 0 !important;
 }
 

@@ -1,11 +1,12 @@
 package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.*;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.ConfirmOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.*;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteRouteCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteShipCommand;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteStaffCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.DisplayCruiseFormCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.EditCruiseCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @WebServlet(name = "controller", value = "/controller")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        fileSizeThreshold = 1024 * 1024, // 1 MB
         maxFileSize = 1024 * 1024 * 10,      // 10 MB
         maxRequestSize = 1024 * 1024 * 100   // 100 MB
 )
@@ -52,17 +53,15 @@ public class Controller extends HttpServlet {
         commands.put("displayOrderForm", new DisplayOrderFormCommand());
 
         commands.put("createOrder", new CreateOrderCommand());
+        commands.put("confirmOrder", new ConfirmOrderCommand());
         commands.put("createCruise", new CreateCruiseCommand());
-        commands.put("createRoute", new CreateRouteCommand());
         commands.put("createStaff", new CreateStaffCommand());
-        commands.put("createShip", new CreateShipCommand());
 
         commands.put("deleteCruise", new DeleteCruiseCommand());
-        commands.put("deleteRoute", new DeleteRouteCommand());
         commands.put("deleteStaff", new DeleteStaffCommand());
-        commands.put("deleteShip", new DeleteShipCommand());
 
-        commands.put("filterShips", new FilterShipsCommand());
+        commands.put("editCruise", new EditCruiseCommand());
+        commands.put("displayCruiseForm", new DisplayCruiseFormCommand());
 
         commands.put("changeLocale", new ChangeLocaleCommand());
 

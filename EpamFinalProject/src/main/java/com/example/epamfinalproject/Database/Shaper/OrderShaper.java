@@ -29,8 +29,6 @@ public class OrderShaper implements DataShaper<Order> {
         order.setId(resultSet.getLong(FieldKey.ENTITY_ID));
         order.setCruise(cruise);
         order.setUser(userShaper(resultSet));
-        order.setNumberOfSeats(resultSet.getInt(FieldKey.ORDER_SEATS));
-        order.setPrice(resultSet.getInt(FieldKey.ORDER_TOTAL_PRICE));
         order.setStatus(Status.fromString(resultSet.getString(FieldKey.ORDER_STATUS)));
         return order;
     }
@@ -50,8 +48,6 @@ public class OrderShaper implements DataShaper<Order> {
             cruise.setId(resultSet.getLong(FieldKey.ORDER_CRUISE_ID));
             order.setCruise(cruise);
             order.setUser(userShaper(resultSet));
-            order.setNumberOfSeats(resultSet.getInt(FieldKey.ORDER_SEATS));
-            order.setPrice(resultSet.getInt(FieldKey.ORDER_TOTAL_PRICE));
             order.setStatus(Status.fromString(resultSet.getString(FieldKey.ORDER_STATUS)));
             orderList.add(order);
         }

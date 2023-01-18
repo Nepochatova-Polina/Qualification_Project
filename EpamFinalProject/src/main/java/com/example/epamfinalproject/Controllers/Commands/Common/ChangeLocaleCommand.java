@@ -15,6 +15,6 @@ public class ChangeLocaleCommand implements Command {
 
         request.getSession().setAttribute("locale", request.getParameter("locale").equals("en") ? "en" : "ua");
         log.debug("Command finished");
-        return "redirect:"+request.getParameter("page-path");
+        return "redirect:" + request.getParameter("page-path");
     }
 }

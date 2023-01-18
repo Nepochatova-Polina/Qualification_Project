@@ -30,6 +30,7 @@
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
                 <input type="hidden" name="command" value="catalogue"/>
+                <input type="hidden" name="page-path" value="/catalogue.jsp">
             </form>
         </a>
     </div>
@@ -50,68 +51,73 @@
         </div>
     </div>
 </div>
-<div class="container row">
-    <div class="user col-sm-4">
+<div class="container-fluid">
+    <div class="user">
         <div class="user_info row">
             <c:set var="user" scope="session" value="${sessionScope.user}"/>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <p><h5><strong><fmt:message key="user.label.login"/>:</strong></h5>
                 <c:out value="${user.login}"/>
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-3">
                 <p><h5><strong><fmt:message key="user.label.firstName"/>:</strong></h5>
                 <c:out value="${user.firstName}"/>
+            </div>
+            <div class="col-sm-3">
                 <p><h5><strong><fmt:message key="user.label.lastName"/>:</strong></h5>
                 <c:out value="${user.lastName}"/>
             </div>
-        </div>
-        <div>
-            <form id="logout" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
-            <input type="submit" class="btn col logout-btn" value="<fmt:message key="button.logout"/>">
-            <input type="hidden" name="command" value="logout"/>
-            </form>
-        </div>
-    </div>
-    <div class="orders col-sm-7">
-        <c:forEach var="order" items="${sessionScope.orders}">
-            <div class="card">
-                <div class="card-header">
-                    <p><c:out value="${order.cruise.name}"/>
-                </div>
-                <form class="card-body text-center">
-                    <div class="card-text text-center">
-                        <p><fmt:message key="cruise.label.ship.name"/>:
-                                <c:out value="${order.cruise.ship.name}"/>
-                        <div class="row" style="text-align: center">
-                            <h5><strong><fmt:message key="cruise.label.departure"/></strong></h5>
-                            <p> --> </p>
-                            <h5><strong><fmt:message key="cruise.label.destination"/></strong></h5>
-                        </div>
-                        <div class="row text-center">
-                            <h6><c:out value="${order.cruise.route.destination}"/></h6>
-                            <p> --> </p>
-                            <h6><c:out value="${order.cruise.route.departure}"/></h6>
-                        </div>
-                        <div class="row" style="text-align: center">
-                            <h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5>
-                            <p> --> </p>
-                            <h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5>
-                        </div>
-                        <div class="row text-center">
-                            <h6><c:out value="${order.cruise.startOfTheCruise}"/></h6>
-                            <p> --> </p>
-                            <h6><c:out value="${order.cruise.endOfTheCruise}"/></h6>
-                        </div>
-                        <p><fmt:message key="cruise.label.price"/>:
-                                <c:out value="${order.cruise.price}$"/>
-                    </div>
-                    <div class="card-footer">
-                        <p><fmt:message key="order.label.status"/>:
-                                <c:out value="${order.status}"/>
-                    </div>
+            <div style="display: flex;align-items: flex-end;">
+                <form id="logout" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
+                    <input type="submit" class="btn col logout-btn" value="<fmt:message key="button.logout"/>">
+                    <input type="hidden" name="command" value="logout"/>
                 </form>
             </div>
-        </c:forEach>
+        </div>
+    </div>
+    <div class="card-group container-fluid col-sm-10">
+        <div class="row">
+            <c:forEach var="order" items="${sessionScope.orders}">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><strong><c:out value="${order.cruise.name}"/></strong></h3>
+                    </div>
+                    <form class="card-body text-center" method="post"
+                          action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="command" value="displayOrderForm"/>
+                        <input type="hidden" name="id" value="${order.cruise.id}">
+                        <div class="card-text">
+                            <h4><strong><fmt:message key="cruise.label.ship.name"/></strong>
+                            </h4><h5><c:out value="${order.cruise.ship.name}"/></h5>
+                            <div class="row text-center">
+                                <h4><strong><fmt:message key="cruise.label.departure"/></strong></h4>
+                                <p> --> </p>
+                                <h4><strong><fmt:message key="cruise.label.destination"/></strong></h4>
+                            </div>
+                            <div class="row text-center">
+                                <h5><c:out value="${order.cruise.route.destination}"/></h5>
+                                <p> --> </p>
+                                <h5><c:out value="${order.cruise.route.departure}"/></h5>
+                            </div>
+                            <div class="row" style="text-align: center">
+                                <h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5>
+                                <p> --> </p>
+                                <h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5>
+                            </div>
+                            <div class="row text-center">
+                                <h6><c:out value="${order.cruise.startOfTheCruise}"/></h6>
+                                <p> --> </p>
+                                <h6><c:out value="${order.cruise.endOfTheCruise}"/></h6>
+                            </div>
+                            <div class="card-footer">
+                                <p><strong><fmt:message key="order.label.status"/></strong>:
+                                        <c:out value="${order.status}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </div>
 </body>

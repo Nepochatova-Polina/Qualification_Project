@@ -29,6 +29,11 @@ public class ShipService {
         return shipDAO.getShipByID(id);
     }
 
+    public Ship getShipByName(String name) {
+        ShipDAO shipDAO = new Ship_Implementation();
+        return shipDAO.getShipByName(name);
+    }
+
     public List<Ship> getAllShips() {
         ShipDAO shipDAO = new Ship_Implementation();
         return shipDAO.getAllShips();

@@ -30,6 +30,7 @@
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
                 <input type="hidden" name="command" value="catalogue"/>
+                <input type="hidden" name="page-path" value="/catalogue.jsp">
             </form>
         </a>
     </div>
@@ -54,14 +55,14 @@
     <img src="banner.jpg" class="banner" alt="Snow">
     <div class="centered">
         <h1><fmt:message key="home.slogan"/></h1>
+        <c:if test="${sessionScope.message != null}">
+            <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
+        </c:if>
         <div class="buttons">
             <a href="login.jsp" class="log-button"><fmt:message key="button.login"/></a>
             <a href="signUp.jsp" class="log-button" style="margin-top: 5px;"><fmt:message key="button.signUp"/></a>
         </div>
     </div>
 </div>
-
-<a href="multiPartServlet">Hello Servlet</a>
-
 </body>
 </html>

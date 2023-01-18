@@ -16,6 +16,7 @@ public final class MessageKeys {
     public static final String SIGN_UP_CONFIRMATION_FAILED = "message.signUp.confirmation.failed";
 
     public static final String ORDER_ALREADY_CREATED = "message.order.already.created";
+    public static final String ORDER_CONFIRMATION_ERROR = "message.order.confirmation.error ";
 
     public static final String SHIP_INVALID = "message.ship.invalid";
     public static final String ROUTE_INVALID = "message.route.invalid";

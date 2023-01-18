@@ -38,11 +38,8 @@ public class HelloServlet extends HttpServlet {
         Ship_Implementation si = new Ship_Implementation();
         Route_Implementation ri = new Route_Implementation();
 
-       List<Ship> ships =  si.getShipsByDates(LocalDate.of(2023,06,06),LocalDate.of(2023,06,07));
-        List<Ship> shipList = si.getAllShips();
-       boolean r =  shipList.removeAll(ships);
-        System.out.println(shipList);
-        System.out.println(r);
+        request.getSession().setAttribute("ships", si.getAllShips());
+        request.getSession().setAttribute("cruises", ci.getActualCruises());
 //        si.registerShip(new Ship("Saint Maria",50));
 //        ri.createRoute(new Route("Amariti","Amariti",2,1));
 //        ci.createCruise(new Cruise(si.getShipByID(3),ri.getRouteByID(5),"Amariti Blue",49,LocalDate.parse("2023-06-02"),LocalDate.parse("2023-06-03")));

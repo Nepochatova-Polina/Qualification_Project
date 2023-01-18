@@ -24,8 +24,9 @@ public class CruiseShaper implements DataShaper<Cruise> {
         Ship ship;
         Route route;
         cruise.setId(resultSet.getLong(FieldKey.ENTITY_ID));
-        cruise.setPrice(resultSet.getInt(FieldKey.CRUISE_PRICE));
         cruise.setName(resultSet.getString(FieldKey.CRUISE_NAME));
+        cruise.setPrice(resultSet.getInt(FieldKey.CRUISE_PRICE));
+        cruise.setDeleted(resultSet.getString(FieldKey.CRUISE_DELETED));
         cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.CRUISE_LEAVING)));
         cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.CRUISE_ARRIVING))));
 
@@ -54,8 +55,9 @@ public class CruiseShaper implements DataShaper<Cruise> {
         while (resultSet.next()) {
            Cruise cruise = new Cruise();
             cruise.setId(resultSet.getLong(FieldKey.ENTITY_ID));
-            cruise.setPrice(resultSet.getInt(FieldKey.CRUISE_PRICE));
             cruise.setName(resultSet.getString(FieldKey.CRUISE_NAME));
+            cruise.setPrice(resultSet.getInt(FieldKey.CRUISE_PRICE));
+            cruise.setDeleted(resultSet.getString(FieldKey.CRUISE_DELETED));
             cruise.setStartOfTheCruise(LocalDate.parse(resultSet.getString(FieldKey.CRUISE_LEAVING)));
             cruise.setEndOfTheCruise((LocalDate.parse(resultSet.getString(FieldKey.CRUISE_ARRIVING))));
 
@@ -99,7 +101,6 @@ public class CruiseShaper implements DataShaper<Cruise> {
         route.setId(resultSet.getInt(FieldKey.CRUISE_ROUTE_ID));
         route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
         route.setDestination(resultSet.getString(FieldKey.DESTINATION));
-        route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
         route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
         return route;
     }

@@ -1,6 +1,7 @@
+<%@ page import="java.time.LocalDate" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
@@ -25,11 +26,12 @@
                 <input type="hidden" name="command" value="profile"/>
             </form>
         </a>
-        <a class="active" href="index.jsp"><fmt:message key="navbar.home"/></a>
+        <a class="active" href="../../index.jsp"><fmt:message key="navbar.home"/></a>
         <a>
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
                 <input type="hidden" name="command" value="catalogue"/>
+                <input type="hidden" name="page-path" value="/catalogue.jsp">
             </form>
         </a>
     </div>
@@ -37,73 +39,25 @@
         <div id="locale-changer" class="form-control">
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/index.jsp">
+                <input type="hidden" name="page-path" value="/Admin/Create/createCruise.jsp">
                 <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale"
                        value="ua">
             </form>
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/index.jsp">
+                <input type="hidden" name="page-path" value="/Admin/Create/createCruise.jsp">
                 <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale"
                        value="en">
             </form>
         </div>
     </div>
 </div>
-<div class="row main">
-    <div class="container col-sm-3">
-        <h3><strong><fmt:message key="admin.entity.label.route"/> </strong></h3>
-        <table>
-            <tr>
-                <td>
-                    <h5><strong><fmt:message key="label.id"/></strong></h5>
-                </td>
-                <td>
-                    <h5><strong><fmt:message key="route.label.departure"/></strong></h5>
-                </td>
-                <td>
-                    <h5><strong><fmt:message key="route.label.destination"/></strong></h5>
-                </td>
-            </tr>
-            <c:forEach var="route" items="${sessionScope.routes}">
-                <tr>
-                    <td><c:out value="${route.id}"/></td>
-                    <td><c:out value="${route.departure}"/></td>
-                    <td><c:out value="${route.destination}"/></td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-    <div class="col-sm-5">
-        <form id="dates-from" class="row" method="post" action="${pageContext.request.contextPath}/controller">
-            <input type="hidden" name="command" value="filterShips"/>
-            <div class="form-group col-sm-3">
-                <label for="start_date"><fmt:message key="cruise.label.leaving.date"/></label>
-                <input
-                        type="date"
-                        name="start_date"
-                        id="start_date"
-                        required
-                        class="form-control col">
-            </div>
-            <div class="form-group col-sm-3">
-                <label for="end_date"><fmt:message key="cruise.label.arriving.date"/></label>
-                <input
-                        type="date"
-                        name="end_date"
-                        id="end_date"
-                        required
-                        class="form-control col">
-            </div>
-            <input type="submit" id="date-submit" value="<fmt:message key="button.search"/>"
-                   style="height: 40px; margin-top: 18px; border-radius: 20px">
-        </form>
-
+    <div class="container">
         <div class="card  mx-auto">
             <article class="card-body mx-auto" style="max-width: 400px;">
                 <h3 class="card-title mt-3 text-center"><fmt:message key="form.header"/></h3>
                 <br>
-                <form id="cruise-form" method="post" action="${pageContext.request.contextPath}/controller">
+                <form id="cruise-form" method="get" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="command" value="createCruise"/>
                     <c:if test="${sessionScope.message != null}">
                         <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
@@ -119,31 +73,54 @@
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="ship_id"><fmt:message key="cruise.label.ship.id"/></label>
+                        <label for="ship_name"><fmt:message key="cruise.label.ship.name"/></label>
                         <input
-                                type="number"
-                                name="ship_id"
-                                id="ship_id"
-                                placeholder="<fmt:message key="cruise.placeholder.ship.id"/>"
+                                type="text"
+                                name="ship_name"
+                                id="ship_name"
+                                placeholder="<fmt:message key="cruise.placeholder.name"/>"
                                 required
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="route_id"><fmt:message key="cruise.label.route.id"/></label>
+                        <label for="passenger_capacity"><fmt:message key="ship.label.capacity"/></label>
                         <input
                                 type="number"
-                                name="route_id"
-                                id="route_id"
-                                placeholder="<fmt:message key="cruise.placeholder.route.id"/>"
+                                name="passenger_capacity"
+                                id="passenger_capacity"
+                                placeholder="<fmt:message key="ship.placeholder.capacity"/>"
                                 required
                                 class="form-control col">
                     </div>
+
+                    <div class="form-group">
+                        <label for="departure"><fmt:message key="route.label.departure"/></label>
+                        <input
+                                type="text"
+                                name="departure"
+                                id="departure"
+                                placeholder="<fmt:message key="route.placeholder.departure"/>"
+                                required
+                                class="form-control col">
+                    </div>
+                    <div class="form-group">
+                        <label for="destination"><fmt:message key="route.label.destination"/></label>
+                        <input
+                                type="text"
+                                name="destination"
+                                id="destination"
+                                placeholder="<fmt:message key="route.placeholder.destination"/>"
+                                required
+                                class="form-control col">
+                    </div>
+                    <% LocalDate date = LocalDate.now();%>
                     <div class="form-group">
                         <label for="start_date"><fmt:message key="cruise.label.leaving.date"/></label>
                         <input
                                 type="date"
                                 name="start_date"
                                 id="start_date"
+                                min= "<%=date%>"
                                 required
                                 class="form-control col">
                     </div>
@@ -153,6 +130,7 @@
                                 type="date"
                                 name="end_date"
                                 id="end_date"
+                                min= "<%=date%>"
                                 required
                                 class="form-control col">
                     </div>
@@ -162,17 +140,17 @@
                                 type="number"
                                 name="price"
                                 id="price"
-                                placeholder="<fmt:message key="cruise.label.price"/>$"
+                                placeholder="<fmt:message key="cruise.placeholder.price"/>$"
                                 required
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="duration"><fmt:message key="cruise.label.duration"/></label>
+                        <label for="transit_time"><fmt:message key="route.label.transitTime"/></label>
                         <input
                                 type="number"
-                                name="duration"
-                                id="duration"
-                                placeholder="<fmt:message key="cruise.label.duration"/>"
+                                name="transit_time"
+                                id="transit_time"
+                                placeholder="<fmt:message key="route.placeholder.transitTime"/>"
                                 required
                                 class="form-control col">
                     </div>
@@ -182,38 +160,11 @@
                     </div>
                     <p class="text-center">
                         <fmt:message key="form.label.back"/>
-                        <a href="adminAccount.jsp" style="color: green"><fmt:message key="button.back"/></a>
+                        <a href="../adminAccount.jsp" style="color: green"><fmt:message key="button.back"/></a>
                     </p>
                 </form>
             </article>
         </div>
     </div>
-    <div class="container col-sm-3">
-        <h3><strong><fmt:message key="admin.entity.label.ship"/> </strong></h3>
-        <c:if test="${sessionScope.shipMmessage != null}">
-            <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.shipMessage}"/></h5>
-        </c:if>
-        <table>
-            <tr>
-                <td>
-                    <h4><strong><fmt:message key="label.id"/></strong></h4>
-                </td>
-                <td>
-                    <h4><strong><fmt:message key="ship.label.name"/></strong></h4>
-                </td>
-                <td>
-                    <h4><strong><fmt:message key="ship.label.capacity"/></strong></h4>
-                </td>
-            </tr>
-            <c:forEach var="ship" items="${sessionScope.ships}">
-                <tr>
-                    <td><h5><c:out value="${ship.id}"/></h5></td>
-                    <td><h5><c:out value="${ship.name}"/></h5></td>
-                    <td><h5><c:out value="${ship.passengerCapacity}"/></h5></td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-</div>
 </body>
 </html>

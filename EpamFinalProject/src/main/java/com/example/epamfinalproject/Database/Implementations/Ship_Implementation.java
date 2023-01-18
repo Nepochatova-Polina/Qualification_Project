@@ -62,6 +62,28 @@ public class Ship_Implementation implements ShipDAO {
     }
 
     @Override
+    public Ship getShipByName(String name) {
+        Ship ship = new Ship();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIP_BY_NAME_QUERY);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                ship = shipShaper.shapeData(resultSet);
+            }
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return ship;
+    }
+
+    @Override
     public List<Ship> getAllShips() {
         List<Ship> shipList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {

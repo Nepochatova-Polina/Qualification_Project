@@ -25,7 +25,7 @@
                 <input type="hidden" name="command" value="profile"/>
             </form>
         </a>
-        <a class="active" href="../index.jsp"><fmt:message key="navbar.home"/></a>
+        <a class="active" href="../../index.jsp"><fmt:message key="navbar.home"/></a>
         <a>
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
@@ -37,13 +37,13 @@
         <div id="locale-changer" class="form-control">
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="Admin/createShip.jsp">
+                <input type="hidden" name="page-path" value="/Admin/Create/createStaff.jsp">
                 <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale"
                        value="ua">
             </form>
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="Admin/createShip.jsp">
+                <input type="hidden" name="page-path" value="/Admin/Create/createStaff.jsp">
                 <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale"
                        value="en">
             </form>
@@ -83,7 +83,7 @@
                                 class="form-control col">
                     </div>
                     <div class="form-group">
-                        <label for="ship_id"><fmt:message key="label.id"/></label>
+                        <label for="ship_id"><fmt:message key="cruise.label.ship.id"/></label>
                         <input
                                 type="number"
                                 name="ship_id"
@@ -98,7 +98,7 @@
                     </div>
                     <p class="text-center">
                         <fmt:message key="form.label.back"/>
-                        <a href="adminAccount.jsp" style="color: green"><fmt:message key="button.back"/></a>
+                        <a href="../adminAccount.jsp" style="color: green"><fmt:message key="button.back"/></a>
                     </p>
                 </form>
             </article>

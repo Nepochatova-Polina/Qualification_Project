@@ -15,6 +15,8 @@ public interface ShipDAO {
 
     Ship getShipByID(long id);
 
+    Ship getShipByName(String name);
+
     List<Ship> getAllShips();
 
     List<Ship> getShipsByDates(LocalDate start, LocalDate end);

@@ -20,7 +20,6 @@ public class RouteShaper implements DataShaper<Route> {
         route.setId(resultSet.getInt(FieldKey.ENTITY_ID));
         route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
         route.setDestination(resultSet.getString(FieldKey.DESTINATION));
-        route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
         route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
         return route;
     }
@@ -38,7 +37,6 @@ public class RouteShaper implements DataShaper<Route> {
             route.setId(resultSet.getInt(FieldKey.ENTITY_ID));
             route.setDeparture(resultSet.getString(FieldKey.DEPARTURE));
             route.setDestination(resultSet.getString(FieldKey.DESTINATION));
-            route.setNumberOfPorts(resultSet.getInt(FieldKey.NUMBER_OF_PORTS));
             route.setTransitTime(resultSet.getInt(FieldKey.TRANSIT_TIME));
             routeList.add(route);
         }

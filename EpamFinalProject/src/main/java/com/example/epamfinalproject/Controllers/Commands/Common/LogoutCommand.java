@@ -23,7 +23,7 @@ public class LogoutCommand implements Command {
         //remove current user from logged list
         ServletContext context = request.getServletContext();
         HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
-        if(session != null) {
+        if (session != null) {
             loggedUsers.remove(((User) session.getAttribute("user")).getLogin());
             context.setAttribute("loggedUsers", loggedUsers);
             session.invalidate();

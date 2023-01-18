@@ -79,12 +79,12 @@ public class SessionUtility {
      * Sets Session parameters after creating new Ship
      *
      * @param request
-     * @param ships   all ships of the Company
+     * @param cruise   The Cruise selected by the administrator for editing
      */
-    static public void setShipsParams(HttpServletRequest request, List<Ship> ships) {
+    static public void setCruiseParamsForAdmin(HttpServletRequest request, Cruise cruise) {
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
-        session.setAttribute("ships", ships);
+        session.setAttribute("cruise", cruise);
     }
 
     /**
@@ -98,19 +98,6 @@ public class SessionUtility {
         ServletContext context = request.getServletContext();
         session.setAttribute("staff", staff);
     }
-
-    /**
-     * Sets Session parameter after creating new Route
-     *
-     * @param request
-     * @param routes  all routes of the Company
-     */
-    static public void setRouteParams(HttpServletRequest request, List<Route> routes) {
-        HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
-        session.setAttribute("routes", routes);
-    }
-
     /**
      * Set information about the Cruise that the user has chosen
      *
@@ -125,15 +112,13 @@ public class SessionUtility {
     }
 
     /**
-     * Sets ORDER with it status after CLIENT created one
+     * Sets ORDER with it status after CLIENT created one or after ADMINISTRATOR confirm one
      *
      * @param request
-     * @param user    Client info
-     * @param orders  all User's orders
+     * @param orders  list of orders
      */
-    static public void setOrdersForClient(HttpServletRequest request, User user, List<Order> orders) {
+    static public void setOrders(HttpServletRequest request, List<Order> orders) {
         HttpSession session = request.getSession();
-        session.setAttribute("user", user);
         session.setAttribute("orders", orders);
     }
 

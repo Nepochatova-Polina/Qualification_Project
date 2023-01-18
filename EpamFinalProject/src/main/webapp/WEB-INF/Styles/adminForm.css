@@ -4,8 +4,10 @@ body {
     background-color: #D6C6B9 !important;
 }
 table, td{
+    margin-top: 20px;
     border: 2px solid black;
-    background-color: white;
+    background-color: #efe1c4;
+    text-align: center;
 }
 td h4, h5{
     padding: 10px !important;

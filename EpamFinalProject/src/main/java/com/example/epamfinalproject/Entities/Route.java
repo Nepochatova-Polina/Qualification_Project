@@ -13,7 +13,6 @@ public class Route {
     private long id;
     private String departure;
     private String destination;
-    private int numberOfPorts;
     private int transitTime;
 
     /**
@@ -21,13 +20,11 @@ public class Route {
      *
      * @param departure      Place, where cruise started
      * @param destination    Final port
-     * @param numberOfPorts  Number of visited ports
      * @param transitTime    Total time on the ship's board
      */
-    public Route(String departure, String destination, int numberOfPorts, int transitTime) {
+    public Route(String departure, String destination, int transitTime) {
         this.departure = departure;
         this.destination = destination;
-        this.numberOfPorts = numberOfPorts;
         this.transitTime = transitTime;
     }
 }

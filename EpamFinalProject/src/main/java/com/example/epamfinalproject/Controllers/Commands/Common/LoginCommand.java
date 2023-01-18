@@ -3,14 +3,14 @@ package com.example.epamfinalproject.Controllers.Commands.Common;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Utility.SessionUtility;
-import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.Order;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.*;
 import com.example.epamfinalproject.Utility.Encryptor;
+import com.example.epamfinalproject.Utility.FieldKey;
+import com.example.epamfinalproject.Utility.SessionUtility;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -30,7 +30,7 @@ public class LoginCommand implements Command {
         if (login == null || login.equals("")) {
             request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);
             log.trace("Invalid User parameters");
-            return Path.LOGIN_PAGE;
+            return "redirect:" + Path.LOGIN_PAGE;
         }
 
         UserService userService = new UserService();
@@ -51,14 +51,14 @@ public class LoginCommand implements Command {
                 SessionUtility.setParamsForAdmin(request, user,
                         userService.getClientUsers(),
                         cruiseService.getActualCruises(),
-                        orderService.getAllOrders(),
+                        orderService.getAllUnconfirmedOrders(),
                         staffService.getAllStaff(),
                         shipService.getAllShips(),
                         routeService.getAllRoutes());
 
                 log.debug("Logging in as ADMINISTRATOR");
                 log.debug("Command finished");
-                return Path.ADMINISTRATOR_PAGE;
+                return "redirect:" + Path.ADMINISTRATOR_PAGE;
             } else {
                 log.debug("Logging in as USER");
                 log.debug("Command Finished");
@@ -66,14 +66,14 @@ public class LoginCommand implements Command {
                 String preCommand = (String) request.getSession().getAttribute("preCommand");
                 if (preCommand != null && preCommand.equals("displayOrderForm")) {
                     updateSession(request, user);
-                    return Path.ORDER_PAGE;
+                    return "redirect:" + Path.ORDER_PAGE;
                 }
 
 
-                SessionUtility.setParamsForClient(request,user,
-                        cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE,0),
+                SessionUtility.setParamsForClient(request, user,
+                        cruiseService.getActualCruisesForPage(FieldKey.PAGE_SIZE, 0),
                         orderService.getOrdersByUserID(user.getId()));
-                return Path.CLIENT_PAGE;
+                return "redirect:" + Path.CLIENT_PAGE;
             }
         } else {
             request.getSession().setAttribute("message", MessageKeys.LOGIN_INVALID);
@@ -89,8 +89,9 @@ public class LoginCommand implements Command {
 
     /**
      * Updating data in session, set User data, selected Cruise data, availability for this cruise and all User's orders.
+     *
      * @param request
-     * @param user logged user
+     * @param user    logged user
      */
     private void updateSession(HttpServletRequest request, User user) {
         OrderService orderService = new OrderService();

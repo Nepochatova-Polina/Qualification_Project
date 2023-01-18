@@ -6,7 +6,7 @@ package com.example.epamfinalproject.Utility;
  */
 public class FieldKey {
     //    Static Final Values
-    public static final int PAGE_SIZE = 4;
+    public static final int PAGE_SIZE = 6;
 
     //User and Staff table fields
     public static final String ENTITY_ID = "id";
@@ -28,14 +28,11 @@ public class FieldKey {
     //Route table fields
     public static final String DEPARTURE = "departure";
     public static final String DESTINATION = "destination";
-    public static final String NUMBER_OF_PORTS = "number_of_ports";
     public static final String TRANSIT_TIME = "transit_time";
 
     //Order table fields
     public static final String ORDER_CRUISE_ID = "cruise_id";
     public static final String ORDER_USER_ID = "user_id";
-    public static final String ORDER_SEATS = "number_of_seats";
-    public static final String ORDER_TOTAL_PRICE = "price";
     public static final String ORDER_STATUS = "status";
 
 
@@ -43,9 +40,10 @@ public class FieldKey {
     public static final String CRUISE_SHIP_ID = "ship_id";
     public static final String CRUISE_ROUTE_ID = "route_id";
     public static final String CRUISE_NAME = "cruise_name";
+    public static final String CRUISE_SHIP_NAME = "ship_name";
     public static final String CRUISE_PRICE = "price";
+    public static final String CRUISE_DELETED = "deleted";
     public static final String CRUISE_LEAVING = "start_date";
     public static final String CRUISE_ARRIVING = "end_date";
-    public static final String CRUISE_DURATION = "duration";
 
 }

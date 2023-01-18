@@ -39,13 +39,13 @@
         <hr style="background-color: aliceblue">
         <form id="order-form" method="post" action="${pageContext.request.contextPath}/controller"
               enctype='multipart/form-data'>
+        <input type="hidden" name="command" value="createOrder"/>
 
             <div class="row">
                 <div class="card mx-auto col-sm-6" style="margin-right: 10px! important">
                     <article class="card-body mx-auto">
                         <h3 class="card-title mt-3 text-center"><fmt:message key="order.label.header"/></h3>
                         <br>
-                        <input type="hidden" name="command" value="createOrder"/>
                         <div id="info">
                             <c:set var="cruise" scope="session" value="${sessionScope.cruise}"/>
                             <input type="hidden" name="id" value="<c:out value="${cruise.id}"/>">
