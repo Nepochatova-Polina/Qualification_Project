@@ -28,7 +28,7 @@
                 <input type="hidden" name="command" value="profile"/>
             </form>
         </a>
-        <a class="active" href="../../index.jsp"><fmt:message key="navbar.home"/></a>
+        <a class="active" href="../index.jsp"><fmt:message key="navbar.home"/></a>
         <a>
             <form id="catalog" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
                 <input type="submit" class="btn col" value="<fmt:message key="button.cruises.catalogue"/>">
@@ -41,13 +41,13 @@
         <div id="locale-changer" class="form-control">
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/Create/displayCruises.jsp">
+                <input type="hidden" name="page-path" value="/Admin/displayCruises.jsp">
                 <input class="btn" style="background: lightgray; width: 50px" type="submit" name="locale"
                        value="ua">
             </form>
             <form method="post" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="changeLocale">
-                <input type="hidden" name="page-path" value="/Admin/Edit/displayCruises.jsp">
+                <input type="hidden" name="page-path" value="/Admin/displayCruises.jsp">
                 <input class="btn" style="background: lightgray; width: 50px;" type="submit" name="locale" value="en">
             </form>
         </div>

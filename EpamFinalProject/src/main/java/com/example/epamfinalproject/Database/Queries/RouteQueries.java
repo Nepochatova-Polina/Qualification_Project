@@ -17,4 +17,5 @@ public class RouteQueries {
 
     public static final String GET_ROUTE_BY_TRANSIT_TIME_QUERY = "select * from routes where transit_time = ?";
     public static final String GET_ALL_ROUTES_QUERY = "select * from routes";
+    public static final String GET_ROUTE_BY_ALL_PARAMETERS_QUERY = "select  * from routes where departure = ? and destination = ? and transit_time = ?";
 }

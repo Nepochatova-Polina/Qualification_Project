@@ -135,6 +135,28 @@ public class Route_Implementation implements RouteDAO {
     }
 
     @Override
+    public Route getRouteByAllParameters(Route route) {
+        Route routeRecord = new Route();
+        try (Connection connection = ConnectionPool.getConnection()) {
+            preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_ALL_PARAMETERS_QUERY);
+            preparedStatement.setString(1, route.getDeparture());
+            preparedStatement.setString(2, route.getDestination());
+            preparedStatement.setInt(3, route.getTransitTime());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            routeRecord = routeShaper.shapeData(resultSet);
+        } catch (SQLException e) {
+            log.warn("Problems with connection:" + e);
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                log.warn("Error closing connection");
+            }
+        }
+        return routeRecord;
+    }
+
+    @Override
     public List<Route> getRoutesByDeparture(String departure) {
         List<Route> routeList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection()) {

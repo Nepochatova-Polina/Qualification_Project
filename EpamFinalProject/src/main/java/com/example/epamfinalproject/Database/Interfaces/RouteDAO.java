@@ -15,6 +15,8 @@ public interface RouteDAO {
 
     List<Route> getAllRoutes();
 
+    Route getRouteByAllParameters(Route route);
+
     List<Route> getRoutesByDeparture(String departure);
 
     List<Route> getRoutesByDestination(String destination);

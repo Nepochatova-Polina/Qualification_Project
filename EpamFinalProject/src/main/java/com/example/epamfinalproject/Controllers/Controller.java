@@ -4,7 +4,6 @@ import com.example.epamfinalproject.Controllers.Commands.*;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.ConfirmOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.*;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Delete.DeleteStaffCommand;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.DisplayCruiseFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.Administrator.Edit.EditCruiseCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
@@ -55,11 +54,7 @@ public class Controller extends HttpServlet {
         commands.put("createOrder", new CreateOrderCommand());
         commands.put("confirmOrder", new ConfirmOrderCommand());
         commands.put("createCruise", new CreateCruiseCommand());
-        commands.put("createStaff", new CreateStaffCommand());
-
         commands.put("deleteCruise", new DeleteCruiseCommand());
-        commands.put("deleteStaff", new DeleteStaffCommand());
-
         commands.put("editCruise", new EditCruiseCommand());
         commands.put("displayCruiseForm", new DisplayCruiseFormCommand());
 

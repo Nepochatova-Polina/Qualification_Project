@@ -22,7 +22,7 @@ public class DeleteCruiseCommand implements Command {
 
         if (params.isEmpty()) {
             log.trace("Not a Ship was checked");
-            return Path.DELETE_CRUISE_PAGE;
+            return "redirect:"+ Path.ADMINISTRATOR_PAGE;
         }
         CruiseService cruiseService = new CruiseService();
         for (String param : params) {
@@ -32,6 +32,6 @@ public class DeleteCruiseCommand implements Command {
 
         SessionUtility.setCruisesParams(request,cruiseService.getAllCruises());
         log.debug("Command Finished");
-        return "redirect:"+ Path.DELETE_CRUISE_PAGE;
+        return "redirect:"+ Path.ADMINISTRATOR_PAGE;
     }
 }

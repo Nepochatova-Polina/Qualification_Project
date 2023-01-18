@@ -1,5 +1,6 @@
 package com.example.epamfinalproject.Database.Shaper;
 
+import com.example.epamfinalproject.Services.StaffService;
 import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Entities.Ship;
 
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShipShaper implements DataShaper<Ship> {
+    StaffService staffService = new StaffService();
+
     /**
      * @param resultSet result of SQL query execution
      * @return new instance of Ship class filled with resultSet data
@@ -19,6 +22,7 @@ public class ShipShaper implements DataShaper<Ship> {
         Ship ship = new Ship();
         ship.setId(resultSet.getLong(FieldKey.ENTITY_ID));
         ship.setName(resultSet.getString(FieldKey.SHIP_NAME));
+        ship.setStaff(staffService.getStaffByShipID(ship.getId()));
         ship.setPassengerCapacity(resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
         return ship;
     }
@@ -35,6 +39,7 @@ public class ShipShaper implements DataShaper<Ship> {
             Ship ship = new Ship();
             ship.setId(resultSet.getLong(FieldKey.ENTITY_ID));
             ship.setName(resultSet.getString(FieldKey.SHIP_NAME));
+            ship.setStaff(staffService.getStaffByShipID(ship.getId()));
             ship.setPassengerCapacity(resultSet.getInt(FieldKey.PASSENGER_CAPACITY));
             shipList.add(ship);
         }

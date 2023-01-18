@@ -1,11 +1,8 @@
 package com.example.epamfinalproject.Controllers.Commands.Administrator;
 
-import com.example.epamfinalproject.Controllers.Commands.Administrator.Create.CreateStaffCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Entities.Enums.Status;
-import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Services.OrderService;
 import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Utility.SessionUtility;
@@ -16,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ConfirmOrderCommand implements Command {
-    private static final Logger log = LogManager.getLogger(CreateStaffCommand.class);
+    private static final Logger log = LogManager.getLogger(ConfirmOrderCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {

@@ -81,24 +81,15 @@
         <br>
         <br>
         <div class="text-center row">
-            <a class="col-sm-3" href="Create/createCruise.jsp">
+            <a class="col-sm-3" href="createCruise.jsp">
                 <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
                 <p><fmt:message key="admin.description.label.create.cruise"/></p>
             </a>
-            <a class="col-sm-3" href="Create/createStaff.jsp">
-                <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>
-                <p><fmt:message key="admin.description.label.create.staff"/></p>
-            </a>
-            <a class="col-sm-3" href="Edit/displayCruises.jsp">
+            <a class="col-sm-3" href="displayCruises.jsp">
                 <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
                 <p><fmt:message key="admin.description.label.edit.cruise"/></p>
             </a>
-            <%--
-            <%--                <a class="col-sm-3" href="#">--%>
-            <%--                    <h5><strong><fmt:message key="admin.entity.label.staff"/></strong></h5>--%>
-            <%--                    <p><fmt:message key="admin.description.label.edit.staff"/></p>--%>
-            <%--                </a>--%>
-            <a class="col-sm-3" href="Delete/deleteCruise.jsp">
+            <a class="col-sm-3" href="deleteCruise.jsp">
                 <input type="hidden" name="command" value="deleteCruise"/>
                 <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
                 <p><fmt:message key="admin.description.label.delete.cruise"/></p>

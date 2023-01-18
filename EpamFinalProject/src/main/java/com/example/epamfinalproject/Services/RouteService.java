@@ -25,6 +25,10 @@ public class RouteService {
         RouteDAO routeDAO = new Route_Implementation();
         return routeDAO.getAllRoutes();
     }
+    public Route getRouteByAllParameters(Route route) {
+        RouteDAO routeDAO = new Route_Implementation();
+        return routeDAO.getRouteByAllParameters(route);
+    }
     public Route getRouteByID(long id) {
         RouteDAO routeDAO = new Route_Implementation();
         return routeDAO.getRouteByID(id);

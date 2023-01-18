@@ -19,6 +19,7 @@ public final class MessageKeys {
     public static final String ORDER_CONFIRMATION_ERROR = "message.order.confirmation.error ";
 
     public static final String SHIP_INVALID = "message.ship.invalid";
+    public static final String STAFF_INVALID = "message.staff.invalid";
     public static final String ROUTE_INVALID = "message.route.invalid";
     public static final String CRUISE_INVALID = "message.cruise.invalid";
 
