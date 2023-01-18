@@ -66,7 +66,7 @@
                         <td class="pageItem">
                             <form method="post" action="${pageContext.request.contextPath}/controller">
                                 <input type="hidden" name="command" value="catalogue"/>
-                                <input type="hidden" name="page-path" value="/Admin/Delete/deleteCruise.jsp">
+                                <input type="hidden" name="page-path" value="/Admin/deleteCruise.jsp">
                                 <input type="hidden" name="page" value="${i}">
                                 <button type="submit">${i}</button>
                             </form>

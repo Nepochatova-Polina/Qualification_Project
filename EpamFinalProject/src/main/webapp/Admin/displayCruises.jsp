@@ -17,6 +17,7 @@
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
         <%@include file="/WEB-INF/Styles/adminForm.css" %>
+        <%@include file="/WEB-INF/Styles/catalogue.css" %>
     </style>
 </head>
 <body>
@@ -55,45 +56,66 @@
 </div>
 <div class="container-fluid" id="container" style="display: flex;align-items: center; flex-direction: column;">
     <h1 style="margin-top: 50px; color: white"><fmt:message key="edit.cruise.title"/></h1>
-        <hr style="background-color: aliceblue">
-        <table class="container-fluid">
-            <tr>
-                <td><h5><strong><fmt:message key="cruise.label.name"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.ship.name"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="ship.label.capacity"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.departure"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.destination"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.price"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="cruise.label.duration"/></strong></h5></td>
-                <td><h5><strong><fmt:message key="admin.button.edit"/></strong></h5></td>
-            </tr>
-            <c:forEach var="cruise" items="${sessionScope.cruises}">
-                <form class="card-body text-center" method="get"
-                      action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="displayCruiseForm"/>
-                    <input type="hidden" name="id" value="${cruise.id}">
-                    <tr>
-                        <td><c:out value="${cruise.name}"/></td>
-                        <td><c:out value="${cruise.ship.name}"/></td>
-                        <td><c:out value="${cruise.ship.passengerCapacity}"/></td>
-                        <td><c:out value="${cruise.route.departure}"/></td>
-                        <td><c:out value="${cruise.route.destination}"/></td>
-                        <td><c:out value="${cruise.startOfTheCruise}"/></td>
-                        <td><c:out value="${cruise.endOfTheCruise}"/></td>
-                        <td><c:out value="${cruise.price}"/></td>
-                        <td><c:out value="${cruise.route.transitTime}"/></td>
-                        <td>
-                            <form>
-                                <button class="create-button" type="submit"><fmt:message
-                                        key="admin.button.edit"/></button>
+    <hr style="background-color: aliceblue">
+    <table class="pagination container-fluid" style="display: flex">
+        <tr>
+            <c:forEach begin="1" end="${sessionScope.numOfPages}" var="i">
+                <c:choose>
+                    <c:when test="${sessionScope.currentPage eq i}">
+                        <td>${i}</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td class="pageItem">
+                            <form method="post" action="${pageContext.request.contextPath}/controller">
+                                <input type="hidden" name="command" value="catalogue"/>
+                                <input type="hidden" name="page-path" value="/Admin/displayCruises.jsp">
+                                <input type="hidden" name="page" value="${i}">
+                                <button type="submit">${i}</button>
                             </form>
                         </td>
-                    </tr>
-                </form>
+                    </c:otherwise>
+                </c:choose>
             </c:forEach>
-        </table>
-    </div>
+        </tr>
+    </table>
+    <table class="container-fluid">
+        <tr>
+            <td><h5><strong><fmt:message key="cruise.label.name"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.ship.name"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="ship.label.capacity"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.departure"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.destination"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.price"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="cruise.label.duration"/></strong></h5></td>
+            <td><h5><strong><fmt:message key="admin.button.edit"/></strong></h5></td>
+        </tr>
+        <c:forEach var="cruise" items="${sessionScope.cruises}">
+            <form class="card-body text-center" method="get"
+                  action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="displayCruiseForm"/>
+                <input type="hidden" name="id" value="${cruise.id}">
+                <tr>
+                    <td><c:out value="${cruise.name}"/></td>
+                    <td><c:out value="${cruise.ship.name}"/></td>
+                    <td><c:out value="${cruise.ship.passengerCapacity}"/></td>
+                    <td><c:out value="${cruise.route.departure}"/></td>
+                    <td><c:out value="${cruise.route.destination}"/></td>
+                    <td><c:out value="${cruise.startOfTheCruise}"/></td>
+                    <td><c:out value="${cruise.endOfTheCruise}"/></td>
+                    <td><c:out value="${cruise.price}"/></td>
+                    <td><c:out value="${cruise.route.transitTime}"/></td>
+                    <td>
+                        <form>
+                            <button class="edit-button" type="submit"><fmt:message
+                                    key="admin.button.edit"/></button>
+                        </form>
+                    </td>
+                </tr>
+            </form>
+        </c:forEach>
+    </table>
+</div>
 </body>
 </html>
