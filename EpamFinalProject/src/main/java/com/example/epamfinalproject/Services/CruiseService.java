@@ -1,88 +1,80 @@
 package com.example.epamfinalproject.Services;
 
-import com.example.epamfinalproject.Database.Implementations.Cruise_Implementation;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Entities.Cruise;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public class CruiseService {
-    public void createCruise(Cruise cruise) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        cruiseDAO.createCruise(cruise);
-    }
 
-    public void updateCruiseByID(Cruise cruise, long id) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        cruiseDAO.updateCruiseByID(cruise, id);
-    }
+  private final CruiseDAO cruiseDAO;
 
-    public void deleteCruiseByID(long id) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        cruiseDAO.deleteCruiseByID(id);
-    }
+  public CruiseService(CruiseDAO cruiseDAO) {
+    this.cruiseDAO = cruiseDAO;
+  }
 
-    public List<Cruise> getAllCruisesForPage(int limit, int offset) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesForPage(limit,offset );
-    }
+  public void createCruise(Cruise cruise) {
+    cruiseDAO.createCruise(cruise);
+  }
 
-    public List<Cruise> getActualCruisesForPage(int limit, int offset) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getActualCruisesForPage(limit,offset);
-    }
-    public List<Cruise> getActualCruises() {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getActualCruises();
-    }
-    public int getNumberOfActualCruises() {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getNumberOfActualCruises();
-    }
+  public void updateCruiseByID(Cruise cruise, long id) {
+    cruiseDAO.updateCruiseByID(cruise, id);
+  }
 
-    public Cruise getCruiseByID(long id) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getCruiseByID(id);
-    }
+  public void deleteCruiseByID(long id) {
+    cruiseDAO.deleteCruiseByID(id);
+  }
 
-    public List<Cruise> getCruisesByShipID(long id) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getCruisesByShipID(id);
-    }
+  public List<Cruise> getAllCruisesForPage(int limit, int offset) {
+    return cruiseDAO.getAllCruisesForPage(limit, offset);
+  }
 
-    public List<Cruise> getAllCruisesByDuration(int duration) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByDuration(duration);
-    }
+  public List<Cruise> getActualCruisesForPage(int limit, int offset) {
+    return cruiseDAO.getActualCruisesForPage(limit, offset);
+  }
 
-    public List<Cruise> getAllCruisesAfterDate(LocalDate date) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesAfterDate(date);
-    }
+  public List<Cruise> getActualCruises() {
+    return cruiseDAO.getActualCruises();
+  }
 
-    public List<Cruise> getAllCruisesBeforeDate(LocalDate date) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesBeforeDate(date);
-    }
+  public int getNumberOfActualCruises() {
+    return cruiseDAO.getNumberOfActualCruises();
+  }
 
-    public List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesBetweenTwoDates(start, end);
-    }
+  public Cruise getCruiseByID(long id) {
+    return cruiseDAO.getCruiseByID(id);
+  }
 
-    public List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByStartAndDuration(start, duration);
-    }
+  public List<Cruise> getCruisesByShipID(long id) {
+    return cruiseDAO.getCruisesByShipID(id);
+  }
 
-    public List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByEndAndDuration(end, duration);
-    }
+  public List<Cruise> getAllCruisesByDuration(int duration) {
+    return cruiseDAO.getAllCruisesByDuration(duration);
+  }
 
-    public List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end, int duration) {
-        CruiseDAO cruiseDAO = new Cruise_Implementation();
-        return cruiseDAO.getAllCruisesByDatesAndDuration(start, end, duration);
-    }
+  public List<Cruise> getAllCruisesAfterDate(LocalDate date) {
+    return cruiseDAO.getAllCruisesAfterDate(date);
+  }
+
+  public List<Cruise> getAllCruisesBeforeDate(LocalDate date) {
+    return cruiseDAO.getAllCruisesBeforeDate(date);
+  }
+
+  public List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end) {
+    return cruiseDAO.getAllCruisesBetweenTwoDates(start, end);
+  }
+
+  public List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration) {
+    return cruiseDAO.getAllCruisesByStartAndDuration(start, duration);
+  }
+
+  public List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration) {
+    return cruiseDAO.getAllCruisesByEndAndDuration(end, duration);
+  }
+
+  public List<Cruise> getAllCruisesByDatesAndDuration(
+      LocalDate start, LocalDate end, int duration) {
+    return cruiseDAO.getAllCruisesByDatesAndDuration(start, end, duration);
+  }
 }

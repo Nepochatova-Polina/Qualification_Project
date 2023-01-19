@@ -1,100 +1,111 @@
 package com.example.epamfinalproject.Controllers;
 
-import com.example.epamfinalproject.Controllers.Commands.*;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.ConfirmOrderCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.CreateCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.DeleteCruiseCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.DisplayCruiseFormCommand;
-import com.example.epamfinalproject.Controllers.Commands.Administrator.EditCruiseCommand;
+import com.example.epamfinalproject.Controllers.Commands.Administrator.*;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;
-import com.example.epamfinalproject.Controllers.Commands.Common.ProfileCommand;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import com.example.epamfinalproject.Database.Implementations.*;
+import com.example.epamfinalproject.Services.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+
+import com.example.epamfinalproject.Utility.Constants;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 @WebServlet(name = "controller", value = "/controller")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024, // 1 MB
-        maxFileSize = 1024 * 1024 * 10,      // 10 MB
-        maxRequestSize = 1024 * 1024 * 100   // 100 MB
-)
+    fileSizeThreshold = 1024 * 1024, // 1 MB
+    maxFileSize = 1024 * 1024 * 10, // 10 MB
+    maxRequestSize = 1024 * 1024 * 100 // 100 MB
+    )
 public class Controller extends HttpServlet {
-    private static final Map<String, Command> commands = new HashMap<>();
-    private static final Logger log = LogManager.getLogger(Controller.class);
+  private static final Logger log = LogManager.getLogger(Controller.class);
 
-    /**
-     * Inits all accessible commands and loggedUsers container
-     */
-    @Override
-    public void init() {
+  private static final Map<String, Command> commands = new HashMap<>();
 
-        this.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
+  private final OrderService orderService;
+  private final CruiseService cruiseService;
+  private final UserService userService;
+  private final RouteService routeService;
+  private final ShipService shipService;
+  private final StaffService staffService;
 
+  public Controller() {
+    orderService = new OrderService(new OrderImplementation());
+    cruiseService = new CruiseService(new CruiseImplementation());
+    userService = new UserService(new UserImplementation());
+    routeService = new RouteService(new RouteImplementation());
+    shipService = new ShipService(new ShipImplementation());
+    staffService = new StaffService(new StaffImplementation());
+  }
 
-        commands.put("login", new LoginCommand());
-        commands.put("signUp", new SignUpCommand());
-        commands.put("logout", new LogoutCommand());
-        commands.put("profile", new ProfileCommand());
-        commands.put("catalogue", new CatalogueCommand());
-        commands.put("filterCruises", new FilterCruisesCommand());
-        commands.put("displayOrderForm", new DisplayOrderFormCommand());
+  /** Inits all accessible commands and loggedUsers container */
+  @Override
+  public void init() {
+    this.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
-        commands.put("createOrder", new CreateOrderCommand());
-        commands.put("confirmOrder", new ConfirmOrderCommand());
-        commands.put("createCruise", new CreateCruiseCommand());
-        commands.put("deleteCruise", new DeleteCruiseCommand());
-        commands.put("editCruise", new EditCruiseCommand());
-        commands.put("displayCruiseForm", new DisplayCruiseFormCommand());
+    commands.put("login", new LoginCommand(userService, cruiseService, orderService, shipService, routeService));
+    commands.put("signUp", new SignUpCommand(userService, cruiseService));
+    commands.put("logout", new LogoutCommand());
+    commands.put("profile", new ProfileCommand());
+    commands.put("catalogue", new CatalogueCommand(cruiseService));
+    commands.put("filterCruises", new FilterCruisesCommand(cruiseService));
+    commands.put("displayOrderForm", new DisplayOrderFormCommand(cruiseService, orderService));
 
-        commands.put("changeLocale", new ChangeLocaleCommand());
+    commands.put("createOrder", new CreateOrderCommand(orderService, userService, cruiseService));
+    commands.put("confirmOrder", new ConfirmOrderCommand(orderService));
+    commands.put("createCruise", new CreateCruiseCommand(cruiseService, routeService, shipService, staffService));
+    commands.put("deleteCruise", new DeleteCruiseCommand(cruiseService));
+    commands.put("editCruise", new EditCruiseCommand(cruiseService, shipService, routeService));
+    commands.put("displayCruiseForm", new DisplayCruiseFormCommand(cruiseService));
 
+    commands.put("changeLocale", new ChangeLocaleCommand());
+  }
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    processRequest(request, response);
+  }
+
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+    processRequest(request, response);
+  }
+
+  private void processRequest(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+
+    log.debug("Controller starts");
+
+    String commandName = request.getParameter("command");
+    log.trace("Request parameter: command " + commandName);
+
+    Command command = commands.getOrDefault(commandName, r -> Path.MAIN_PAGE);
+    log.trace("Obtained command:" + command);
+
+    String page = command.execute(request);
+    request.getSession().setAttribute("message-displayed", false);
+
+    if (page.contains(Constants.REDIRECT)) {
+      log.trace("Redirect: " + page);
+      log.debug("Controller finished, now go to address" + page);
+      response.sendRedirect(page.replace("redirect:", request.getContextPath()));
+    } else {
+      log.trace("Forward address: " + page);
+      log.debug("Controller finished, now go to forward address: " + page);
+      request.getRequestDispatcher(page).forward(request, response);
     }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-
-    }
-
-    private void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        log.debug("Controller starts");
-
-        String commandName = request.getParameter("command");
-        log.trace("Request parameter: command " + commandName);
-
-        Command command = commands.getOrDefault(commandName, (r) -> Path.MAIN_PAGE);
-        log.trace("Obtained command:" + command);
-
-        String page = command.execute(request);
-        request.getSession().setAttribute("message-displayed", false);
-
-        if (page.contains("redirect:")) {
-            log.trace("Redirect: " + page);
-            log.debug("Controller finished, now go to address" + page);
-            response.sendRedirect(page.replace("redirect:", request.getContextPath()));
-        } else {
-            log.trace("Forward address: " + page);
-            log.debug("Controller finished, now go to forward address: " + page);
-            request.getRequestDispatcher(page).forward(request, response);
-        }
-    }
+  }
 }

@@ -1,57 +1,34 @@
 package com.example.epamfinalproject.Services;
 
-import com.example.epamfinalproject.Database.Implementations.Route_Implementation;
 import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
 import com.example.epamfinalproject.Entities.Route;
-
 import java.util.List;
 
 public class RouteService {
-    public void createRoute(Route route) {
-        RouteDAO routeDAO = new Route_Implementation();
-        routeDAO.createRoute(route);
-    }
 
-    public void updateRouteByID(Route route, long id) {
-        RouteDAO routeDAO = new Route_Implementation();
-        routeDAO.updateRouteByID(id, route);
-    }
+  private final RouteDAO routeDAO;
 
-    public void deleteRouteByID(long id) {
-        RouteDAO routeDAO = new Route_Implementation();
-        routeDAO.deleteRouteByID(id);
-    }
-    public List<Route> getAllRoutes() {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getAllRoutes();
-    }
-    public Route getRouteByAllParameters(Route route) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRouteByAllParameters(route);
-    }
-    public Route getRouteByID(long id) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRouteByID(id);
-    }
+  public RouteService(RouteDAO routeDAO) {
+    this.routeDAO = routeDAO;
+  }
 
-    public List<Route> getRouteByDeparture(String depature) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRoutesByDeparture(depature);
-    }
+  public void createRoute(Route route) {
+    routeDAO.createRoute(route);
+  }
 
-    public List<Route> getRouteByDestination(String destination) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRoutesByDestination(destination);
-    }
+  public void updateRouteByID(Route route, long id) {
+    routeDAO.updateRouteByID(id, route);
+  }
 
-    public List<Route> getRouteByTransitTime(int transitTime) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRoutesByTransitTime(transitTime);
-    }
+  public List<Route> getAllRoutes() {
+    return routeDAO.getAllRoutes();
+  }
 
-    public List<Route> getRouteByDepartureAndDestination(String departure, String destination) {
-        RouteDAO routeDAO = new Route_Implementation();
-        return routeDAO.getRoutesByDepartureAndDestination(departure, destination);
-    }
+  public Route getRouteByAllParameters(Route route) {
+    return routeDAO.getRouteByAllParameters(route);
+  }
 
+  public Route getRouteByID(long id) {
+    return routeDAO.getRouteByID(id);
+  }
 }

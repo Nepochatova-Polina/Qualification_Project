@@ -6,34 +6,43 @@ import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Services.OrderService;
+import com.example.epamfinalproject.Utility.Constants;
 import com.example.epamfinalproject.Utility.FieldKey;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class DisplayOrderFormCommand implements Command {
-    private static final Logger log = LogManager.getLogger(DisplayOrderFormCommand.class);
+  private static final Logger log = LogManager.getLogger(DisplayOrderFormCommand.class);
 
-    @Override
-    public String execute(HttpServletRequest request) {
-        log.debug("Command starts");
-        CruiseService cruiseService = new CruiseService();
-        OrderService orderService = new OrderService();
+  private final CruiseService cruiseService;
+  private final OrderService orderService;
 
-        Cruise cruise = cruiseService.getCruiseByID(Long.parseLong(request.getParameter(FieldKey.ENTITY_ID)));
-        int freeSeats = cruise.getShip().getPassengerCapacity() - orderService.getBookedSeatsByCruiseID(cruise.getId());
-        if (freeSeats == 0) {
-            request.getSession().setAttribute("message", MessageKeys.SHIP_INACCESSIBLE);
-            log.trace("Cruise is full");
-            log.debug("Command Finished");
-            return "redirect:" + Path.CATALOGUE_PAGE;
-        }
-        request.getSession().setAttribute("cruise", cruise);
-        request.getSession().setAttribute("freeSeats", freeSeats);
+  public DisplayOrderFormCommand(CruiseService cruiseService, OrderService orderService) {
+    this.cruiseService = cruiseService;
+    this.orderService = orderService;
+  }
 
-        log.debug("Command finished");
+  @Override
+  public String execute(HttpServletRequest request) {
+    log.debug(Constants.COMMAND_STARTS);
 
-        return "redirect:" + Path.ORDER_PAGE;
+    Cruise cruise =
+        cruiseService.getCruiseByID(Long.parseLong(request.getParameter(FieldKey.ENTITY_ID)));
+    int freeSeats =
+        cruise.getShip().getPassengerCapacity()
+            - orderService.getBookedSeatsByCruiseID(cruise.getId());
+    if (freeSeats == 0) {
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.SHIP_INACCESSIBLE);
+      log.trace("Cruise is full");
+      log.debug(Constants.COMMAND_FINISHED);
+      return Constants.REDIRECT + Path.CATALOGUE_PAGE;
     }
+    request.getSession().setAttribute("cruise", cruise);
+    request.getSession().setAttribute("freeSeats", freeSeats);
+
+    log.debug(Constants.COMMAND_FINISHED);
+
+    return Constants.REDIRECT + Path.ORDER_PAGE;
+  }
 }

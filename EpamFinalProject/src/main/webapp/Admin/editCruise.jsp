@@ -5,7 +5,7 @@
 
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
-
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
-        <%@include file="/Styles/order.css" %>
+        <%@include file="/Styles/adminForm.css" %>
     </style>
 </head>
 <body>
@@ -54,13 +54,13 @@
         </div>
     </div>
 </div>
-<div class="container" id="container">
+<div class="container-fluid" id="container">
     <hr style="background-color: aliceblue">
     <form id="order-form" method="post" action="${pageContext.request.contextPath}/controller"
           enctype='multipart/form-data'>
         <div class="row">
             <div class="card mx-auto col-sm-6" style="margin-right: 10px! important">
-                <article class="card-body mx-auto">
+                <article class="card-body mx-auto" style="margin-top: 50px">
                     <h3 class="card-title mt-3 text-center"><fmt:message key="order.label.header"/></h3>
                     <br>
                     <input type="hidden" name="command" value="editCruise"/>

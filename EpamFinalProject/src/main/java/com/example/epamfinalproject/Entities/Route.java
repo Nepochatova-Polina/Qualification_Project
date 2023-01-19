@@ -10,21 +10,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Route {
-    private long id;
-    private String departure;
-    private String destination;
-    private int transitTime;
+  private long id;
+  private String departure;
+  private String destination;
+  private int transitTime;
 
-    /**
-     * Constructor - creating new object with specific values
-     *
-     * @param departure      Place, where cruise started
-     * @param destination    Final port
-     * @param transitTime    Total time on the ship's board
-     */
-    public Route(String departure, String destination, int transitTime) {
-        this.departure = departure;
-        this.destination = destination;
-        this.transitTime = transitTime;
-    }
+  /**
+   * Constructor - creating new object with specific values
+   *
+   * @param departure Place, where cruise started
+   * @param destination Final port
+   * @param transitTime Total time on the ship's board
+   */
+  public Route(String departure, String destination, int transitTime) {
+    this.departure = departure;
+    this.destination = destination;
+    this.transitTime = transitTime;
+  }
 }

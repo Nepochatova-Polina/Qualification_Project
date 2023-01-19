@@ -1,41 +1,39 @@
 package com.example.epamfinalproject.Database.Interfaces;
 
 import com.example.epamfinalproject.Entities.Cruise;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public interface CruiseDAO {
-    void createCruise(Cruise cruise);
+  void createCruise(Cruise cruise);
 
-    void updateCruiseByID(Cruise cruise, long id);
+  void updateCruiseByID(Cruise cruise, long id);
 
-    void deleteCruiseByID(long id);
+  void deleteCruiseByID(long id);
 
-    int getNumberOfActualCruises();
+  int getNumberOfActualCruises();
 
-    Cruise getCruiseByID(long id);
+  Cruise getCruiseByID(long id);
 
-    List<Cruise> getCruisesByShipID(long id);
+  List<Cruise> getCruisesByShipID(long id);
 
-    List<Cruise> getAllCruisesForPage(int limit, int offset);
+  List<Cruise> getAllCruisesForPage(int limit, int offset);
 
-    List<Cruise> getActualCruisesForPage(int limit, int offset);
+  List<Cruise> getActualCruisesForPage(int limit, int offset);
 
-    List<Cruise> getActualCruises();
+  List<Cruise> getActualCruises();
 
-    List<Cruise> getAllCruisesByDuration(int duration);
+  List<Cruise> getAllCruisesByDuration(int duration);
 
-    List<Cruise> getAllCruisesAfterDate(LocalDate date);
+  List<Cruise> getAllCruisesAfterDate(LocalDate date);
 
-    List<Cruise> getAllCruisesBeforeDate(LocalDate date);
+  List<Cruise> getAllCruisesBeforeDate(LocalDate date);
 
-    List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end);
+  List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end);
 
-    List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration);
+  List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration);
 
-    List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration);
+  List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration);
 
-    List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end, int duration);
-
+  List<Cruise> getAllCruisesByDatesAndDuration(LocalDate start, LocalDate end, int duration);
 }
