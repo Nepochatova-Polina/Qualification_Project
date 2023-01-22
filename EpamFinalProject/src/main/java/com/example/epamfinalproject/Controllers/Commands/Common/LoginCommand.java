@@ -75,7 +75,7 @@ public class LoginCommand implements Command {
         log.debug(Constants.COMMAND_FINISHED);
 
         String preCommand = (String) request.getSession().getAttribute("preCommand");
-        if (preCommand != null && preCommand.equals("displayOrderForm")) {
+        if (preCommand != null && preCommand.equals("displayFormWithCruiseInfo")) {
           updateSession(request, user);
           return Constants.REDIRECT + Path.ORDER_PAGE;
         }
@@ -94,6 +94,13 @@ public class LoginCommand implements Command {
     }
   }
 
+  /**
+   *
+   * @param user User to be authorized
+   * @param request
+   * @return true - if the user entered the correct login and password,
+   * false - if there is a mismatch
+   */
   private boolean validateUserData(User user, HttpServletRequest request) {
     return (user != null)
         && (Encryptor.check(user.getPassword(), request.getParameter(FieldKey.PASSWORD)));
@@ -111,6 +118,9 @@ public class LoginCommand implements Command {
     int freeSeats =
         cruise.getShip().getPassengerCapacity()
             - orderService.getBookedSeatsByCruiseID(cruise.getId());
-    SessionUtility.setCruiseParamsForClient(request, user, cruise, freeSeats,orders);
+    request.getSession().setAttribute("cruise", cruise);
+    request.getSession().setAttribute("freeSeats", freeSeats);
+    SessionUtility.setParamsForClient(
+        request, user, cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0), orders);
   }
 }

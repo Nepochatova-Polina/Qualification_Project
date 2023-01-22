@@ -16,7 +16,13 @@ public class ProfileCommand implements Command {
   public String execute(HttpServletRequest request) {
     log.debug(Constants.COMMAND_STARTS);
 
+    if (request.getSession().getAttribute("user") == null) {
+      log.debug("Unable tp redirect to Profile page");
+      log.debug(Constants.COMMAND_FINISHED);
+      return Constants.REDIRECT + Path.MAIN_PAGE;
+    }
     User user = (User) request.getSession().getAttribute("user");
+
     if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
       log.debug("Redirect to " + UserRole.ADMINISTRATOR + " page");
       log.debug(Constants.COMMAND_FINISHED);

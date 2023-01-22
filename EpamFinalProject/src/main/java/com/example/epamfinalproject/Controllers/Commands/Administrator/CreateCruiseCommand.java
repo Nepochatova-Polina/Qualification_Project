@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+/**
+ * A command to create an instance of the Cruise class and add a record to the database. Available for Administrator
+ */
 public class CreateCruiseCommand implements Command {
   private static final Logger log = LogManager.getLogger(CreateCruiseCommand.class);
   private final CruiseService cruiseService;
@@ -77,7 +80,7 @@ public class CreateCruiseCommand implements Command {
       log.debug(Constants.COMMAND_FINISHED);
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
-    return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
+    return Constants.REDIRECT + Path.CREATE_CRUISE_PAGE;
   }
 
   /**
@@ -91,7 +94,7 @@ public class CreateCruiseCommand implements Command {
     route.setDestination(request.getParameter(FieldKey.DESTINATION));
     route.setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
     if (!Validation.validateRouteFields(route)
-        || routeService.getRouteByAllParameters(route).getDeparture() != null) {
+        || routeService.getRouteByAllParameters(route) != null) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ROUTE_INVALID);
       log.trace("Invalid Route parameters");
       log.debug(Constants.COMMAND_FINISHED);
@@ -106,7 +109,7 @@ public class CreateCruiseCommand implements Command {
    * @param route new Route instance without id
    * @return Route instance with id value
    */
-  public Route addRouteRecord(Route route) {
+  private Route addRouteRecord(Route route) {
     routeService.createRoute(route);
     log.debug("Route record was added");
     return routeService.getRouteByAllParameters(route);
@@ -117,12 +120,12 @@ public class CreateCruiseCommand implements Command {
    *
    * @return new Ship instance
    */
-  public Ship createShip(HttpServletRequest request) {
+  private Ship createShip(HttpServletRequest request) {
     Ship ship = new Ship();
     ship.setName(request.getParameter(FieldKey.CRUISE_SHIP_NAME));
     ship.setPassengerCapacity(Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)));
     if (!Validation.validateShipFields(ship)
-        || shipService.getShipByName(ship.getName()).getName() != null) {
+        || shipService.getShipByName(ship.getName()) != null) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.SHIP_INVALID);
       log.trace("Invalid Ship parameters");
       log.debug(Constants.COMMAND_FINISHED);
@@ -137,7 +140,7 @@ public class CreateCruiseCommand implements Command {
    * @param ship new Ship instance
    * @return Ship instance with id value
    */
-  public Ship addShipRecord(Ship ship) {
+  private Ship addShipRecord(Ship ship) {
     shipService.registerShip(ship);
     log.debug("Ship record was added");
     return shipService.getShipByName(ship.getName());
@@ -148,12 +151,12 @@ public class CreateCruiseCommand implements Command {
    *
    * @return list of Staff entities
    */
-  public List<Staff> createStaffList(HttpServletRequest request) {
+  private List<Staff> createStaffList(HttpServletRequest request) {
     List<Staff> staffList = new ArrayList<>();
-    for (int i = 1; i <= 3; i++) {
+    for (int i = 1; i <= Constants.STAFF_NUMBER; i++) {
       Staff staff = new Staff();
-      staff.setFirstName(request.getParameter("first_name" + i));
-      staff.setLastName(request.getParameter("last_name" + i));
+      staff.setFirstName(request.getParameter(FieldKey.FIRST_NAME + i));
+      staff.setLastName(request.getParameter(FieldKey.LAST_NAME + i));
 
       if (!Validation.validateStaffFields(staff)) {
         request.getSession().setAttribute("message", MessageKeys.STAFF_INVALID);
@@ -170,7 +173,7 @@ public class CreateCruiseCommand implements Command {
    * @param staff List of new Staff instances
    * @param shipId ID of ship
    */
-  public void addStaffRecords(List<Staff> staff, long shipId) {
+  private void addStaffRecords(List<Staff> staff, long shipId) {
     for (Staff value : staff) {
       value.setShipId(shipId);
       staffService.registerStaff(value);

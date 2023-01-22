@@ -95,17 +95,11 @@ public class SessionUtility {
     session.setAttribute("staff", staff);
   }
 
-  /**
-   * Set information about the Cruise that the user has chosen
-   *
-   * @param user Client info
-   */
+  /** Set information about the Cruise that the user has chosen */
   public static void setCruiseParamsForClient(
-      HttpServletRequest request, User user, Cruise cruise, int freeSeats, List<Order> orders) {
+      HttpServletRequest request, Cruise cruise, int freeSeats) {
     HttpSession session = request.getSession();
-    session.setAttribute("user", user);
     session.setAttribute("cruise", cruise);
-    session.setAttribute("orders", orders);
     session.setAttribute("freeSeats", freeSeats);
   }
 

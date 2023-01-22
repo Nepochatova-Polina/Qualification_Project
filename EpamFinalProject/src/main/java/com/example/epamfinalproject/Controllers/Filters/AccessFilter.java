@@ -23,10 +23,10 @@ public class AccessFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
 
-        accessMap.put("administrator", Arrays.asList("profile", "createCruise", "displayCruiseForm",
+        accessMap.put("administrator", Arrays.asList("profile", "createCruise", "displayFormWithCruiseInfo",
                 "editCruise", "deleteCruise", "confirmOrder"));
 
-        accessMap.put("client", Arrays.asList("createOrder", "displayOrderForm", "profile"));
+        accessMap.put("client", Arrays.asList("createOrder", "displayFormWithCruiseInfo", "profile"));
 
         commons = Arrays.asList("login", "signUp", "logout", "changeLocale", "filterCruises", "catalogue");
 

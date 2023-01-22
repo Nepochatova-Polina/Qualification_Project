@@ -106,7 +106,7 @@
             </div>
             <form class="card-body text-center" method="post"
                   action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="command" value="displayOrderForm"/>
+                <input type="hidden" name="command" value="displayFormWithCruiseInfo"/>
                 <input type="hidden" name="id" value="${cruise.id}">
                 <div class="card-text">
                     <h4><strong><fmt:message key="cruise.label.ship.name"/></strong>

@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+/**
+ * The Command collects data from the request and checks which fields have been changed,
+ * generates a new Cruise class instance and overwrites the data in the database.
+ * Fields for which there is no new data remain unchanged.
+ */
 public class EditCruiseCommand implements Command {
   private static final Logger log = LogManager.getLogger(EditCruiseCommand.class);
 
@@ -37,8 +42,8 @@ public class EditCruiseCommand implements Command {
 
     Cruise cruise = (Cruise) request.getSession().getAttribute("cruise");
 
-    if (!Objects.equals(request.getParameter("cruise_name"), ""))
-      cruise.setName(request.getParameter("cruise_name"));
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_NAME), ""))
+      cruise.setName(request.getParameter(FieldKey.CRUISE_NAME));
 
     if (!Objects.equals(request.getParameter("ship_name"), ""))
       cruise.getShip().setName(request.getParameter("ship_name"));
@@ -49,25 +54,39 @@ public class EditCruiseCommand implements Command {
           .setPassengerCapacity(
               Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)));
 
-    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_LEAVING), ""))
-      cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_LEAVING)));
+    if (!Validation.validateShipFields(cruise.getShip())) {
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.SHIP_INVALID);
+      log.trace("Invalid Ship parameters");
+      log.debug(Constants.COMMAND_FINISHED);
+      return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
+    }
 
-    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_ARRIVING), ""))
-      cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_ARRIVING)));
-
-    if (!Objects.equals(request.getParameter(FieldKey.DEPARTURE), ""))
+    if (!Objects.equals(request.getParameter(FieldKey.DEPARTURE), "")) {
       cruise.getRoute().setDeparture(request.getParameter(FieldKey.DEPARTURE));
-
-    if (!Objects.equals(request.getParameter(FieldKey.DESTINATION), ""))
-      cruise.getRoute().setDeparture(request.getParameter(FieldKey.DESTINATION));
-
-    if (Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)) != 0)
-      cruise.setPrice(Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)));
-
-    if (Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)) != 0)
+    }
+    if (!Objects.equals(request.getParameter(FieldKey.DESTINATION), "")) {
+      cruise.getRoute().setDestination(request.getParameter(FieldKey.DESTINATION));
+    }
+    if (Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)) != 0) {
       cruise
-          .getRoute()
-          .setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
+              .getRoute()
+              .setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
+    }
+    if (!Validation.validateRouteFields(cruise.getRoute())) {
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ROUTE_INVALID);
+      log.trace("Invalid Route parameters");
+      log.debug(Constants.COMMAND_FINISHED);
+      return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
+    }
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_LEAVING), "")) {
+      cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_LEAVING)));
+    }
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_ARRIVING), "")) {
+      cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_ARRIVING)));
+    }
+    if (Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)) != 0) {
+      cruise.setPrice(Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)));
+    }
 
     if (Validation.validateCruiseFields(cruise)) {
       cruiseService.updateCruiseByID(cruise, cruise.getId());

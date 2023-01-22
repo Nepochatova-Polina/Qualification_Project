@@ -2,11 +2,11 @@ package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.Administrator.*;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
-import com.example.epamfinalproject.Controllers.Commands.Client.DisplayOrderFormCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;
 import com.example.epamfinalproject.Database.Implementations.*;
 import com.example.epamfinalproject.Services.*;
+import com.example.epamfinalproject.Utility.Constants;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,8 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.example.epamfinalproject.Utility.Constants;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -54,20 +52,21 @@ public class Controller extends HttpServlet {
   public void init() {
     this.getServletContext().setAttribute("loggedUsers", new HashSet<String>());
 
-    commands.put("login", new LoginCommand(userService, cruiseService, orderService, shipService, routeService));
+    commands.put(
+        "login",
+        new LoginCommand(userService, cruiseService, orderService, shipService, routeService));
     commands.put("signUp", new SignUpCommand(userService, cruiseService));
     commands.put("logout", new LogoutCommand());
     commands.put("profile", new ProfileCommand());
     commands.put("catalogue", new CatalogueCommand(cruiseService));
     commands.put("filterCruises", new FilterCruisesCommand(cruiseService));
-    commands.put("displayOrderForm", new DisplayOrderFormCommand(cruiseService, orderService));
+    commands.put("displayFormWithCruiseInfo", new DisplayFormWithCruiseInfoCommand(cruiseService, orderService));
 
     commands.put("createOrder", new CreateOrderCommand(orderService, userService, cruiseService));
     commands.put("confirmOrder", new ConfirmOrderCommand(orderService));
     commands.put("createCruise", new CreateCruiseCommand(cruiseService, routeService, shipService, staffService));
     commands.put("deleteCruise", new DeleteCruiseCommand(cruiseService));
     commands.put("editCruise", new EditCruiseCommand(cruiseService, shipService, routeService));
-    commands.put("displayCruiseForm", new DisplayCruiseFormCommand(cruiseService));
 
     commands.put("changeLocale", new ChangeLocaleCommand());
   }

@@ -21,6 +21,9 @@ import javax.servlet.http.Part;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+/**
+ * A Command that collects data and creates an instance of an Order class and adds a record of it to the database
+ */
 public class CreateOrderCommand implements Command {
   private static final Logger log = LogManager.getLogger(CreateOrderCommand.class);
   private final OrderService orderService;
@@ -38,15 +41,27 @@ public class CreateOrderCommand implements Command {
   public String execute(HttpServletRequest request) {
     log.debug(Constants.COMMAND_STARTS);
 
-    Order order = shapeOrder(request);
+    if(request.getSession().getAttribute("user") == null){
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ACCESS_DENIED);
+      log.warn("Filter error! Accessed by an unauthenticated User");
+      return Constants.REDIRECT + Path.MAIN_PAGE;
+    }
     User user = (User) request.getSession().getAttribute("user");
 
-    List<Order> userOrders = orderService.getOrdersByUserID(order.getUser().getId());
+    Order order = shapeOrder(request);
+    if(order == null){
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.CRUISE_INVALID);
+      log.trace("Database has no Cruise with ID");
+      log.debug(Constants.COMMAND_FINISHED);
+      return Constants.REDIRECT + Path.MAIN_PAGE;
+    }
+
+    List<Order> userOrders = orderService.getOrdersByUserID(user.getId());
 
     if (checkOrder(userOrders, order)) {
       log.debug("User already has the same order");
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ORDER_ALREADY_CREATED);
-      return Path.ORDER_PAGE;
+      return Constants.REDIRECT + Path.MAIN_PAGE;
     }
 
     InputStream fileContent;
@@ -55,15 +70,15 @@ public class CreateOrderCommand implements Command {
       Part filePart = request.getPart("passport");
       fileContent = filePart.getInputStream();
       size = filePart.getSize();
-    } catch (ServletException | IOException e) {
+    } catch (ServletException | IOException | NullPointerException e) {
       log.trace("Document data cannot be processed");
-      throw new RuntimeException(e);
+      return Constants.REDIRECT + Path.MAIN_PAGE;
     }
 
     orderService.createOrder(order);
     userService.updateUserPassport(user.getId(), fileContent, size);
 
-    userOrders = orderService.getOrdersByUserID(order.getUser().getId());
+    userOrders = orderService.getOrdersByUserID(user.getId());
 
     SessionUtility.setOrders(request, userOrders);
     log.debug(Constants.COMMAND_FINISHED);
@@ -76,6 +91,9 @@ public class CreateOrderCommand implements Command {
 
     Cruise cruise =
         cruiseService.getCruiseByID((Long.parseLong(request.getParameter(FieldKey.ENTITY_ID))));
+    if(cruise == null){
+      return null;
+    }
     order.setCruise(cruise);
     return order;
   }

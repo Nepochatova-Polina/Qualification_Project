@@ -94,7 +94,7 @@
         <c:forEach var="cruise" items="${sessionScope.cruises}">
             <form class="card-body text-center" method="get"
                   action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="command" value="displayCruiseForm"/>
+                <input type="hidden" name="command" value="displayFormWithCruiseInfo"/>
                 <input type="hidden" name="id" value="${cruise.id}">
                 <tr>
                     <td><c:out value="${cruise.name}"/></td>

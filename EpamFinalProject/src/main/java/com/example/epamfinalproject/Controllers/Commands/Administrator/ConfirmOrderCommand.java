@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+/**
+ * Administrator order confirmation command
+ */
 public class ConfirmOrderCommand implements Command {
   private static final Logger log = LogManager.getLogger(ConfirmOrderCommand.class);
 
@@ -32,6 +35,11 @@ public class ConfirmOrderCommand implements Command {
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
     for (String param : params) {
+      if(Long.parseLong(param) < 1){
+        request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ORDER_CONFIRMATION_ERROR);
+        log.trace("Order ID is invalid");
+        return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
+      }
       orderService.confirmOrderByID(Long.parseLong(param));
       log.debug("Record with id " + Integer.parseInt(param) + "was confirmed");
     }

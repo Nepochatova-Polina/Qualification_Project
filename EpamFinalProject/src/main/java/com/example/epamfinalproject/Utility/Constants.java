@@ -6,6 +6,7 @@ public class Constants {
 
   //    Static Final Values
   public static final int PAGE_SIZE = 6;
+  public static final int STAFF_NUMBER = 3;
   public static final String REDIRECT = "redirect:";
   public static final String MESSAGE = "message";
   public static final String COMMAND_FINISHED = "Command finished";

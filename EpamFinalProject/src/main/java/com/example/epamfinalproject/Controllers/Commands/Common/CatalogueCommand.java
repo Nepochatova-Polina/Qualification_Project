@@ -1,7 +1,10 @@
 package com.example.epamfinalproject.Controllers.Commands.Common;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
+import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Cruise;
+import com.example.epamfinalproject.Entities.Enums.UserRole;
+import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Utility.Constants;
 import com.example.epamfinalproject.Utility.SessionUtility;
@@ -23,13 +26,24 @@ public class CatalogueCommand implements Command {
   public String execute(HttpServletRequest request) {
     log.debug(Constants.COMMAND_STARTS);
 
+    User user = (User) request.getSession().getAttribute("user");
+
     int recordsCount = cruiseService.getNumberOfActualCruises();
     int page = 1;
+    String pagePath = request.getParameter("page-path");
+
     if (request.getParameter("page") != null) {
       page = Integer.parseInt(request.getParameter("page"));
     }
+    if (page < 1 && user.getRole().equals(UserRole.ADMINISTRATOR)
+        || pagePath == null && user.getRole().equals(UserRole.ADMINISTRATOR)) {
+      return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
+    }
+    if (page < 1 || pagePath == null) {
+      return Constants.REDIRECT + Path.MAIN_PAGE;
+    }
     List<Cruise> cruises;
-    if (request.getParameter("page-path").contains("Admin")) {
+    if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
       cruises =
           cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, (page - 1) * Constants.PAGE_SIZE);
     } else {
@@ -43,6 +57,6 @@ public class CatalogueCommand implements Command {
     request.getSession().setAttribute("currentPage", page);
 
     log.debug(Constants.COMMAND_FINISHED);
-    return Constants.REDIRECT + request.getParameter("page-path");
+    return Constants.REDIRECT + pagePath;
   }
 }

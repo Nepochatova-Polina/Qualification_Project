@@ -26,4 +26,7 @@ public final class MessageKeys {
   public static final String CRUISE_INVALID = "message.cruise.invalid";
 
   public static final String SHIP_INACCESSIBLE = "message.ship.inaccessible";
+
+  public static final String DATE_INVALID = "message.date.invalid";
+  public static final String PARAM_INVALID = "message.param.invalid";
 }
