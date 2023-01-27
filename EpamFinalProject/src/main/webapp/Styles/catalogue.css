@@ -1,9 +1,10 @@
 body {
     margin: 0;
-    font-family:"Lohit Tamil Classical", cursive !important;
+    font-family: "Lohit Tamil Classical", cursive !important;
     background-color: #F3D3B8 !important;
 }
-.create-button{
+
+.create-button {
     border: 2px solid #20948B;
     background-color: white;
     padding: 6px;
@@ -12,7 +13,7 @@ body {
     margin-top: 10px;
 }
 
-.card{
+.card {
     display: flex;
     margin-top: 20px;
     margin-right: 20px;
@@ -21,7 +22,8 @@ body {
     min-width: 340px !important;
     border-radius: 50px !important;
 }
-.card-header{
+
+.card-header {
     background-color: #A5C3CF !important;
     display: flex;
     align-items: center;
@@ -32,6 +34,7 @@ body {
     min-height: 130px;
     border-radius: 50px 50px 0 0 !important;
 }
+
 .navbar {
     overflow: hidden;
     background-color: #003b3b;
@@ -64,9 +67,11 @@ body {
     text-decoration: none;
     font-size: 17px !important;
 }
-.navbar form{
-    max-height: 8px;
+
+.navbar form {
+    max-height: 24px;
 }
+
 .navbar a:hover {
     background-color: #ddd;
     color: black;
@@ -89,7 +94,8 @@ body {
     background-color: gray;
     border-color: black;
 }
-.sortbar{
+
+.sortbar {
     padding: 30px;
     display: flex;
     justify-content: space-between;
@@ -100,28 +106,31 @@ body {
 
 }
 
-.sortbar input{
+.sortbar input {
     height: 40px;
-    border:2px solid #BF9A77;
+    border: 2px solid #BF9A77;
     border-radius: 10pc;
 }
 
-.submit-btn{
+.submit-btn {
     margin-right: 50px;
     width: 100px;
 }
-.submit-btn:active{
+
+.submit-btn:active {
     background-color: #D6C6B9;
     box-shadow: 0 5px #807d7d;
     transform: translateY(4px);
 }
-.inpt{
+
+.inpt {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     flex-direction: row;
 }
-.inpt label{
+
+.inpt label {
     margin-right: 10px;
     font-size: 20px;
 }
@@ -144,14 +153,17 @@ body {
     max-height: 50px;
     text-decoration: none;
 }
-.pagination td button{
+
+.pagination td button {
     background-color: inherit;
     border: none;
 }
-.pagination td:hover{
+
+.pagination td:hover {
     background-color: #D6C6B9;
 }
-.pagination td:active{
+
+.pagination td:active {
     background-color: #D6C6B9;
     box-shadow: 0 5px #807d7d;
     transform: translateY(4px);
@@ -162,4 +174,36 @@ footer {
     padding: 15px;
     width: 50px;
     margin-top: 50px;
+}
+
+.filter-values {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+}
+
+.element {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    text-align: center;
+    font-size: 10px;
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    background-color: rgba(159, 155, 155, 0.62);
+    border-radius: 50px;
+}
+.reset-btn{
+    display: flex;
+    /*padding: 5px;*/
+    border-radius: 20px;
+    margin-bottom: 0;
+    text-align: center;
+    color: #000;
+}
+.reset-btn button{
+    background-color: rgba(171, 167, 167, 0.62);
 }

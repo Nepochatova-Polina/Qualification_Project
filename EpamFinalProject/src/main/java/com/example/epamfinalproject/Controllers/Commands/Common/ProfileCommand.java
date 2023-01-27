@@ -6,8 +6,14 @@ import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Utility.Constants;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import  java.util.Base64;
+
+import com.example.epamfinalproject.Utility.FieldKey;
+//import com.lambdaworks.codec.Base64;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
 
 public class ProfileCommand implements Command {
   private static final Logger log = LogManager.getLogger(ProfileCommand.class);

@@ -41,7 +41,9 @@ class DisplayFormWithCruiseInfoCommandTest {
     cruiseService = new CruiseService(mock(CruiseDAO.class));
     orderService = new OrderService(mock(OrderDAO.class));
     cruise =
-        new Cruise(new Ship(1, "Name", 1), new Route(1, "Value", "Value", 4),
+        new Cruise(
+            new Ship(1, "Name", 1),
+                new Route(1, "Value", "Value", 4),
                 "Name", 0, null, null);
     command = new DisplayFormWithCruiseInfoCommand(cruiseService, orderService);
   }

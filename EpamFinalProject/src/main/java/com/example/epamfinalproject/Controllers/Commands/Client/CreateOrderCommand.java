@@ -14,6 +14,7 @@ import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Utility.SessionUtility;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class CreateOrderCommand implements Command {
   }
 
   @Override
-  public String execute(HttpServletRequest request) {
+  public String execute(HttpServletRequest request){
     log.debug(Constants.COMMAND_STARTS);
 
     if(request.getSession().getAttribute("user") == null){
@@ -81,6 +82,11 @@ public class CreateOrderCommand implements Command {
     userOrders = orderService.getOrdersByUserID(user.getId());
 
     SessionUtility.setOrders(request, userOrders);
+    try {
+      SessionUtility.updateUser(request,userService.getUserByID(user.getId()));
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
     log.debug(Constants.COMMAND_FINISHED);
     return Constants.REDIRECT + Path.CATALOGUE_PAGE;
   }

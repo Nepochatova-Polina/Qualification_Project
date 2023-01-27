@@ -59,14 +59,16 @@ public class Controller extends HttpServlet {
     commands.put("logout", new LogoutCommand());
     commands.put("profile", new ProfileCommand());
     commands.put("catalogue", new CatalogueCommand(cruiseService));
-    commands.put("filterCruises", new FilterCruisesCommand(cruiseService));
     commands.put("displayFormWithCruiseInfo", new DisplayFormWithCruiseInfoCommand(cruiseService, orderService));
 
     commands.put("createOrder", new CreateOrderCommand(orderService, userService, cruiseService));
     commands.put("confirmOrder", new ConfirmOrderCommand(orderService));
+    commands.put("confirmCruise", new ConfirmCruiseCommand(cruiseService));
+    commands.put("confirmAll", new ConfirmAllCommand(orderService));
     commands.put("createCruise", new CreateCruiseCommand(cruiseService, routeService, shipService, staffService));
     commands.put("deleteCruise", new DeleteCruiseCommand(cruiseService));
     commands.put("editCruise", new EditCruiseCommand(cruiseService, shipService, routeService));
+    commands.put("resetFilter", new ResetFilterCommand(cruiseService));
 
     commands.put("changeLocale", new ChangeLocaleCommand());
   }

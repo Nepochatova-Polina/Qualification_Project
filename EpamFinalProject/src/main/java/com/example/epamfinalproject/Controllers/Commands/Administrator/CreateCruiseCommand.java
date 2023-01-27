@@ -70,8 +70,8 @@ public class CreateCruiseCommand implements Command {
     if (Validation.validateCruiseFields(cruise)) {
       cruise.setShip(addShipRecord(ship));
       cruise.setRoute(addRouteRecord(route));
-      cruiseService.createCruise(cruise);
       addStaffRecords(staff, cruise.getShip().getId());
+      cruiseService.createCruise(cruise);
       log.debug("Record was added");
       log.debug(Constants.COMMAND_FINISHED);
     } else {
@@ -88,13 +88,13 @@ public class CreateCruiseCommand implements Command {
    *
    * @return Route instance
    */
-  public Route createRoute(HttpServletRequest request) {
+  private Route createRoute(HttpServletRequest request) {
     Route route = new Route();
     route.setDeparture(request.getParameter(FieldKey.DEPARTURE));
     route.setDestination(request.getParameter(FieldKey.DESTINATION));
     route.setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
     if (!Validation.validateRouteFields(route)
-        || routeService.getRouteByAllParameters(route) != null) {
+        || routeService.getRouteByAllParameters(route).getDeparture() != null) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ROUTE_INVALID);
       log.trace("Invalid Route parameters");
       log.debug(Constants.COMMAND_FINISHED);
@@ -125,7 +125,7 @@ public class CreateCruiseCommand implements Command {
     ship.setName(request.getParameter(FieldKey.CRUISE_SHIP_NAME));
     ship.setPassengerCapacity(Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)));
     if (!Validation.validateShipFields(ship)
-        || shipService.getShipByName(ship.getName()) != null) {
+        || shipService.getShipByName(ship.getName()).getName() != null) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.SHIP_INVALID);
       log.trace("Invalid Ship parameters");
       log.debug(Constants.COMMAND_FINISHED);

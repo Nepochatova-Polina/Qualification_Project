@@ -42,54 +42,6 @@ public class StaffImplementation implements StaffDAO {
   }
 
   @Override
-  public void updateStaffByID(Staff staff, long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
-      connection.setAutoCommit(false);
-      preparedStatement = connection.prepareStatement(StaffQueries.UPDATE_STAFF_BY_ID_QUERY);
-      preparedStatement.setString(1, staff.getFirstName());
-      preparedStatement.setString(2, staff.getLastName());
-      preparedStatement.setLong(3, staff.getShipId());
-      preparedStatement.setLong(4, id);
-      if (preparedStatement.executeUpdate() <= 0) {
-        connection.rollback();
-        log.warn("Cannot update staff.");
-      }
-      connection.commit();
-      connection.setAutoCommit(true);
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-  }
-
-  @Override
-  public Staff getStaffByID(long id) {
-    Staff staff = new Staff();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(StaffQueries.GET_STAFF_BY_ID_QUERY);
-      preparedStatement.setLong(1, id);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet.next()) {
-        staff = staffShaper.shapeData(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return staff;
-  }
-
-  @Override
   public List<Staff> getAllStaff() {
     List<Staff> staffList = new ArrayList<>();
     try (Connection connection = ConnectionPool.getConnection()) {

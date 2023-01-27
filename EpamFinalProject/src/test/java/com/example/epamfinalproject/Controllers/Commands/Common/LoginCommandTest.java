@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Database.Interfaces.*;
+import com.example.epamfinalproject.Database.Queries.CruiseQueries;
 import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Services.*;
@@ -109,10 +110,12 @@ class LoginCommandTest {
     when(request.getServletContext().getAttribute("loggedUsers")).thenReturn(new HashSet<String>());
 
     when(cruiseService.getCruiseByID(user.getId()))
-        .thenReturn(new Cruise(new Ship("Name", 2), new Route(), null, 0, null, null));
+        .thenReturn(new Cruise(new Ship("Name", 2),
+                new Route(), null, 0, null, null));
     when(orderService.getOrdersByUserID(user.getId())).thenReturn(List.of(new Order()));
     when(orderService.getBookedSeatsByCruiseID(any(Long.class))).thenReturn(0);
-    when(cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0)).thenReturn(List.of(new Cruise()));
+    when(cruiseService.getAllCruisesForPage(CruiseQueries.GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY))
+        .thenReturn(List.of(new Cruise()));
 
     assertEquals(Constants.REDIRECT + Path.ORDER_PAGE, command.execute(request));
   }

@@ -1,5 +1,7 @@
 package com.example.epamfinalproject.Controllers.Commands.Common;
 
+import static com.example.epamfinalproject.Database.Queries.CruiseQueries.GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY;
+
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
@@ -8,6 +10,8 @@ import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Services.UserService;
 import com.example.epamfinalproject.Utility.*;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
@@ -34,7 +38,6 @@ public class SignUpCommand implements Command {
       log.trace("Password Confirmation Failed");
       return Constants.REDIRECT + Path.SIGN_UP_PAGE;
     }
-
     User user =
         new User.UserBuilder()
             .firstName(request.getParameter(FieldKey.FIRST_NAME))
@@ -55,16 +58,18 @@ public class SignUpCommand implements Command {
       return Constants.REDIRECT + Path.LOGIN_PAGE;
     }
     userService.registerUser(user);
-
-    SessionUtility.setParamsForClient(
-        request,
-        user,
-        cruiseService.getActualCruisesForPage(Constants.PAGE_SIZE, 0),
-        new ArrayList<>());
+    try {
+      SessionUtility.setParamsForClient(
+          request,
+          user,
+          cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
+          new ArrayList<>());
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
     request.getSession().setAttribute("role", user.getRole());
 
     log.debug(Constants.COMMAND_FINISHED);
-
     return Constants.REDIRECT + Path.CLIENT_PAGE;
   }
 }

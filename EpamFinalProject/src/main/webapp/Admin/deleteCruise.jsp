@@ -6,6 +6,7 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
 
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <style>
@@ -138,10 +139,5 @@
     <input type="submit" style="max-width: 120px;height: 50px; margin-top: 20px"
            value="<fmt:message key="admin.button.delete"/>">
 </form>
-<%--<form method="get" action="${pageContext.request.contextPath}/controller">--%>
-<%--    <input type="hidden" name="command" value="deleteCruise"/>--%>
-<%--    <input type="hidden" name="all" value="true">--%>
-<%--<input type="submit" style="max-width: 120px;height: 50px; margin-top: 20px" value="<fmt:message key="admin.button.delete.all"/>">--%>
-<%--</form>--%>
 </body>
 </html>

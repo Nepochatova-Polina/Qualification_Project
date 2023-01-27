@@ -5,6 +5,7 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
 
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <style>
@@ -82,12 +83,12 @@
         <br>
         <div class="text-center row">
             <a class="col-sm-3" href="createCruise.jsp" style="color: black">
-                <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                <h5><strong><fmt:message key="admin.label.create"/></strong></h5>
                 <p><fmt:message key="admin.description.label.create.cruise"/></p>
             </a>
             <form class=" col-sm-3" method="get" action="${pageContext.request.contextPath}/controller">
                 <button type="submit" style="border: none; background-color: inherit">
-                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                    <h5><strong><fmt:message key="admin.label.edit"/></strong></h5>
                     <p><fmt:message key="admin.description.label.edit.cruise"/></p>
                     <input type="hidden" name="page" value="${1}">
                     <input type="hidden" name="command" value="catalogue"/>
@@ -96,7 +97,7 @@
             </form>
             <form class="col-sm-3" method="get" action="${pageContext.request.contextPath}/controller">
                 <button type="submit" style="border: none; background-color: inherit">
-                    <h5><strong><fmt:message key="admin.entity.label.cruise"/></strong></h5>
+                    <h5><strong><fmt:message key="admin.label.delete"/></strong></h5>
                     <p><fmt:message key="admin.description.label.delete.cruise"/></p>
                     <input type="hidden" name="page" value="${1}">
                     <input type="hidden" name="command" value="catalogue"/>

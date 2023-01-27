@@ -1,10 +1,13 @@
+<%@ page import="com.lambdaworks.codec.Base64" %>
+<%@ page import="com.example.epamfinalproject.Utility.FieldKey" %>
+<%@ page import="java.util.Arrays" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
-
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <style>
@@ -68,55 +71,63 @@
                 <c:out value="${user.lastName}"/>
             </div>
             <div style="display: flex;align-items: flex-end;">
-                <form id="logout" class="navbar-form" method="get" action="${pageContext.request.contextPath}/controller">
+                <form id="logout" class="navbar-form" method="get"
+                      action="${pageContext.request.contextPath}/controller">
                     <input type="submit" class="btn col logout-btn" value="<fmt:message key="button.logout"/>">
                     <input type="hidden" name="command" value="logout"/>
                 </form>
             </div>
         </div>
     </div>
-    <div class="card-group container-fluid col-sm-10">
-        <div class="row">
-            <c:forEach var="order" items="${sessionScope.orders}">
-                <div class="card">
-                    <div class="card-header">
-                        <h3><strong><c:out value="${order.cruise.name}"/></strong></h3>
-                    </div>
-                    <form class="card-body text-center" method="post"
-                          action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="displayOrderForm"/>
-                        <input type="hidden" name="id" value="${order.cruise.id}">
-                        <div class="card-text">
-                            <h4><strong><fmt:message key="cruise.label.ship.name"/></strong>
-                            </h4><h5><c:out value="${order.cruise.ship.name}"/></h5>
-                            <div class="row text-center">
-                                <h4><strong><fmt:message key="cruise.label.departure"/></strong></h4>
-                                <p> --> </p>
-                                <h4><strong><fmt:message key="cruise.label.destination"/></strong></h4>
-                            </div>
-                            <div class="row text-center">
-                                <h5><c:out value="${order.cruise.route.destination}"/></h5>
-                                <p> --> </p>
-                                <h5><c:out value="${order.cruise.route.departure}"/></h5>
-                            </div>
-                            <div class="row" style="text-align: center">
-                                <h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5>
-                                <p> --> </p>
-                                <h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5>
-                            </div>
-                            <div class="row text-center">
-                                <h6><c:out value="${order.cruise.startOfTheCruise}"/></h6>
-                                <p> --> </p>
-                                <h6><c:out value="${order.cruise.endOfTheCruise}"/></h6>
-                            </div>
-                            <div class="card-footer">
-                                <p><strong><fmt:message key="order.label.status"/></strong>:
-                                        <c:out value="${order.status}"/>
-                            </div>
+    <div class="row">
+        <c:if test="${sessionScope.passport_img!= null}">
+            <div class="col-sm-3" style="margin-left: 50px; margin-top: 40px">
+                <img src="${sessionScope.passport_img}" width="300" height="350" alt="passport">
+            </div>
+        </c:if>
+        <div class="card-group container-fluid col-sm-8">
+            <div class="row">
+                <c:forEach var="order" items="${sessionScope.orders}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><strong><c:out value="${order.cruise.name}"/></strong></h3>
                         </div>
-                    </form>
-                </div>
-            </c:forEach>
+                        <form class="card-body text-center" method="post"
+                              action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="displayOrderForm"/>
+                            <input type="hidden" name="id" value="${order.cruise.id}">
+                            <div class="card-text">
+                                <h4><strong><fmt:message key="cruise.label.ship.name"/></strong>
+                                </h4><h5><c:out value="${order.cruise.ship.name}"/></h5>
+                                <div class="row text-center">
+                                    <h4><strong><fmt:message key="cruise.label.departure"/></strong></h4>
+                                    <p> --> </p>
+                                    <h4><strong><fmt:message key="cruise.label.destination"/></strong></h4>
+                                </div>
+                                <div class="row text-center">
+                                    <h5><c:out value="${order.cruise.route.destination}"/></h5>
+                                    <p> --> </p>
+                                    <h5><c:out value="${order.cruise.route.departure}"/></h5>
+                                </div>
+                                <div class="row" style="text-align: center">
+                                    <h5><strong><fmt:message key="cruise.label.leaving.date"/></strong></h5>
+                                    <p> --> </p>
+                                    <h5><strong><fmt:message key="cruise.label.arriving.date"/></strong></h5>
+                                </div>
+                                <div class="row text-center">
+                                    <h6><c:out value="${order.cruise.startOfTheCruise}"/></h6>
+                                    <p> --> </p>
+                                    <h6><c:out value="${order.cruise.endOfTheCruise}"/></h6>
+                                </div>
+                                <div class="card-footer">
+                                    <p><strong><fmt:message key="order.label.status"/></strong>:
+                                            <c:out value="${order.status}"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
     </div>
 </div>

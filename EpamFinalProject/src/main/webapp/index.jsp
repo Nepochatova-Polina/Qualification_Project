@@ -4,7 +4,7 @@
 
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
-
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <style>
@@ -52,15 +52,17 @@
     </div>
 </div>
 <div>
-    <img src="banner.jpg" class="banner" alt="Snow">
+    <img src="banner.jpg" class="banner" alt="banner">
     <div class="centered">
         <h1><fmt:message key="home.slogan"/></h1>
         <c:if test="${sessionScope.message != null}">
             <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
         </c:if>
         <div class="buttons">
+            <c:if test="${sessionScope.user == null}">
             <a href="login.jsp" class="log-button"><fmt:message key="button.login"/></a>
             <a href="signUp.jsp" class="log-button" style="margin-top: 5px;"><fmt:message key="button.signUp"/></a>
+            </c:if>
         </div>
     </div>
 </div>

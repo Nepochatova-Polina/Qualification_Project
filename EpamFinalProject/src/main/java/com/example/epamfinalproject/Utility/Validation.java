@@ -1,6 +1,9 @@
 package com.example.epamfinalproject.Utility;
 
 import com.example.epamfinalproject.Entities.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 /** Utility class for validating incoming data */
@@ -30,5 +33,18 @@ public class Validation {
 
   public static boolean validateCruiseFields(Cruise cruise) {
     return Pattern.compile(Regex.CRUISE_NAME).matcher(cruise.getName()).find();
+  }
+  /**
+   * @param date a string that supposedly contains a date
+   * @return true - if date is valid format, false - if parsing is impossible
+   */
+  public static boolean isDateValid(String date) {
+    if (date.equals("")) return true;
+    try {
+      LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+      return true;
+    } catch (DateTimeParseException e) {
+      return false;
+    }
   }
 }

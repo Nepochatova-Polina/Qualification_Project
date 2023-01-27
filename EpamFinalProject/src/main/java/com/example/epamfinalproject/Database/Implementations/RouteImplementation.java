@@ -120,7 +120,9 @@ public class RouteImplementation implements RouteDAO {
       preparedStatement.setString(2, route.getDestination());
       preparedStatement.setInt(3, route.getTransitTime());
       ResultSet resultSet = preparedStatement.executeQuery();
-      routeRecord = routeShaper.shapeData(resultSet);
+      if(resultSet.next()) {
+        routeRecord = routeShaper.shapeData(resultSet);
+      }
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {

@@ -77,7 +77,7 @@
                             </c:if>
                             <div class="passport_form">
                                 <h5><strong><fmt:message key="order.label.passport"/></strong></h5>
-                                <input type="file" placeholder="<fmt:message key="button.submit"/>" name="passport"  accept="image/jpeg"/>
+                                <input type="file" placeholder="<fmt:message key="button.submit"/>" name="passport"  accept="image/png"/>
                                 <input type="submit" id="submit_btn" value="<fmt:message key="button.order"/>"/>
                             </div>
                         </article>

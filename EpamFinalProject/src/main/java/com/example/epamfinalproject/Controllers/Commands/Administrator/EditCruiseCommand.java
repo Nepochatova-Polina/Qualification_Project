@@ -17,10 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import static com.example.epamfinalproject.Database.Queries.CruiseQueries.GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY;
+
 /**
- * The Command collects data from the request and checks which fields have been changed,
- * generates a new Cruise class instance and overwrites the data in the database.
- * Fields for which there is no new data remain unchanged.
+ * The Command collects data from the request and checks which fields have been changed, generates a
+ * new Cruise class instance and overwrites the data in the database. Fields for which there is no
+ * new data remain unchanged.
  */
 public class EditCruiseCommand implements Command {
   private static final Logger log = LogManager.getLogger(EditCruiseCommand.class);
@@ -69,8 +71,8 @@ public class EditCruiseCommand implements Command {
     }
     if (Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)) != 0) {
       cruise
-              .getRoute()
-              .setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
+          .getRoute()
+          .setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
     }
     if (!Validation.validateRouteFields(cruise.getRoute())) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ROUTE_INVALID);
@@ -78,10 +80,12 @@ public class EditCruiseCommand implements Command {
       log.debug(Constants.COMMAND_FINISHED);
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
-    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_LEAVING), "")) {
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_LEAVING), "")
+        && Validation.isDateValid((request.getParameter(FieldKey.CRUISE_LEAVING)))) {
       cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_LEAVING)));
     }
-    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_ARRIVING), "")) {
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_ARRIVING), "")
+        && Validation.isDateValid((request.getParameter(FieldKey.CRUISE_ARRIVING)))) {
       cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_ARRIVING)));
     }
     if (Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)) != 0) {
@@ -99,7 +103,7 @@ public class EditCruiseCommand implements Command {
       log.debug("Route Record was updated");
 
       SessionUtility.setCruisesParams(
-          request, cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0));
+          request, cruiseService.getAllCruisesForPage(GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY));
 
     } else {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.CRUISE_INVALID);

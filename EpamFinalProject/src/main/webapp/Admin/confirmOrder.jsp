@@ -6,6 +6,7 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
 
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <style>
@@ -54,6 +55,7 @@
     </div>
 </div>
 <hr style="background-color: aliceblue">
+<h2 style="color: white" class="text-center"><fmt:message key="admin.description.label.confirm.order"/></h2>
 <form class="container-fluid" style="display: flex;justify-content: space-around;flex-direction: column;" method="get"
       action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="confirmOrder"/>
@@ -99,7 +101,7 @@
         <c:forEach var="order" items="${sessionScope.orders}">
             <tr>
                 <td><input type="checkbox" name="id" value="${order.id}"></td>
-                <td><h5><c:out value="${order.cruise.id}"/></h5></td>
+                <td><h5><c:out value="${order.id}"/></h5></td>
                 <td><h5><c:out value="${order.cruise.name}"/></h5></td>
                 <td><h5><c:out value="${order.cruise.ship.name}"/></h5></td>
                 <td><h5><c:out value="${order.cruise.route.departure}"/></h5></td>
@@ -114,6 +116,11 @@
     </table>
     <input type="submit" style="max-width: 120px;height: 50px; margin-top: 20px"
            value="<fmt:message key="button.confirm"/>">
+</form>
+<form class="container-fluid" method="get" action="${pageContext.request.contextPath}/controller">
+    <input type="hidden" name="command" value="confirmAll"/>
+    <input type="hidden" name="all" value="true">
+    <input type="submit" style="max-width: 120px;height: 50px; margin-top: 20px" value="<fmt:message key="button.confirm.all"/>">
 </form>
 </body>
 </html>

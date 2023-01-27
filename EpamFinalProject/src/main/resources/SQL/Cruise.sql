@@ -7,7 +7,8 @@ create table if not exists cruises
     price       integer,
     start_date  date,
     end_date    date,
-    deleted     bool default false
+    deleted     bool default false,
+    confirmed     bool default false
 );
 alter table cruises
     owner to "user";

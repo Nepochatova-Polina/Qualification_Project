@@ -6,6 +6,7 @@
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="resources"/>
 
+<!DOCTYPE html>
 <html lang="${sessionScope.locale}">
 <head>
     <meta charset="UTF-8">
@@ -57,8 +58,7 @@
     </div>
 </div>
 
-<form id="staff-form" method="post" action="${pageContext.request.contextPath}/controller"
-      enctype='multipart/form-data'>
+<form id="form" method="get" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="createCruise"/>
     <hr style="background-color: aliceblue">
     <div class="row">

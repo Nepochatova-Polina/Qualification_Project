@@ -31,7 +31,6 @@ class SignUpCommandTest {
   private static HttpSession session;
   private static UserService userService;
   private static CruiseService cruiseService;
-  private static OrderService orderService;
   private static Command command;
 
   @BeforeAll
@@ -40,7 +39,6 @@ class SignUpCommandTest {
     session = mock(HttpSession.class);
     userService = new UserService(mock(UserDAO.class));
     cruiseService = new CruiseService(mock(CruiseDAO.class));
-    orderService = new OrderService(mock(OrderDAO.class));
     command = new SignUpCommand(userService, cruiseService);
   }
 
@@ -94,7 +92,7 @@ class SignUpCommandTest {
         when(userService.getUserByLogin(any(String.class))).thenReturn(null);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getServletContext().getAttribute("loggedUsers")).thenReturn(new HashSet<String>());
-        when(cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0)).thenReturn(List.of(new Cruise()));
+//        when(cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0)).thenReturn(List.of(new Cruise()));
 
         assertEquals(Constants.REDIRECT + Path.CLIENT_PAGE, command.execute(request));
     }

@@ -16,14 +16,6 @@ public class StaffService {
     staffDAO.registerStaff(staff);
   }
 
-  public void updateStaffByID(Staff staff, long id) {
-    staffDAO.updateStaffByID(staff, id);
-  }
-
-  public Staff getStaffByID(long id) {
-    return staffDAO.getStaffByID(id);
-  }
-
   public List<Staff> getAllStaff() {
     return staffDAO.getAllStaff();
   }

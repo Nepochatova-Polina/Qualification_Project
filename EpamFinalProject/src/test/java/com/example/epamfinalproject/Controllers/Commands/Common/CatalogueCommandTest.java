@@ -14,6 +14,7 @@ import com.example.epamfinalproject.Entities.Ship;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Utility.Constants;
+import com.example.epamfinalproject.Utility.FieldKey;
 import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -44,7 +45,7 @@ class CatalogueCommandTest {
 
   @ParameterizedTest
   @MethodSource("adminInvalidData")
-  void catalogueCommandInvalidPageAdminTest(String path, String page) {
+  void executeInvalidPageAdminTest(String path, String page) {
     when(request.getSession()).thenReturn(session);
     when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
     when(request.getSession().getAttribute("user")).thenReturn(userAdmin);
@@ -52,12 +53,12 @@ class CatalogueCommandTest {
     when(request.getParameter("page-path")).thenReturn(path);
     when(request.getParameter("page")).thenReturn(page);
 
-    assertEquals(Constants.REDIRECT + Path.ADMINISTRATOR_PAGE, command.execute(request));
+    assertEquals(Constants.REDIRECT + Path.MAIN_PAGE, command.execute(request));
   }
 
   @ParameterizedTest
   @MethodSource("clientInvalidData")
-  void catalogueCommandInvalidPageClientTest(String path, String page) {
+  void executeInvalidPageClientTest(String path, String page) {
     when(request.getSession()).thenReturn(session);
     when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
     when(request.getSession().getAttribute("user")).thenReturn(userClient);
@@ -70,7 +71,7 @@ class CatalogueCommandTest {
 
   @ParameterizedTest
   @MethodSource("adminValidData")
-  void catalogueCommandValidPageAdminTest(String path, String page) {
+  void executeValidPageAdminTest(String path, String page) {
     when(request.getSession()).thenReturn(session);
     when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
     when(request.getSession().getAttribute("user")).thenReturn(userAdmin);
@@ -83,7 +84,7 @@ class CatalogueCommandTest {
 
   @ParameterizedTest
   @MethodSource("clientValidData")
-  void catalogueCommandValidPageClientTest(String path, String page) {
+  void executeValidPageClientTest(String path, String page) {
     when(request.getSession()).thenReturn(session);
     when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
     when(request.getSession().getAttribute("user")).thenReturn(userClient);
@@ -92,6 +93,40 @@ class CatalogueCommandTest {
     when(request.getParameter("page")).thenReturn(page);
 
     assertEquals(Constants.REDIRECT + path, command.execute(request));
+  }
+
+  @ParameterizedTest
+  @MethodSource("validFilterData")
+  void executeValidFilterTest(String leavingDate, String arrivingDate, String transitTime) {
+    session.setAttribute(FieldKey.CRUISE_LEAVING, leavingDate);
+    session.setAttribute(FieldKey.CRUISE_ARRIVING, arrivingDate);
+    session.setAttribute(FieldKey.TRANSIT_TIME, transitTime);
+
+    when(request.getSession()).thenReturn(session);
+    when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
+    when(request.getSession().getAttribute("user")).thenReturn(userClient);
+
+    when(request.getParameter("page-path")).thenReturn("/test.jsp");
+    when(request.getParameter("page")).thenReturn("1");
+
+    assertEquals(Constants.REDIRECT + "/test.jsp", command.execute(request));
+  }
+
+  @ParameterizedTest
+  @MethodSource("invalidFilterData")
+  void executeInvalidFilterTest(String leavingDate, String arrivingDate, String transitTime) {
+    session.setAttribute(FieldKey.CRUISE_LEAVING, leavingDate);
+    session.setAttribute(FieldKey.CRUISE_ARRIVING, arrivingDate);
+    session.setAttribute(FieldKey.TRANSIT_TIME, transitTime);
+
+    when(request.getSession()).thenReturn(session);
+    when(request.getSession().getAttribute("cruise")).thenReturn(cruise);
+    when(request.getSession().getAttribute("user")).thenReturn(userClient);
+
+    when(request.getParameter("page-path")).thenReturn("/test.jsp");
+    when(request.getParameter("page")).thenReturn("1");
+
+    assertEquals(Constants.REDIRECT + "/test.jsp", command.execute(request));
   }
 
   static Stream<Arguments> adminInvalidData() {
@@ -120,5 +155,27 @@ class CatalogueCommandTest {
         Arguments.of("/catalogue.jsp", "1"),
         Arguments.of("/catalogue.jsp", "3"),
         Arguments.of("/catalogue.jsp", null));
+  }
+
+  static Stream<Arguments> validFilterData() {
+    return Stream.of(
+        Arguments.of(null, null, "2"),
+        Arguments.of(null, "2022-12-12", null),
+        Arguments.of("2022-12-12", null, null),
+        Arguments.of("2022-12-12", "2022-12-12", null),
+        Arguments.of("2022-12-12", null, "2"),
+        Arguments.of(null, "2022-12-12", "2"),
+        Arguments.of("2022-12-12", "2022-12-12", "2"));
+  }
+
+  static Stream<Arguments> invalidFilterData() {
+    return Stream.of(
+        Arguments.of("2022-11-11", "2022-11-11", ""), // invalid transit time
+        Arguments.of("2022-11-11", "202-12-12", "1"), // invalid arriving date
+        Arguments.of("", "2022-11-11", "1"), // invalid leaving time
+        Arguments.of("2022-12-100", "20-22-12-12", "1"), // invalid arriving and leaving dates
+        Arguments.of("2022-2-2", "2022-11-11", "-2"), // invalid leaving date and transit time
+        Arguments.of("2022-11-11", "", "-2"), // invalid arriving and transit time
+        Arguments.of("2-0-2-2-12-12", "abvgt", "-2")); // invalid all values
   }
 }

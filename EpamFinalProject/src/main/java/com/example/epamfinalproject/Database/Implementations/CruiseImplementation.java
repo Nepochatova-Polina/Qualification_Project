@@ -9,7 +9,6 @@ import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Services.StaffService;
 import com.example.epamfinalproject.Utility.Constants;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -97,10 +96,33 @@ public class CruiseImplementation implements CruiseDAO {
   }
 
   @Override
-  public int getNumberOfActualCruises() {
+  public void confirmCruiseByID(long id) {
+    try (Connection connection = ConnectionPool.getConnection()) {
+      connection.setAutoCommit(false);
+      preparedStatement = connection.prepareStatement(CruiseQueries.CONFIRM_CRUISE_BY_ID_QUERY);
+      preparedStatement.setLong(1, id);
+      if (preparedStatement.executeUpdate() <= 0) {
+        connection.rollback();
+        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      }
+      connection.commit();
+      connection.setAutoCommit(true);
+    } catch (SQLException e) {
+      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
+    } finally {
+      try {
+        preparedStatement.close();
+      } catch (SQLException e) {
+        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      }
+    }
+  }
+
+  @Override
+  public int getNumberOfActualCruises(String query) {
     int rowsCount = 0;
     try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_NUMBER_OF_ACTUAL_CRUISES);
+      preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
         rowsCount = resultSet.getInt(1);
@@ -162,12 +184,10 @@ public class CruiseImplementation implements CruiseDAO {
   }
 
   @Override
-  public List<Cruise> getAllCruisesForPage(int limit, int offset) {
+  public List<Cruise> getAllCruisesForPage(String query) {
     List<Cruise> cruiseList = new ArrayList<>();
     try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_FOR_PAGE_QUERY);
-      preparedStatement.setInt(1, limit);
-      preparedStatement.setInt(2, offset);
+      preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
         cruiseList = cruiseShaper.shapeDataToList(resultSet);
@@ -185,13 +205,10 @@ public class CruiseImplementation implements CruiseDAO {
   }
 
   @Override
-  public List<Cruise> getActualCruisesForPage(int limit, int offset) {
+  public List<Cruise> getActualCruisesForPage(String query) {
     List<Cruise> cruiseList = new ArrayList<>();
     try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_FOR_PAGE_QUERY);
-      preparedStatement.setLong(1, limit);
-      preparedStatement.setInt(2, offset);
+      preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
         cruiseList = cruiseShaper.shapeDataToList(resultSet);
@@ -213,171 +230,6 @@ public class CruiseImplementation implements CruiseDAO {
     List<Cruise> cruiseList = new ArrayList<>();
     try (Connection connection = ConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_QUERY);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesByDuration(int duration) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_BY_DURATION_QUERY);
-      preparedStatement.setInt(1, duration);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesAfterDate(LocalDate date) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_AFTER_DATE);
-      preparedStatement.setDate(1, Date.valueOf(date));
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesBeforeDate(LocalDate date) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_BEFORE_DATE);
-      preparedStatement.setDate(1, Date.valueOf(date));
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesBetweenTwoDates(LocalDate start, LocalDate end) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_ALL_CRUISES_BETWEEN_DATES_QUERY);
-      preparedStatement.setDate(1, Date.valueOf(start));
-      preparedStatement.setDate(2, Date.valueOf(end));
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesByStartAndDuration(LocalDate start, int duration) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_CRUISES_BY_START_AND_DURATION_QUERY);
-      preparedStatement.setDate(1, Date.valueOf(start));
-      preparedStatement.setInt(2, duration);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesByEndAndDuration(LocalDate end, int duration) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_CRUISES_BY_END_AND_DURATION_QUERY);
-      preparedStatement.setDate(1, Date.valueOf(end));
-      preparedStatement.setInt(2, duration);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
-  public List<Cruise> getAllCruisesByDatesAndDuration(
-      LocalDate start, LocalDate end, int duration) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement =
-          connection.prepareStatement(CruiseQueries.GET_CRUISES_BY_DATES_AND_DURATION_QUERY);
-      preparedStatement.setDate(1, Date.valueOf(start));
-      preparedStatement.setDate(2, Date.valueOf(end));
-      preparedStatement.setInt(3, duration);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
         cruiseList = cruiseShaper.shapeDataToList(resultSet);

@@ -24,6 +24,7 @@ public class UserShaper implements DataShaper<User> {
         .login(resultSet.getString(FieldKey.LOGIN))
         .password(resultSet.getString(FieldKey.PASSWORD))
         .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
+        .passport(resultSet.getBytes(FieldKey.PASSPORT))
         .build();
   }
 
@@ -45,6 +46,7 @@ public class UserShaper implements DataShaper<User> {
               .login(resultSet.getString(FieldKey.LOGIN))
               .password(resultSet.getString(FieldKey.PASSWORD))
               .role(UserRole.fromString(resultSet.getString(FieldKey.ROLE)))
+              .passport(resultSet.getBytes(FieldKey.PASSPORT))
               .build();
       userList.add(user);
     }

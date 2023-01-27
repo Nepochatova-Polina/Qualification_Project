@@ -157,6 +157,13 @@ class CreateOrderCommandTest {
                 return null;
               }
             });
+    when(userService.getUserByID(any(Long.class)))
+        .thenReturn(
+            new User.UserBuilder()
+                .login("Login")
+                .role(UserRole.CLIENT)
+                .passport(new byte[] {})
+                .build());
 
     assertEquals(Constants.REDIRECT + Path.CATALOGUE_PAGE, command.execute(request));
   }

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import static com.example.epamfinalproject.Database.Queries.CruiseQueries.GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY;
+
 /**
  * The Command to delete a Cruise record from the database.
  * The command changes the value of the "deleted" field to true,
@@ -47,7 +49,7 @@ public class DeleteCruiseCommand implements Command {
     }
 
     SessionUtility.setCruisesParams(
-        request, cruiseService.getAllCruisesForPage(Constants.PAGE_SIZE, 0));
+        request, cruiseService.getAllCruisesForPage(GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY));
     log.debug(Constants.COMMAND_FINISHED);
     return Constants.REDIRECT + Path.DELETE_CRUISE_PAGE;
   }
