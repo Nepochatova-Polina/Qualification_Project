@@ -98,28 +98,6 @@ class LoginCommandTest {
     assertEquals(Constants.REDIRECT + Path.CLIENT_PAGE, command.execute(request));
   }
 
-  @ParameterizedTest
-  @MethodSource("validClientData")
-  void executePreCommandTest(User user) {
-    when(request.getSession()).thenReturn(session);
-    when(request.getParameter(FieldKey.LOGIN)).thenReturn(user.getLogin());
-    when(userService.getUserByLogin(any(String.class))).thenReturn(user);
-    when(request.getParameter(FieldKey.PASSWORD)).thenReturn("password");
-    when(request.getSession().getAttribute("preCommand")).thenReturn("displayFormWithCruiseInfo");
-    when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-    when(request.getServletContext().getAttribute("loggedUsers")).thenReturn(new HashSet<String>());
-
-    when(cruiseService.getCruiseByID(user.getId()))
-        .thenReturn(new Cruise(new Ship("Name", 2),
-                new Route(), null, 0, null, null));
-    when(orderService.getOrdersByUserID(user.getId())).thenReturn(List.of(new Order()));
-    when(orderService.getBookedSeatsByCruiseID(any(Long.class))).thenReturn(0);
-    when(cruiseService.getAllCruisesForPage(CruiseQueries.GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY))
-        .thenReturn(List.of(new Cruise()));
-
-    assertEquals(Constants.REDIRECT + Path.ORDER_PAGE, command.execute(request));
-  }
-
   static Stream<Arguments> validAdminData() {
     return Stream.of(
         Arguments.of(

@@ -36,19 +36,11 @@ public class CruiseService {
     return cruiseDAO.getActualCruisesForPage(query);
   }
 
-  public List<Cruise> getActualCruises() {
-    return cruiseDAO.getActualCruises();
-  }
-
   public int getNumberOfActualCruises(String query) {
     return cruiseDAO.getNumberOfActualCruises(query);
   }
 
   public Cruise getCruiseByID(long id) {
     return cruiseDAO.getCruiseByID(id);
-  }
-
-  public List<Cruise> getCruisesByShipID(long id) {
-    return cruiseDAO.getCruisesByShipID(id);
   }
 }

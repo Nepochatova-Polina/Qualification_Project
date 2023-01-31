@@ -1,23 +1,17 @@
 package com.example.epamfinalproject.Controllers.Commands.Common;
 
 import static com.example.epamfinalproject.Database.Queries.CruiseQueries.GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY;
-import static com.example.epamfinalproject.Database.Queries.CruiseQueries.GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY;
 
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.MessageKeys;
 import com.example.epamfinalproject.Controllers.Path;
-import com.example.epamfinalproject.Entities.Cruise;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
-import com.example.epamfinalproject.Entities.Order;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.*;
 import com.example.epamfinalproject.Utility.Constants;
 import com.example.epamfinalproject.Utility.Encryptor;
 import com.example.epamfinalproject.Utility.FieldKey;
 import com.example.epamfinalproject.Utility.SessionUtility;
-
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -78,15 +72,11 @@ public class LoginCommand implements Command {
         log.debug("Logging in as CLIENT");
         log.debug(Constants.COMMAND_FINISHED);
 
-        try {
-          SessionUtility.setParamsForClient(
-              request,
-              user,
-              cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
-              orderService.getOrdersByUserID(user.getId()));
-        } catch (UnsupportedEncodingException e) {
-          throw new RuntimeException(e);
-        }
+        SessionUtility.setParamsForClient(
+            request,
+            user,
+            cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
+            orderService.getOrdersByUserID(user.getId()));
         return Constants.REDIRECT + Path.CLIENT_PAGE;
       }
     } else {
@@ -98,33 +88,11 @@ public class LoginCommand implements Command {
 
   /**
    * @param user User to be authorized
-   * @param request
    * @return true - if the user entered the correct login and password, false - if there is a
    *     mismatch
    */
   private boolean validateUserData(User user, HttpServletRequest request) {
     return (user != null)
         && (Encryptor.check(user.getPassword(), request.getParameter(FieldKey.PASSWORD)));
-  }
-
-  /**
-   * Updating data in session, set User data, selected Cruise data, availability for this cruise and
-   * all User's orders.
-   *
-   * @param user logged user
-   */
-  private void updateSession(HttpServletRequest request, User user) throws UnsupportedEncodingException {
-    Cruise cruise = cruiseService.getCruiseByID(user.getId());
-    List<Order> orders = orderService.getOrdersByUserID(user.getId());
-    int freeSeats =
-        cruise.getShip().getPassengerCapacity()
-            - orderService.getBookedSeatsByCruiseID(cruise.getId());
-    request.getSession().setAttribute("cruise", cruise);
-    request.getSession().setAttribute("freeSeats", freeSeats);
-    SessionUtility.setParamsForClient(
-        request,
-        user,
-        cruiseService.getAllCruisesForPage(GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY),
-        orders);
   }
 }

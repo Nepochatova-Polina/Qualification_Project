@@ -17,12 +17,8 @@ public interface CruiseDAO {
 
   Cruise getCruiseByID(long id);
 
-  List<Cruise> getCruisesByShipID(long id);
-
   List<Cruise> getAllCruisesForPage(String query);
 
   List<Cruise> getActualCruisesForPage(String query);
-
-  List<Cruise> getActualCruises();
 
 }

@@ -11,7 +11,6 @@ import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Services.UserService;
 import com.example.epamfinalproject.Utility.*;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
@@ -58,15 +57,11 @@ public class SignUpCommand implements Command {
       return Constants.REDIRECT + Path.LOGIN_PAGE;
     }
     userService.registerUser(user);
-    try {
-      SessionUtility.setParamsForClient(
-          request,
-          user,
-          cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
-          new ArrayList<>());
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
+    SessionUtility.setParamsForClient(
+        request,
+        user,
+        cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
+        new ArrayList<>());
     request.getSession().setAttribute("role", user.getRole());
 
     log.debug(Constants.COMMAND_FINISHED);

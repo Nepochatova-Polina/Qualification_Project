@@ -162,28 +162,6 @@ public class CruiseImplementation implements CruiseDAO {
   }
 
   @Override
-  public List<Cruise> getCruisesByShipID(long id) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_CRUISE_BY_SHIP_ID);
-      preparedStatement.setLong(1, id);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
-
-  @Override
   public List<Cruise> getAllCruisesForPage(String query) {
     List<Cruise> cruiseList = new ArrayList<>();
     try (Connection connection = ConnectionPool.getConnection()) {
@@ -225,24 +203,4 @@ public class CruiseImplementation implements CruiseDAO {
     return cruiseList;
   }
 
-  @Override
-  public List<Cruise> getActualCruises() {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(CruiseQueries.GET_ALL_ACTUAL_CRUISES_QUERY);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-      }
-    }
-    return cruiseList;
-  }
 }

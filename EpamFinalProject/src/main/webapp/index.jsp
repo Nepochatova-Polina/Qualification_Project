@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
@@ -54,14 +55,14 @@
 <div>
     <img src="banner.jpg" class="banner" alt="banner">
     <div class="centered">
-        <h1><fmt:message key="home.slogan"/></h1>
+        <h1><ctg:sloganTag/></h1>
         <c:if test="${sessionScope.message != null}">
             <h5 style="color: red; text-align: center"><fmt:message key="${sessionScope.message}"/></h5>
         </c:if>
         <div class="buttons">
             <c:if test="${sessionScope.user == null}">
-            <a href="login.jsp" class="log-button"><fmt:message key="button.login"/></a>
-            <a href="signUp.jsp" class="log-button" style="margin-top: 5px;"><fmt:message key="button.signUp"/></a>
+                <a href="login.jsp" class="log-button"><fmt:message key="button.login"/></a>
+                <a href="signUp.jsp" class="log-button" style="margin-top: 5px;"><fmt:message key="button.signUp"/></a>
             </c:if>
         </div>
     </div>
