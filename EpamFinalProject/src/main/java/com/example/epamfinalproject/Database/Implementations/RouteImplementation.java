@@ -33,10 +33,12 @@ public class RouteImplementation implements RouteDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -60,10 +62,12 @@ public class RouteImplementation implements RouteDAO {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
       log.warn(e.toString());
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -82,10 +86,12 @@ public class RouteImplementation implements RouteDAO {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
       log.warn(e.toString());
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return route;
@@ -101,10 +107,12 @@ public class RouteImplementation implements RouteDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return routeList;
@@ -120,16 +128,18 @@ public class RouteImplementation implements RouteDAO {
       preparedStatement.setString(2, route.getDestination());
       preparedStatement.setInt(3, route.getTransitTime());
       ResultSet resultSet = preparedStatement.executeQuery();
-      if(resultSet.next()) {
+      if (resultSet.next()) {
         routeRecord = routeShaper.shapeData(resultSet);
       }
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return routeRecord;

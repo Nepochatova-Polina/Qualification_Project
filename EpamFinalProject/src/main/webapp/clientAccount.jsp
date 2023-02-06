@@ -1,8 +1,6 @@
-<%@ page import="com.lambdaworks.codec.Base64" %>
-<%@ page import="com.example.epamfinalproject.Utility.FieldKey" %>
-<%@ page import="java.util.Arrays" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="com.example.epamfinalproject.Entities.Enums.Status" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <fmt:setLocale value="${sessionScope.locale}"/>
@@ -94,8 +92,8 @@
                         </div>
                         <form class="card-body text-center" method="post"
                               action="${pageContext.request.contextPath}/controller">
-                            <input type="hidden" name="command" value="displayOrderForm"/>
-                            <input type="hidden" name="id" value="${order.cruise.id}">
+                            <input type="hidden" name="command" value="payForTheOrder"/>
+                            <input type="hidden" name="id" value="${order.id}">
                             <div class="card-text">
                                 <h4><strong><fmt:message key="cruise.label.ship.name"/></strong>
                                 </h4><h5><c:out value="${order.cruise.ship.name}"/></h5>
@@ -122,6 +120,9 @@
                                 <div class="card-footer">
                                     <p><strong><fmt:message key="order.label.status"/></strong>:
                                             <c:out value="${order.status}"/>
+                                        <c:if test="${order.cruise.confirmed == true && order.status != Status.PAID}">
+                                        <button type="submit"><fmt:message key="button.pay"/></button>
+                                        </c:if>
                                 </div>
                             </div>
                         </form>

@@ -26,5 +26,6 @@ public class OrderQueries {
   public static final String GET_BOOKED_SEATS_BY_CRUISE_ID_QUERY =
       "select count(*) from orders where cruise_id = ?";
 
-  public static final String CONFIRM_ORDER_BY_ID = "update orders set status = 'paid' where id = ?";
+  public static final String CONFIRM_ORDER_BY_ID = "update orders set status = 'confirmed' where id = ?";
+  public static final String PAY_FOR_THE_ORDER_BY_ID = "update orders set status = 'paid' where id = ?";
 }

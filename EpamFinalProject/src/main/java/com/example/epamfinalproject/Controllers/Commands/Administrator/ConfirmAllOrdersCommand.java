@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-public class ConfirmAllCommand implements Command {
-  private static final Logger log = LogManager.getLogger(ConfirmAllCommand.class);
+public class ConfirmAllOrdersCommand implements Command {
+  private static final Logger log = LogManager.getLogger(ConfirmAllOrdersCommand.class);
 
   private final OrderService orderService;
 
-  public ConfirmAllCommand(OrderService orderService) {
+  public ConfirmAllOrdersCommand(OrderService orderService) {
     this.orderService = orderService;
   }
 

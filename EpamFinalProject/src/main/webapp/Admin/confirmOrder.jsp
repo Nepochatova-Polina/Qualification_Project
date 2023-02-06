@@ -118,7 +118,7 @@
            value="<fmt:message key="button.confirm"/>">
 </form>
 <form class="container-fluid" method="get" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="confirmAll"/>
+    <input type="hidden" name="command" value="confirmAllOrders"/>
     <input type="hidden" name="all" value="true">
     <input type="submit" style="max-width: 120px;height: 50px; margin-top: 20px" value="<fmt:message key="button.confirm.all"/>">
 </form>

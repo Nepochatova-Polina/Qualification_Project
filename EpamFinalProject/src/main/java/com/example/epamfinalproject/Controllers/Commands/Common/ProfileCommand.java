@@ -23,7 +23,7 @@ public class ProfileCommand implements Command {
     log.debug(Constants.COMMAND_STARTS);
 
     if (request.getSession().getAttribute("user") == null) {
-      log.debug("Unable tp redirect to Profile page");
+      log.debug("Unable to redirect to Profile page");
       log.debug(Constants.COMMAND_FINISHED);
       return Constants.REDIRECT + Path.MAIN_PAGE;
     }

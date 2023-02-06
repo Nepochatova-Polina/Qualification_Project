@@ -33,10 +33,12 @@ public class OrderImplementation implements OrderDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -54,10 +56,14 @@ public class OrderImplementation implements OrderDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        if (preparedStatement != null) {
+          try {
+            preparedStatement.close();
+          } catch (SQLException e) {
+            log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+          }
+        }
       }
     }
     return orderList;
@@ -76,10 +82,14 @@ public class OrderImplementation implements OrderDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        if (preparedStatement != null) {
+          try {
+            preparedStatement.close();
+          } catch (SQLException e) {
+            log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+          }
+        }
       }
     }
     return orderList;
@@ -99,10 +109,12 @@ public class OrderImplementation implements OrderDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return result;
@@ -111,22 +123,42 @@ public class OrderImplementation implements OrderDAO {
   @Override
   public void confirmOrderByID(long id) {
     try (Connection connection = ConnectionPool.getConnection()) {
-      connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(OrderQueries.CONFIRM_ORDER_BY_ID);
       preparedStatement.setLong(1, id);
       if (preparedStatement.executeUpdate() <= 0) {
-        connection.rollback();
         log.warn("Cannot update order information.");
       }
-      connection.commit();
-      connection.setAutoCommit(true);
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
+      }
+    }
+  }
+
+  @Override
+  public void payForTheOrderByID(long id) {
+    try (Connection connection = ConnectionPool.getConnection()) {
+      preparedStatement = connection.prepareStatement(OrderQueries.PAY_FOR_THE_ORDER_BY_ID);
+      preparedStatement.setLong(1, id);
+      if (preparedStatement.executeUpdate() <= 0) {
+
+        log.warn("Cannot update order information.");
+      }
+    } catch (SQLException e) {
+      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
+    } finally {
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }

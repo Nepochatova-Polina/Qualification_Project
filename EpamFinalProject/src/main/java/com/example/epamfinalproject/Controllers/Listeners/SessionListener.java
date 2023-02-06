@@ -6,10 +6,8 @@ import jakarta.servlet.http.HttpSessionListener;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import javax.servlet.annotation.WebListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@WebListener
 public class SessionListener implements HttpSessionListener {
     private static final Logger log = LogManager.getLogger(SessionListener.class);
     private final AtomicInteger activeSessions;

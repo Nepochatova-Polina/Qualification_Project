@@ -51,6 +51,7 @@ class CreateOrderCommandTest {
             new Route(2, "Value", "Value", 4),
             0,
             "false",
+            false,
             null,
             null);
     command = new CreateOrderCommand(orderService, userService, cruiseService);

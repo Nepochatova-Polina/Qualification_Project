@@ -31,4 +31,7 @@ public class OrderService {
   public void confirmOrderByID(long id) {
     orderDAO.confirmOrderByID(id);
   }
+  public void payForTheOrderByID(long id) {
+    orderDAO.payForTheOrderByID(id);
+  }
 }

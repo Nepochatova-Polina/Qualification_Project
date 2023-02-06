@@ -2,7 +2,8 @@ package com.example.epamfinalproject.Entities.Enums;
 
 public enum Status {
   PENDING("pending"),
-  PAID("paid");
+  PAID("paid"),
+  CONFIRMED("confirmed");
 
   private final String text;
 

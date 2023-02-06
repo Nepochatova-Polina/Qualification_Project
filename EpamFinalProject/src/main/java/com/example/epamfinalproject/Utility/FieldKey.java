@@ -42,6 +42,7 @@ public class FieldKey {
   public static final String CRUISE_SHIP_NAME = "ship_name";
   public static final String CRUISE_PRICE = "price";
   public static final String CRUISE_DELETED = "deleted";
+  public static final String CRUISE_CONFIRMED = "confirmed";
   public static final String CRUISE_LEAVING = "start_date";
   public static final String CRUISE_ARRIVING = "end_date";
 }

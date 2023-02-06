@@ -24,7 +24,7 @@ public class ShipImplementation implements ShipDAO {
       preparedStatement.setString(1, ship.getName());
       preparedStatement.setInt(2, ship.getPassengerCapacity());
       if (preparedStatement.executeUpdate() <= 0) {
-        log.warn("Cannot register shipDTO.");
+        log.warn("Cannot register ship.");
       }
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
@@ -50,10 +50,12 @@ public class ShipImplementation implements ShipDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return ship;
@@ -71,10 +73,12 @@ public class ShipImplementation implements ShipDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return shipList;
@@ -97,10 +101,12 @@ public class ShipImplementation implements ShipDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }

@@ -3,6 +3,8 @@ package com.example.epamfinalproject.Database.Implementations;
 import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Database.Queries.CruiseQueries;
+import com.example.epamfinalproject.Database.Queries.RouteQueries;
+import com.example.epamfinalproject.Database.Queries.ShipQueries;
 import com.example.epamfinalproject.Database.Shaper.CruiseShaper;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
 import com.example.epamfinalproject.Entities.Cruise;
@@ -21,24 +23,46 @@ public class CruiseImplementation implements CruiseDAO {
 
   @Override
   public void createCruise(Cruise cruise) {
+    long shipID = 0;
+    long routeID = 0;
     try (Connection connection = ConnectionPool.getConnection()) {
+      connection.setAutoCommit(false);
+      preparedStatement = connection.prepareStatement(ShipQueries.REGISTER_SHIP_QUERY_RETURNING_ID);
+      preparedStatement.setString(1, cruise.getShip().getName());
+      preparedStatement.setInt(2, cruise.getShip().getPassengerCapacity());
+      ResultSet resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) shipID = resultSet.getLong(1);
+
+      preparedStatement = connection.prepareStatement(RouteQueries.CREATE_ROUTE_QUERY_RETURNING_ID);
+      preparedStatement.setString(1, cruise.getRoute().getDeparture());
+      preparedStatement.setString(2, cruise.getRoute().getDestination());
+      preparedStatement.setInt(3, cruise.getRoute().getTransitTime());
+      resultSet = preparedStatement.executeQuery();
+      if (resultSet.next()) routeID = resultSet.getLong(1);
+
       preparedStatement = connection.prepareStatement(CruiseQueries.CREATE_CRUISE_QUERY);
-      preparedStatement.setLong(1, cruise.getShip().getId());
-      preparedStatement.setLong(2, cruise.getRoute().getId());
+      preparedStatement.setLong(1, shipID);
+      preparedStatement.setLong(2, routeID);
       preparedStatement.setString(3, cruise.getName());
       preparedStatement.setInt(4, cruise.getPrice());
       preparedStatement.setDate(5, Date.valueOf(cruise.getStartOfTheCruise()));
       preparedStatement.setDate(6, Date.valueOf(cruise.getEndOfTheCruise()));
       if (preparedStatement.executeUpdate() <= 0) {
         log.warn("Cannot add cruise information.");
+        connection.rollback();
       }
+      connection.commit();
+      connection.setAutoCommit(true);
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
+
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -64,10 +88,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -87,10 +113,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -110,10 +138,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }
@@ -130,10 +160,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return rowsCount;
@@ -152,10 +184,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return cruise;
@@ -173,10 +207,12 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return cruiseList;
@@ -194,13 +230,14 @@ public class CruiseImplementation implements CruiseDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
     return cruiseList;
   }
-
 }

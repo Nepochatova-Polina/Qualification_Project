@@ -2,6 +2,7 @@ package com.example.epamfinalproject.Controllers;
 
 import com.example.epamfinalproject.Controllers.Commands.Administrator.*;
 import com.example.epamfinalproject.Controllers.Commands.Client.CreateOrderCommand;
+import com.example.epamfinalproject.Controllers.Commands.Client.PayForTheOrderCommand;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Commands.Common.*;
 import com.example.epamfinalproject.Database.Implementations.*;
@@ -59,16 +60,18 @@ public class Controller extends HttpServlet {
     commands.put("logout", new LogoutCommand());
     commands.put("profile", new ProfileCommand());
     commands.put("catalogue", new CatalogueCommand(cruiseService));
+    commands.put("resetFilter", new ResetFilterCommand(cruiseService));
     commands.put("displayFormWithCruiseInfo", new DisplayFormWithCruiseInfoCommand(cruiseService, orderService));
 
     commands.put("createOrder", new CreateOrderCommand(orderService, userService, cruiseService));
+    commands.put("payForTheOrder", new PayForTheOrderCommand(orderService));
+
     commands.put("confirmOrder", new ConfirmOrderCommand(orderService));
+    commands.put("confirmAllOrders", new ConfirmAllOrdersCommand(orderService));
     commands.put("confirmCruise", new ConfirmCruiseCommand(cruiseService));
-    commands.put("confirmAll", new ConfirmAllCommand(orderService));
     commands.put("createCruise", new CreateCruiseCommand(cruiseService, routeService, shipService, staffService));
     commands.put("deleteCruise", new DeleteCruiseCommand(cruiseService));
     commands.put("editCruise", new EditCruiseCommand(cruiseService, shipService, routeService));
-    commands.put("resetFilter", new ResetFilterCommand(cruiseService));
 
     commands.put("changeLocale", new ChangeLocaleCommand());
   }

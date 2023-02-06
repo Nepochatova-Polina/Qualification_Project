@@ -17,6 +17,7 @@ public class Cruise {
   private Route route;
   private int price;
   private String deleted;
+  private boolean confirmed;
   LocalDate startOfTheCruise;
   LocalDate endOfTheCruise;
 

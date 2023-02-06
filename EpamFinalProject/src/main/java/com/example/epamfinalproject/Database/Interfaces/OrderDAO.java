@@ -14,4 +14,6 @@ public interface OrderDAO {
   int getBookedSeatsByCruiseID(long id);
 
   void confirmOrderByID(long id);
+
+  void payForTheOrderByID(long id);
 }

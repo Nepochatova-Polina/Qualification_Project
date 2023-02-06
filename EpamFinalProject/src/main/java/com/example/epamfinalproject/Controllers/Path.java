@@ -16,7 +16,6 @@ public final class Path {
   public static final String ADMINISTRATOR_PAGE = "/Admin/adminAccount.jsp";
   public static final String CREATE_CRUISE_PAGE = "/Admin/createCruise.jsp";
   public static final String DELETE_CRUISE_PAGE = "/Admin/deleteCruise.jsp";
-  public static final String DELETE_STAFF_PAGE = "/Admin/deleteStaff.jsp";
   public static final String EDIT_CRUISE_PAGE = "/Admin/editCruise.jsp";
   public static final String DISPLAY_EDIT_CATALOGUE_PAGE = "/Admin/displayCruises.jsp";
   public static final String CONFIRM_ORDERS = "/Admin/confirmOrder.jsp";

@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -56,35 +55,67 @@ class CreateCruiseCommandTest {
             new StaffService(staffDAO));
   }
 
-//  @ParameterizedTest
-//  @MethodSource("validCruiseData")
-//  void executeValidTest(Cruise cruise1) {
-//
-//    when(request.getSession()).thenReturn(session);
-//
-//    when(request.getParameter("ship_name")).thenReturn(cruise1.getShip().getName());
-//    when(request.getParameter(FieldKey.PASSENGER_CAPACITY)).thenReturn(String.valueOf(cruise1.getShip().getPassengerCapacity()));
-//    when(shipService.getShipByName(any(String.class))).thenReturn(null);
-//
-//    when(request.getParameter(FieldKey.DEPARTURE)).thenReturn(cruise1.getRoute().getDeparture());
-//    when(request.getParameter(FieldKey.DESTINATION)).thenReturn(cruise1.getRoute().getDestination());
-//    when(request.getParameter(FieldKey.TRANSIT_TIME)).thenReturn(String.valueOf(cruise1.getRoute().getTransitTime()));
-//    when(routeService.getRouteByAllParameters(any(Route.class))).thenReturn(null);
-//
-//    for (int i = 1; i <= Constants.STAFF_NUMBER; i++) {
-//      when(request.getParameter(FieldKey.FIRST_NAME + i)).thenReturn("Name");
-//      when(request.getParameter(FieldKey.LAST_NAME + i)).thenReturn("Name");
-//    }
-//    when(request.getParameter(FieldKey.CRUISE_NAME)).thenReturn(cruise1.getName());
-//    when(request.getParameter(FieldKey.CRUISE_PRICE)).thenReturn(String.valueOf(cruise1.getPrice()));
-//    when(request.getParameter(FieldKey.CRUISE_LEAVING)).thenReturn(String.valueOf(cruise1.getStartOfTheCruise()));
-//    when(request.getParameter(FieldKey.CRUISE_ARRIVING)).thenReturn(String.valueOf(cruise1.getEndOfTheCruise()));
-//
-////    when(shipService.getShipByName(any(String.class))).thenReturn(cruise1.getShip());
-////    when(routeService.getRouteByAllParameters(any(Route.class))).thenReturn(cruise1.getRoute());
-//
-//    assertEquals(Constants.REDIRECT + Path.CREATE_CRUISE_PAGE, command.execute(request));
-//  }
+  @ParameterizedTest
+  @MethodSource("validCruiseData")
+  void executeValidTest(Cruise cruise1) {
+
+    when(request.getSession()).thenReturn(session);
+
+    when(request.getParameter("ship_name")).thenReturn(cruise1.getShip().getName());
+    when(request.getParameter(FieldKey.PASSENGER_CAPACITY))
+        .thenReturn(String.valueOf(cruise1.getShip().getPassengerCapacity()));
+    when(shipService.getShipByName(any(String.class))).thenReturn(new Ship());
+
+    when(request.getParameter(FieldKey.DEPARTURE)).thenReturn(cruise1.getRoute().getDeparture());
+    when(request.getParameter(FieldKey.DESTINATION))
+        .thenReturn(cruise1.getRoute().getDestination());
+    when(request.getParameter(FieldKey.TRANSIT_TIME))
+        .thenReturn(String.valueOf(cruise1.getRoute().getTransitTime()));
+    when(routeService.getRouteByAllParameters(any(Route.class))).thenReturn(new Route());
+
+    for (int i = 1; i <= Constants.STAFF_NUMBER; i++) {
+      when(request.getParameter(FieldKey.FIRST_NAME + i)).thenReturn("Name");
+      when(request.getParameter(FieldKey.LAST_NAME + i)).thenReturn("Name");
+    }
+    when(request.getParameter(FieldKey.CRUISE_NAME)).thenReturn(cruise1.getName());
+    when(request.getParameter(FieldKey.CRUISE_PRICE))
+        .thenReturn(String.valueOf(cruise1.getPrice()));
+    when(request.getParameter(FieldKey.CRUISE_LEAVING))
+        .thenReturn(String.valueOf(cruise1.getStartOfTheCruise()));
+    when(request.getParameter(FieldKey.CRUISE_ARRIVING))
+        .thenReturn(String.valueOf(cruise1.getEndOfTheCruise()));
+
+    when(shipService.getShipByName(any(String.class))).thenReturn(cruise.getShip());
+
+    assertEquals(Constants.REDIRECT + Path.CREATE_CRUISE_PAGE, command.execute(request));
+  }
+
+  @ParameterizedTest
+  @MethodSource("invalidNameData")
+  void executeInvalidTest(String name) {
+
+    when(request.getSession()).thenReturn(session);
+
+    when(request.getParameter("ship_name")).thenReturn("Name");
+    when(request.getParameter(FieldKey.PASSENGER_CAPACITY)).thenReturn(String.valueOf(10));
+    when(shipService.getShipByName(any(String.class))).thenReturn(new Ship());
+
+    when(request.getParameter(FieldKey.DEPARTURE)).thenReturn("Departure");
+    when(request.getParameter(FieldKey.DESTINATION)).thenReturn("Destination");
+    when(request.getParameter(FieldKey.TRANSIT_TIME)).thenReturn("10");
+    when(routeService.getRouteByAllParameters(any(Route.class))).thenReturn(new Route());
+
+    for (int i = 1; i <= Constants.STAFF_NUMBER; i++) {
+      when(request.getParameter(FieldKey.FIRST_NAME + i)).thenReturn("Name");
+      when(request.getParameter(FieldKey.LAST_NAME + i)).thenReturn("Name");
+    }
+    when(request.getParameter(FieldKey.CRUISE_NAME)).thenReturn(name);
+    when(request.getParameter(FieldKey.CRUISE_PRICE)).thenReturn(String.valueOf(100));
+    when(request.getParameter(FieldKey.CRUISE_LEAVING)).thenReturn("2022-10-10");
+    when(request.getParameter(FieldKey.CRUISE_ARRIVING)).thenReturn("2022-10-10");
+
+    assertEquals(Constants.REDIRECT + Path.ADMINISTRATOR_PAGE, command.execute(request));
+  }
 
   @ParameterizedTest
   @MethodSource("invalidNameData")

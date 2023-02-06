@@ -19,7 +19,4 @@ public class UserQueries {
 
   public static final String UPDATE_USER_PASSPORT_QUERY =
       "update users set passport_img = ? where id = ?";
-
-  public static final String GET_USER_PASSPORT_QUERY =
-      "select passport_img from users where id = ?";
 }

@@ -1,12 +1,15 @@
 package com.example.epamfinalproject.Database.Queries;
 
-/** A;; Queries for Ship table */
+/** Queries for Ship table */
 public class ShipQueries {
 
   private ShipQueries() {}
 
   public static final String REGISTER_SHIP_QUERY =
       "insert into ships(name,passenger_capacity) values (?,?)";
+
+  public static final String REGISTER_SHIP_QUERY_RETURNING_ID =
+      "insert into ships(name,passenger_capacity) values (?,?) returning id";
 
   public static final String GET_SHIP_BY_NAME_QUERY = "select * from ships where name = ?";
 

@@ -11,7 +11,7 @@ import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.Status;
 import com.example.epamfinalproject.Services.OrderService;
 import com.example.epamfinalproject.Utility.Constants;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-class ConfirmAllCommandTest {
+class ConfirmAllOrdersCommandTest {
   private static HttpServletRequest request;
   private static HttpSession session;
   private static Command command;
@@ -29,7 +29,7 @@ class ConfirmAllCommandTest {
     request = mock(HttpServletRequest.class);
     session = mock(HttpSession.class);
     OrderDAO orderDAO = mock(OrderDAO.class);
-    command = new ConfirmAllCommand(new OrderService(orderDAO));
+    command = new ConfirmAllOrdersCommand(new OrderService(orderDAO));
   }
 
   @Test

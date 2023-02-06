@@ -30,7 +30,6 @@ class SignUpCommandTest {
   private static HttpServletRequest request;
   private static HttpSession session;
   private static UserService userService;
-  private static CruiseService cruiseService;
   private static Command command;
 
   @BeforeAll
@@ -38,7 +37,7 @@ class SignUpCommandTest {
     request = mock(HttpServletRequest.class);
     session = mock(HttpSession.class);
     userService = new UserService(mock(UserDAO.class));
-    cruiseService = new CruiseService(mock(CruiseDAO.class));
+    CruiseService cruiseService = new CruiseService(mock(CruiseDAO.class));
     command = new SignUpCommand(userService, cruiseService);
   }
 

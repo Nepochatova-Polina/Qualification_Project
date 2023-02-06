@@ -23,7 +23,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 /**
- * A command to create an instance of the Cruise class and add a record to the database. Available for Administrator
+ * A command to create an instance of the Cruise class and add a record to the database. Available
+ * for Administrator
  */
 public class CreateCruiseCommand implements Command {
   private static final Logger log = LogManager.getLogger(CreateCruiseCommand.class);
@@ -59,25 +60,13 @@ public class CreateCruiseCommand implements Command {
     if (staff.isEmpty()) {
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
-    Cruise cruise = new Cruise();
-    cruise.setName(request.getParameter(FieldKey.CRUISE_NAME));
-    cruise.setPrice(Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)));
-    cruise.setStartOfTheCruise(
-        LocalDate.parse(String.valueOf(request.getParameter(FieldKey.CRUISE_LEAVING))));
-    cruise.setEndOfTheCruise(
-        LocalDate.parse(String.valueOf(request.getParameter(FieldKey.CRUISE_ARRIVING))));
-
-    if (Validation.validateCruiseFields(cruise)) {
-      cruise.setShip(addShipRecord(ship));
-      cruise.setRoute(addRouteRecord(route));
-      addStaffRecords(staff, cruise.getShip().getId());
+    Cruise cruise = createCruise(request, ship, route);
+    if (cruise != null) {
       cruiseService.createCruise(cruise);
+      addStaffRecords(staff, shipService.getShipByName(ship.getName()).getId());
       log.debug("Record was added");
       log.debug(Constants.COMMAND_FINISHED);
     } else {
-      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.CRUISE_INVALID);
-      log.trace("Invalid Cruise parameters");
-      log.debug(Constants.COMMAND_FINISHED);
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
     return Constants.REDIRECT + Path.CREATE_CRUISE_PAGE;
@@ -102,19 +91,6 @@ public class CreateCruiseCommand implements Command {
     }
     return route;
   }
-
-  /**
-   * Adds new Route record to database
-   *
-   * @param route new Route instance without id
-   * @return Route instance with id value
-   */
-  private Route addRouteRecord(Route route) {
-    routeService.createRoute(route);
-    log.debug("Route record was added");
-    return routeService.getRouteByAllParameters(route);
-  }
-
   /**
    * Shapes request to Ship instance
    *
@@ -133,19 +109,29 @@ public class CreateCruiseCommand implements Command {
     }
     return ship;
   }
-
   /**
-   * Adds new Ship instance to database
+   * Shapes request to Route instance
    *
-   * @param ship new Ship instance
-   * @return Ship instance with id value
+   * @return Route instance
    */
-  private Ship addShipRecord(Ship ship) {
-    shipService.registerShip(ship);
-    log.debug("Ship record was added");
-    return shipService.getShipByName(ship.getName());
+  private Cruise createCruise(HttpServletRequest request, Ship ship, Route route) {
+    Cruise cruise = new Cruise();
+    cruise.setName(request.getParameter(FieldKey.CRUISE_NAME));
+    cruise.setPrice(Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)));
+    cruise.setStartOfTheCruise(
+        LocalDate.parse(String.valueOf(request.getParameter(FieldKey.CRUISE_LEAVING))));
+    cruise.setEndOfTheCruise(
+        LocalDate.parse(String.valueOf(request.getParameter(FieldKey.CRUISE_ARRIVING))));
+    cruise.setShip(ship);
+    cruise.setRoute(route);
+    if (!Validation.validateCruiseFields(cruise)) {
+      request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.CRUISE_INVALID);
+      log.trace("Invalid Cruise parameters");
+      log.debug(Constants.COMMAND_FINISHED);
+      return null;
+    }
+    return cruise;
   }
-
   /**
    * Shape request into list of Staff entities
    *

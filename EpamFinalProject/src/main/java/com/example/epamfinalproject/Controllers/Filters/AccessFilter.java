@@ -34,7 +34,7 @@ public class AccessFilter implements Filter {
             "confirmAll",
             "confirmCruise"));
 
-    accessMap.put("client", Arrays.asList("createOrder", "displayFormWithCruiseInfo", "profile"));
+    accessMap.put("client", Arrays.asList("createOrder", "displayFormWithCruiseInfo", "profile","payForTheOrder"));
 
     commons =
         Arrays.asList("login", "signUp", "logout", "changeLocale", "catalogue", "resetFilter");

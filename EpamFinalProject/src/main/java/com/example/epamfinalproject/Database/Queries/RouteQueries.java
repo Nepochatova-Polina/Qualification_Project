@@ -8,6 +8,9 @@ public class RouteQueries {
   public static final String CREATE_ROUTE_QUERY =
       "insert into routes(departure, destination, transit_time) values (?,?,?)";
 
+public static final String CREATE_ROUTE_QUERY_RETURNING_ID =
+      "insert into routes(departure, destination, transit_time) values (?,?,?) returning id";
+
   public static final String UPDATE_ROUTE_QUERY =
       "update routes set departure = ?,destination = ?,transit_time= ? where id = ?";
 
