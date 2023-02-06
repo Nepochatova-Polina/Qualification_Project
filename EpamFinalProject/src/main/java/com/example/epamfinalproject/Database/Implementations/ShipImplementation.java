@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Database.Queries.ShipQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
@@ -19,7 +20,7 @@ public class ShipImplementation implements ShipDAO {
 
   @Override
   public void registerShip(Ship ship) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(ShipQueries.REGISTER_SHIP_QUERY);
       preparedStatement.setString(1, ship.getName());
       preparedStatement.setInt(2, ship.getPassengerCapacity());
@@ -40,7 +41,7 @@ public class ShipImplementation implements ShipDAO {
   @Override
   public Ship getShipByName(String name) {
     Ship ship = new Ship();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(ShipQueries.GET_SHIP_BY_NAME_QUERY);
       preparedStatement.setString(1, name);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -64,7 +65,7 @@ public class ShipImplementation implements ShipDAO {
   @Override
   public List<Ship> getAllShips() {
     List<Ship> shipList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(ShipQueries.GET_ALL_SHIPS_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
@@ -86,7 +87,7 @@ public class ShipImplementation implements ShipDAO {
 
   @Override
   public void updateShipByID(Ship ship, long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(ShipQueries.UPDATE_SHIP_BY_ID_QUERY);
       preparedStatement.setString(1, ship.getName());

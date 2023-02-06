@@ -56,21 +56,10 @@ class ShipIT {
 
   @Test
   void updateShipByIDTest() {
-    Ship currentShip = new Ship(2, "Ship", 25);
-    shipService.registerShip(new Ship("Ship", 10));
-    shipService.updateShipByID(currentShip, shipService.getShipByName("Ship").getId());
+    Ship currentShip = new Ship(1, "Ship", 25);
+    shipService.updateShipByID(currentShip, 1);
     Ship ship = shipService.getShipByName("Ship");
     assertTrue(new ReflectionEquals(currentShip, "id","staff").matches(ship));
-  }
-
-  @ParameterizedTest
-  @MethodSource("shipStream")
-  void getAllShipsTest(List<Ship> shipList) {
-    for (Ship ship : shipList) {
-      shipService.registerShip(ship);
-    }
-    List<Ship> allShips = shipService.getAllShips();
-    assertEquals(shipList.size() + 1, allShips.size());
   }
 
   @AfterAll

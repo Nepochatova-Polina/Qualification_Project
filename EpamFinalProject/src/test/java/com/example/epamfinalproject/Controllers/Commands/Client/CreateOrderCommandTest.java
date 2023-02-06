@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Database.Interfaces.*;
 import com.example.epamfinalproject.Entities.*;
@@ -28,7 +29,7 @@ class CreateOrderCommandTest {
 
   private static HttpServletRequest request;
   private static HttpSession session;
-  private static CreateOrderCommand command;
+  private static Command command;
   private static Cruise cruise;
   private static CruiseService cruiseService;
   private static OrderService orderService;

@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
@@ -98,7 +99,7 @@ public class OrderImplementation implements OrderDAO {
   @Override
   public int getBookedSeatsByCruiseID(long id) {
     int result = 0;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement =
           connection.prepareStatement(OrderQueries.GET_BOOKED_SEATS_BY_CRUISE_ID_QUERY);
       preparedStatement.setLong(1, id);
@@ -122,7 +123,7 @@ public class OrderImplementation implements OrderDAO {
 
   @Override
   public void confirmOrderByID(long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(OrderQueries.CONFIRM_ORDER_BY_ID);
       preparedStatement.setLong(1, id);
       if (preparedStatement.executeUpdate() <= 0) {
@@ -143,7 +144,7 @@ public class OrderImplementation implements OrderDAO {
 
   @Override
   public void payForTheOrderByID(long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(OrderQueries.PAY_FOR_THE_ORDER_BY_ID);
       preparedStatement.setLong(1, id);
       if (preparedStatement.executeUpdate() <= 0) {

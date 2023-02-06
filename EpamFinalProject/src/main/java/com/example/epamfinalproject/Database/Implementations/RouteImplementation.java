@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.RouteDAO;
 import com.example.epamfinalproject.Database.Queries.RouteQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
@@ -22,7 +23,7 @@ public class RouteImplementation implements RouteDAO {
 
   @Override
   public void createRoute(Route route) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(RouteQueries.CREATE_ROUTE_QUERY);
       preparedStatement.setString(1, route.getDeparture());
       preparedStatement.setString(2, route.getDestination());
@@ -45,7 +46,7 @@ public class RouteImplementation implements RouteDAO {
 
   @Override
   public void updateRouteByID(long id, Route route) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(RouteQueries.UPDATE_ROUTE_QUERY);
       preparedStatement.setString(1, route.getDeparture());
@@ -75,7 +76,7 @@ public class RouteImplementation implements RouteDAO {
   @Override
   public Route getRouteByID(long id) {
     Route route = new Route();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(RouteQueries.GET_ROUTE_BY_ID_QUERY);
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -100,7 +101,7 @@ public class RouteImplementation implements RouteDAO {
   @Override
   public List<Route> getAllRoutes() {
     List<Route> routeList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(RouteQueries.GET_ALL_ROUTES_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       routeList = routeShaper.shapeDataToList(resultSet);
@@ -121,7 +122,7 @@ public class RouteImplementation implements RouteDAO {
   @Override
   public Route getRouteByAllParameters(Route route) {
     Route routeRecord = new Route();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement =
           connection.prepareStatement(RouteQueries.GET_ROUTE_BY_ALL_PARAMETERS_QUERY);
       preparedStatement.setString(1, route.getDeparture());

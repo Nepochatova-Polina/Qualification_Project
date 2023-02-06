@@ -1,6 +1,6 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.UserDAO;
 import com.example.epamfinalproject.Database.Queries.UserQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
@@ -20,7 +20,7 @@ public class UserImplementation implements UserDAO {
 
   @Override
   public void registerUser(User user) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(UserQueries.REGISTER_USER_QUERY);
       preparedStatement.setString(1, user.getFirstName());
       preparedStatement.setString(2, user.getLastName());
@@ -46,7 +46,7 @@ public class UserImplementation implements UserDAO {
   @Override
   public User getUserByLogin(String login) {
     User user = null;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_LOGIN_QUERY);
       preparedStatement.setString(1, login);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -70,7 +70,7 @@ public class UserImplementation implements UserDAO {
   @Override
   public List<User> getClientUsers() {
     List<User> users = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ROLE_CLIENT_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
@@ -94,7 +94,7 @@ public class UserImplementation implements UserDAO {
   @Override
   public List<User> getAllUsers() {
     List<User> users = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(UserQueries.GET_ALL_USERS_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
@@ -117,7 +117,7 @@ public class UserImplementation implements UserDAO {
   @Override
   public User getUserByID(long id) {
     User user = null;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(UserQueries.GET_USER_BY_ID_QUERY);
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -141,7 +141,7 @@ public class UserImplementation implements UserDAO {
 
   @Override
   public void updateUserPassport(long id, InputStream image, long length) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(UserQueries.UPDATE_USER_PASSPORT_QUERY);
       preparedStatement.setBinaryStream(1, image, (int) length);

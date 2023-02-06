@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
 import com.example.epamfinalproject.Database.Queries.StaffQueries;
 import com.example.epamfinalproject.Database.Shaper.DataShaper;
@@ -22,7 +23,7 @@ public class StaffImplementation implements StaffDAO {
 
   @Override
   public void registerStaff(Staff staff) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(StaffQueries.REGISTER_STAFF_QUERY);
       preparedStatement.setString(1, staff.getFirstName());
       preparedStatement.setString(2, staff.getLastName());
@@ -46,7 +47,7 @@ public class StaffImplementation implements StaffDAO {
   @Override
   public List<Staff> getAllStaff() {
     List<Staff> staffList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(StaffQueries.GET_ALL_STAFF_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
@@ -69,7 +70,7 @@ public class StaffImplementation implements StaffDAO {
   @Override
   public List<Staff> getAllStaffByShipID(long id) {
     List<Staff> staffList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(StaffQueries.GET_STAFF_BY_SHIP_ID_QUERY);
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();

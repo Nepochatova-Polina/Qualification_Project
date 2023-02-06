@@ -1,6 +1,7 @@
 package com.example.epamfinalproject.Database.Implementations;
 
 import com.example.epamfinalproject.Database.ConnectionPool;
+import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Database.Queries.CruiseQueries;
 import com.example.epamfinalproject.Database.Queries.RouteQueries;
@@ -25,7 +26,7 @@ public class CruiseImplementation implements CruiseDAO {
   public void createCruise(Cruise cruise) {
     long shipID = 0;
     long routeID = 0;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(ShipQueries.REGISTER_SHIP_QUERY_RETURNING_ID);
       preparedStatement.setString(1, cruise.getShip().getName());
@@ -69,7 +70,7 @@ public class CruiseImplementation implements CruiseDAO {
 
   @Override
   public void updateCruiseByID(Cruise cruise, long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(CruiseQueries.UPDATE_CRUISE_BY_ID_QUERY);
       preparedStatement.setLong(1, cruise.getShip().getId());
@@ -100,7 +101,7 @@ public class CruiseImplementation implements CruiseDAO {
 
   @Override
   public void deleteCruiseByID(long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(CruiseQueries.DELETE_CRUISE_BY_ID_QUERY);
       preparedStatement.setLong(1, id);
@@ -125,7 +126,7 @@ public class CruiseImplementation implements CruiseDAO {
 
   @Override
   public void confirmCruiseByID(long id) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       connection.setAutoCommit(false);
       preparedStatement = connection.prepareStatement(CruiseQueries.CONFIRM_CRUISE_BY_ID_QUERY);
       preparedStatement.setLong(1, id);
@@ -151,7 +152,7 @@ public class CruiseImplementation implements CruiseDAO {
   @Override
   public int getNumberOfActualCruises(String query) {
     int rowsCount = 0;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet.next()) {
@@ -174,7 +175,7 @@ public class CruiseImplementation implements CruiseDAO {
   @Override
   public Cruise getCruiseByID(long id) {
     Cruise cruise = null;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(CruiseQueries.GET_CRUISE_BY_ID);
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -198,7 +199,7 @@ public class CruiseImplementation implements CruiseDAO {
   @Override
   public List<Cruise> getAllCruisesForPage(String query) {
     List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
@@ -221,7 +222,7 @@ public class CruiseImplementation implements CruiseDAO {
   @Override
   public List<Cruise> getActualCruisesForPage(String query) {
     List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(query);
       ResultSet resultSet = preparedStatement.executeQuery();
       if (resultSet != null) {
