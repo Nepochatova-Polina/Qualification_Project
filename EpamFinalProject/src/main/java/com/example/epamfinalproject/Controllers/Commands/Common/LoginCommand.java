@@ -61,9 +61,7 @@ public class LoginCommand implements Command {
             request,
             user,
             userService.getClientUsers(),
-            orderService.getAllUnconfirmedOrders(),
-            shipService.getAllShips(),
-            routeService.getAllRoutes());
+            orderService.getAllUnconfirmedOrders());
 
         log.debug("Logging in as ADMINISTRATOR");
         log.debug(Constants.COMMAND_FINISHED);

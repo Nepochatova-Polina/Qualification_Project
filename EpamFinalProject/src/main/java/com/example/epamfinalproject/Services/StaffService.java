@@ -16,10 +16,6 @@ public class StaffService {
     staffDAO.registerStaff(staff);
   }
 
-  public List<Staff> getAllStaff() {
-    return staffDAO.getAllStaff();
-  }
-
   public List<Staff> getStaffByShipID(long id) {
     return staffDAO.getAllStaffByShipID(id);
   }

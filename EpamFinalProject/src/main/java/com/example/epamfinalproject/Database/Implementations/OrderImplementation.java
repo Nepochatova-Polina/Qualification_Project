@@ -1,6 +1,5 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.OrderDAO;
 import com.example.epamfinalproject.Database.Queries.OrderQueries;
@@ -23,7 +22,7 @@ public class OrderImplementation implements OrderDAO {
 
   @Override
   public void createOrder(Order order) {
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(OrderQueries.CREATE_ORDER_QUERY);
       preparedStatement.setLong(1, order.getCruise().getId());
       preparedStatement.setLong(2, order.getUser().getId());
@@ -47,7 +46,7 @@ public class OrderImplementation implements OrderDAO {
   @Override
   public List<Order> getOrdersByUserID(long id) {
     List<Order> orderList = null;
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement = connection.prepareStatement(OrderQueries.GET_ORDER_BY_USER_ID);
       preparedStatement.setLong(1, id);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -58,14 +57,12 @@ public class OrderImplementation implements OrderDAO {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
       if (preparedStatement != null) {
-        if (preparedStatement != null) {
           try {
             preparedStatement.close();
           } catch (SQLException e) {
             log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
           }
         }
-      }
     }
     return orderList;
   }
@@ -73,7 +70,7 @@ public class OrderImplementation implements OrderDAO {
   @Override
   public List<Order> getAllUnconfirmedOrders() {
     List<Order> orderList = new ArrayList<>();
-    try (Connection connection = ConnectionPool.getConnection()) {
+    try (Connection connection = HikariConnectionPool.getConnection()) {
       preparedStatement =
           connection.prepareStatement(OrderQueries.GET_ALL_UNCONFIRMED_ORDERS_QUERY);
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -84,13 +81,11 @@ public class OrderImplementation implements OrderDAO {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
       if (preparedStatement != null) {
-        if (preparedStatement != null) {
           try {
             preparedStatement.close();
           } catch (SQLException e) {
             log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
           }
-        }
       }
     }
     return orderList;

@@ -1,6 +1,5 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.CruiseDAO;
 import com.example.epamfinalproject.Database.Queries.CruiseQueries;

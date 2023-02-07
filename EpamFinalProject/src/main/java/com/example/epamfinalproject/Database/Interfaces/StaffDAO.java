@@ -4,9 +4,8 @@ import com.example.epamfinalproject.Entities.Staff;
 import java.util.List;
 
 public interface StaffDAO {
-  void registerStaff(Staff staff);
 
-  List<Staff> getAllStaff();
+  void registerStaff(Staff staff);
 
   List<Staff> getAllStaffByShipID(long id);
 }

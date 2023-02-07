@@ -1,22 +1,23 @@
 package Integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.Implementations.ShipImplementation;
 import com.example.epamfinalproject.Entities.Ship;
 import com.example.epamfinalproject.Services.ShipService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -32,8 +33,6 @@ class ShipIT {
   void beforeAll() {
     postgresContainer.start();
 
-    ConnectionPool.setHostPort(postgresContainer.getHost(), postgresContainer.getFirstMappedPort());
-
     shipService = new ShipService(new ShipImplementation());
   }
 
@@ -41,7 +40,15 @@ class ShipIT {
   private static final PostgreSQLContainer<?> postgresContainer =
       new PostgreSQLContainer<>("postgres:11.1")
           .withExposedPorts(5432)
-              .withDatabaseName("postgres")
+          .withCreateContainerCmdModifier(
+              cmd ->
+                  cmd.withHostConfig(
+                      new HostConfig()
+                          .withPortBindings(
+                              new PortBinding(
+                                  Ports.Binding.bindPort(1988),
+                                  new ExposedPort(5432)))))
+          .withDatabaseName("postgres")
           .withUsername("user")
           .withPassword("password")
           .withInitScript("init_script.sql");
@@ -51,7 +58,7 @@ class ShipIT {
     Ship currentShip = new Ship(1, "Name", 12);
     shipService.registerShip(currentShip);
     Ship ship = shipService.getShipByName("Name");
-    assertTrue(new ReflectionEquals(currentShip, "id","staff").matches(ship));
+    assertTrue(new ReflectionEquals(currentShip, "id", "staff").matches(ship));
   }
 
   @Test
@@ -59,7 +66,7 @@ class ShipIT {
     Ship currentShip = new Ship(1, "Ship", 25);
     shipService.updateShipByID(currentShip, 1);
     Ship ship = shipService.getShipByName("Ship");
-    assertTrue(new ReflectionEquals(currentShip, "id","staff").matches(ship));
+    assertTrue(new ReflectionEquals(currentShip, "id", "staff").matches(ship));
   }
 
   @AfterAll

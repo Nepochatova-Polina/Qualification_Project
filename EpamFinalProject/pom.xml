@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>EpamFinalProject</artifactId>
+    <artifactId>ServletProject</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>EpamFinalProject</name>
     <packaging>war</packaging>
@@ -130,6 +130,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
 

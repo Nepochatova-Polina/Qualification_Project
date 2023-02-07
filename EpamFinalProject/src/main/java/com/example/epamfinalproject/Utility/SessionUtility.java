@@ -26,16 +26,12 @@ public class SessionUtility {
    * @param user administrator info
    * @param users list of all users in system
    * @param orders all unconfirmed orders
-   * @param ships all ships of the Company
-   * @param routes all routes of the Company
    */
   public static void setParamsForAdmin(
       HttpServletRequest request,
       User user,
       List<User> users,
-      List<Order> orders,
-      List<Ship> ships,
-      List<Route> routes) {
+      List<Order> orders) {
     HttpSession session = request.getSession();
     ServletContext context = request.getServletContext();
     HashSet<String> loggedUsers = (HashSet<String>) context.getAttribute("loggedUsers");
@@ -45,8 +41,6 @@ public class SessionUtility {
     session.setAttribute(LOGIN, user.getLogin());
     session.setAttribute("users", users);
     session.setAttribute(ORDERS, orders);
-    session.setAttribute("ships", ships);
-    session.setAttribute("routes", routes);
   }
 
   public static void updateUser(HttpServletRequest request, User user) {

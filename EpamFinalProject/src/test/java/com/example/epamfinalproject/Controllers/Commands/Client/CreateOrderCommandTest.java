@@ -51,7 +51,7 @@ class CreateOrderCommandTest {
             new Ship(2, "Name", 1),
             new Route(2, "Value", "Value", 4),
             0,
-            "false",
+            false,
             false,
             null,
             null);

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OrderShaper implements DataShaper<Order> {
 
-    DataShaper<Cruise> cruiseShaper = new CruiseShaper(new StaffService(new StaffImplementation()));
+  DataShaper<Cruise> cruiseShaper = new CruiseShaper(new StaffService(new StaffImplementation()));
 
   /**
    * @param resultSet result of SQL query execution

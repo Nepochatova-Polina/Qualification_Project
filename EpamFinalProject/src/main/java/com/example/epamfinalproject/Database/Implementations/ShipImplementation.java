@@ -1,6 +1,5 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.ShipDAO;
 import com.example.epamfinalproject.Database.Queries.ShipQueries;
@@ -30,10 +29,12 @@ public class ShipImplementation implements ShipDAO {
     } catch (SQLException e) {
       log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
     } finally {
-      try {
-        preparedStatement.close();
-      } catch (SQLException e) {
-        log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+      if (preparedStatement != null) {
+        try {
+          preparedStatement.close();
+        } catch (SQLException e) {
+          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
+        }
       }
     }
   }

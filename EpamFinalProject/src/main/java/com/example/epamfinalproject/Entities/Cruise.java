@@ -16,8 +16,8 @@ public class Cruise {
   private Ship ship;
   private Route route;
   private int price;
-  private String deleted;
-  private boolean confirmed;
+  private boolean deleted = false;
+  private boolean confirmed = false;
   LocalDate startOfTheCruise;
   LocalDate endOfTheCruise;
 

@@ -1,6 +1,5 @@
 package com.example.epamfinalproject.Database.Implementations;
 
-import com.example.epamfinalproject.Database.ConnectionPool;
 import com.example.epamfinalproject.Database.HikariConnectionPool;
 import com.example.epamfinalproject.Database.Interfaces.StaffDAO;
 import com.example.epamfinalproject.Database.Queries.StaffQueries;
@@ -42,29 +41,6 @@ public class StaffImplementation implements StaffDAO {
         }
       }
     }
-  }
-
-  @Override
-  public List<Staff> getAllStaff() {
-    List<Staff> staffList = new ArrayList<>();
-    try (Connection connection = HikariConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(StaffQueries.GET_ALL_STAFF_QUERY);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        staffList = staffShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      if (preparedStatement != null) {
-        try {
-          preparedStatement.close();
-        } catch (SQLException e) {
-          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-        }
-      }
-    }
-    return staffList;
   }
 
   @Override

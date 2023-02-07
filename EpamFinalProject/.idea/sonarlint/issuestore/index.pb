@@ -18,8 +18,6 @@ dsrc/main/java/com/example/epamfinalproject/Controllers/Commands/Administrator/E
 ‚
 Rsrc/main/java/com/example/epamfinalproject/Controllers/Filters/EncodingFilter.java,c/8/c8b8c8c38d57bae9daa23e6a6f5d69177c5169fd
 n
->src/main/java/com/example/epamfinalproject/Entities/Order.java,3/6/36eca2b10c68e53124b1153f8037278cfe966148
-n
 >src/main/java/com/example/epamfinalproject/Entities/Route.java,d/b/db1535622556d033bdbfa0728e24c04b7e55c112
 m
 =src/main/java/com/example/epamfinalproject/Utility/Regex.java,d/5/d57408e5877ead8a05647053ff9010fe2c3c9beb
