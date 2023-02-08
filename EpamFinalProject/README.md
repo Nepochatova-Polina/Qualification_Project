@@ -13,11 +13,40 @@ The cruise company administrator manages cruise shipDTO records and customer ord
 The application is automatically "completed" upon the end of the cruise.
 
 
+> ### Templates and patterns used in the Development
+>- App is designed corresponding to MVC template
+>- User class designed as Builder Pattern
+>- Server actions was designed as Command Pattern
+>- Used PRG(Post/Redirect/Get) Pattern
+>
 
->App is designed corresponding to MVC template
-> 
-> User class designed as Builder Pattern
-> 
-> Server actions was designed as Command Pattern
+### Test coverage
+ 1.Junit5 tests<br/>
+ 2.Integration Testcontainer tests<br/>
+***Total test coverage:*** 77% lines
+ 
 
-[//]: # (> Used PRG&#40;Post/Redirect/Get&#41; Pattern)
+### Database Visualisation 
+![img.png](diagramDB.png)
+<br><br><br>
+
+## Not Authorized User Functional
+- Log In/Log Out
+- Sign Up
+- Look through the Catalogue
+
+## Client Functional
+- Log In/Log Out
+- Sign Up
+- Create Order
+- Pay for the Order
+- Look through the Catalogue
+
+## Administrator Functional
+- Log In/Log Out
+- Sign Up
+- Create Cruise
+- Confirm Cruise
+- Edit Cruise
+- Delete Cruise
+- Confirm Client's Order

@@ -121,7 +121,7 @@
                                     <p><strong><fmt:message key="order.label.status"/></strong>:
                                             <c:out value="${order.status}"/>
                                         <c:if test="${order.cruise.confirmed == true && order.status != Status.PAID}">
-                                        <button type="submit"><fmt:message key="button.pay"/></button>
+                                        <button type="submit" style="width: 90%"><fmt:message key="button.pay"/></button>
                                         </c:if>
                                 </div>
                             </div>

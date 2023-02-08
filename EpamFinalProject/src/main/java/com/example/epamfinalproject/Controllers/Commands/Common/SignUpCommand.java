@@ -60,7 +60,7 @@ public class SignUpCommand implements Command {
     SessionUtility.setParamsForClient(
         request,
         user,
-        cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
+        cruiseService.getAllCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
         new ArrayList<>());
     request.getSession().setAttribute("role", user.getRole());
 

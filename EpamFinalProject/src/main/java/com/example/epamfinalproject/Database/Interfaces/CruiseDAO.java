@@ -19,6 +19,4 @@ public interface CruiseDAO {
 
   List<Cruise> getAllCruisesForPage(String query);
 
-  List<Cruise> getActualCruisesForPage(String query);
-
 }

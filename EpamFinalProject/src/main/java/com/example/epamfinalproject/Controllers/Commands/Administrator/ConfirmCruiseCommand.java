@@ -42,7 +42,7 @@ public class ConfirmCruiseCommand implements Command {
 
     SessionUtility.setCruisesParams(
         request,
-        cruiseService.getActualCruisesForPage(
+        cruiseService.getAllCruisesForPage(
             CruiseQueries.GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_ADMIN_QUERY));
     log.debug(Constants.COMMAND_FINISHED);
     return Constants.REDIRECT + Path.CATALOGUE_PAGE;

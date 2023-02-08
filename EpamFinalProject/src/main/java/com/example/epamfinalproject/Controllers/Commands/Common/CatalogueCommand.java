@@ -41,12 +41,9 @@ public class CatalogueCommand implements Command {
     checkFilter(request);
     String cruiseQuery = builder.cruiseQueryBuilder(request, page, user);
 
-    if (user != null && user.getRole().equals(UserRole.ADMINISTRATOR)) {
       cruises = cruiseService.getAllCruisesForPage(cruiseQuery);
-    } else {
-      cruises = cruiseService.getActualCruisesForPage(cruiseQuery);
-    }
-    SessionUtility.setCruisesParams(request, cruises);
+
+    SessionUtility.setCruisesParams(request, Sort.sortCruisesByStartDate(cruises));
 
     int recordsCount =
         cruiseService.getNumberOfActualCruises(builder.cruiseCountQueryBuilder(request, user));

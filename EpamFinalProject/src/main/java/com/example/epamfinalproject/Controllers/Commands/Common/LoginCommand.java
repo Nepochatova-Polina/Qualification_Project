@@ -8,10 +8,7 @@ import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.*;
-import com.example.epamfinalproject.Utility.Constants;
-import com.example.epamfinalproject.Utility.Encryptor;
-import com.example.epamfinalproject.Utility.FieldKey;
-import com.example.epamfinalproject.Utility.SessionUtility;
+import com.example.epamfinalproject.Utility.*;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -58,10 +55,7 @@ public class LoginCommand implements Command {
       if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
 
         SessionUtility.setParamsForAdmin(
-            request,
-            user,
-            userService.getClientUsers(),
-            orderService.getAllUnconfirmedOrders());
+            request, user, userService.getClientUsers(), orderService.getAllUnconfirmedOrders());
 
         log.debug("Logging in as ADMINISTRATOR");
         log.debug(Constants.COMMAND_FINISHED);
@@ -73,8 +67,8 @@ public class LoginCommand implements Command {
         SessionUtility.setParamsForClient(
             request,
             user,
-            cruiseService.getActualCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
-            orderService.getOrdersByUserID(user.getId()));
+            cruiseService.getAllCruisesForPage(GET_ALL_ACTUAL_CRUISES_FOR_FIRST_PAGE_QUERY),
+            Sort.sortOrderByStatus(orderService.getOrdersByUserID(user.getId())));
         return Constants.REDIRECT + Path.CLIENT_PAGE;
       }
     } else {

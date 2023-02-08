@@ -218,26 +218,4 @@ public class CruiseImplementation implements CruiseDAO {
     return cruiseList;
   }
 
-  @Override
-  public List<Cruise> getActualCruisesForPage(String query) {
-    List<Cruise> cruiseList = new ArrayList<>();
-    try (Connection connection = HikariConnectionPool.getConnection()) {
-      preparedStatement = connection.prepareStatement(query);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      if (resultSet != null) {
-        cruiseList = cruiseShaper.shapeDataToList(resultSet);
-      }
-    } catch (SQLException e) {
-      log.warn(Constants.DATABASE_PROBLEM_WITH_CONNECTION + e);
-    } finally {
-      if (preparedStatement != null) {
-        try {
-          preparedStatement.close();
-        } catch (SQLException e) {
-          log.warn(Constants.DATABASE_ERROR_CLOSING_CONNECTION);
-        }
-      }
-    }
-    return cruiseList;
-  }
 }

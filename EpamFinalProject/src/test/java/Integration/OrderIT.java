@@ -33,6 +33,7 @@ class OrderIT {
 
   @BeforeAll
   void beforeAll() {
+    postgresContainer.start();
 
     UserService userService = new UserService(new UserImplementation());
     CruiseService cruiseService = new CruiseService(new CruiseImplementation());
@@ -60,10 +61,6 @@ class OrderIT {
     userService.registerUser(user);
     cruiseService.createCruise(cruise);
   }
-@BeforeEach
-void beforeEach(){
-    postgresContainer.start();
-}
   @Container
   private static final PostgreSQLContainer<?> postgresContainer =
       new PostgreSQLContainer<>("postgres:11.1")
@@ -120,7 +117,7 @@ void beforeEach(){
             .isEqualToComparingFieldByFieldRecursively(order);
   }
   @AfterAll
-  static void close() {
+  void close() {
     postgresContainer.close();
   }
 }
