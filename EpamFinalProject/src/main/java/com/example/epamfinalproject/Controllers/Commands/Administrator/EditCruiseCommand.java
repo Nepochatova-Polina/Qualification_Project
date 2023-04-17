@@ -41,20 +41,28 @@ public class EditCruiseCommand implements Command {
   @Override
   public String execute(HttpServletRequest request) {
     log.debug(Constants.COMMAND_STARTS);
+    boolean shipFlag = false;
+    boolean routeFlag = false;
+    boolean cruiseFlag = false;
 
     Cruise cruise = (Cruise) request.getSession().getAttribute("cruise");
 
-    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_NAME), ""))
+    if (!Objects.equals(request.getParameter(FieldKey.CRUISE_NAME), "")) {
       cruise.setName(request.getParameter(FieldKey.CRUISE_NAME));
-
-    if (!Objects.equals(request.getParameter("ship_name"), ""))
+      cruiseFlag = true;
+    }
+    if (!Objects.equals(request.getParameter("ship_name"), "")) {
       cruise.getShip().setName(request.getParameter("ship_name"));
+      shipFlag = true;
+    }
 
-    if (Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)) != 0)
+    if (Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)) != 0) {
       cruise
-          .getShip()
-          .setPassengerCapacity(
-              Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)));
+              .getShip()
+              .setPassengerCapacity(
+                      Integer.parseInt(request.getParameter(FieldKey.PASSENGER_CAPACITY)));
+      shipFlag = true;
+    }
 
     if (!Validation.validateShipFields(cruise.getShip())) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.SHIP_INVALID);
@@ -65,14 +73,17 @@ public class EditCruiseCommand implements Command {
 
     if (!Objects.equals(request.getParameter(FieldKey.DEPARTURE), "")) {
       cruise.getRoute().setDeparture(request.getParameter(FieldKey.DEPARTURE));
+      routeFlag = true;
     }
     if (!Objects.equals(request.getParameter(FieldKey.DESTINATION), "")) {
       cruise.getRoute().setDestination(request.getParameter(FieldKey.DESTINATION));
+      routeFlag = true;
     }
     if (Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)) != 0) {
       cruise
           .getRoute()
           .setTransitTime(Integer.parseInt(request.getParameter(FieldKey.TRANSIT_TIME)));
+      routeFlag = true;
     }
     if (!Validation.validateRouteFields(cruise.getRoute())) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ROUTE_INVALID);
@@ -83,25 +94,31 @@ public class EditCruiseCommand implements Command {
     if (!Objects.equals(request.getParameter(FieldKey.CRUISE_LEAVING), "")
         && Validation.isDateValid((request.getParameter(FieldKey.CRUISE_LEAVING)))) {
       cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_LEAVING)));
+      cruiseFlag = true;
     }
     if (!Objects.equals(request.getParameter(FieldKey.CRUISE_ARRIVING), "")
         && Validation.isDateValid((request.getParameter(FieldKey.CRUISE_ARRIVING)))) {
       cruise.setStartOfTheCruise(LocalDate.parse(request.getParameter(FieldKey.CRUISE_ARRIVING)));
+      cruiseFlag = true;
     }
     if (Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)) != 0) {
       cruise.setPrice(Integer.parseInt(request.getParameter(FieldKey.CRUISE_PRICE)));
+      cruiseFlag = true;
     }
 
     if (Validation.validateCruiseFields(cruise)) {
-      cruiseService.updateCruiseByID(cruise, cruise.getId());
-      log.debug("Cruise Record was updated");
-
-      shipService.updateShipByID(cruise.getShip(), cruise.getShip().getId());
-      log.debug("Ship Record was updated");
-
-      routeService.updateRouteByID(cruise.getRoute(), cruise.getRoute().getId());
-      log.debug("Route Record was updated");
-
+      if(cruiseFlag) {
+        cruiseService.updateCruiseByID(cruise, cruise.getId());
+        log.debug("Cruise Record was updated");
+      }
+      if (shipFlag) {
+        shipService.updateShipByID(cruise.getShip(), cruise.getShip().getId());
+        log.debug("Ship Record was updated");
+      }
+      if (routeFlag) {
+        routeService.updateRouteByID(cruise.getRoute(), cruise.getRoute().getId());
+        log.debug("Route Record was updated");
+      }
       SessionUtility.setCruisesParams(
           request, cruiseService.getAllCruisesForPage(GET_ALL_CRUISES_FOR_FIRST_PAGE_QUERY));
 
