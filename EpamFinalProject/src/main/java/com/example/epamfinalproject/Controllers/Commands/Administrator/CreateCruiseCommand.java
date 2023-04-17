@@ -57,7 +57,7 @@ public class CreateCruiseCommand implements Command {
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
     List<Staff> staff = createStaffList(request);
-    if (staff.isEmpty()) {
+    if (staff.isEmpty() || staff.size() < 3) {
       return Constants.REDIRECT + Path.ADMINISTRATOR_PAGE;
     }
     Cruise cruise = createCruise(request, ship, route);

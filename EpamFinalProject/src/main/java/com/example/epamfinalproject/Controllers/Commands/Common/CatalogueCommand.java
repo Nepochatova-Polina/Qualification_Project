@@ -3,7 +3,6 @@ package com.example.epamfinalproject.Controllers.Commands.Common;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Entities.Cruise;
-import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Entities.User;
 import com.example.epamfinalproject.Services.CruiseService;
 import com.example.epamfinalproject.Utility.*;

@@ -37,7 +37,6 @@ public class PayForTheOrderCommand implements Command {
       log.trace("Not an Order has been ticked off");
       return Constants.REDIRECT + Path.MAIN_PAGE;
     }
-
     if (Long.parseLong(param) < 1) {
       request.getSession().setAttribute(Constants.MESSAGE, MessageKeys.ORDER_CONFIRMATION_ERROR);
       log.trace("Order ID is invalid");

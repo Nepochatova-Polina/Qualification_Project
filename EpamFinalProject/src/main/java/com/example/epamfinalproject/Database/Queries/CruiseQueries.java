@@ -68,9 +68,6 @@ public class CruiseQueries {
           + "inner join ships s on s.id = cruises.ship_id "
           + "where start_date >= now() and deleted = false";
 
-  public static final String GET_NUMBER_OF_ACTUAL_CRUISES =
-      "select count(id) from cruises where start_date >= now() and deleted = false";
-
   public static final String DELETE_CRUISE_BY_ID_QUERY =
       "update cruises set deleted = true where id = ?";
 }

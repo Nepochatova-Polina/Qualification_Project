@@ -62,9 +62,9 @@ public class DisplayFormWithCruiseInfoCommand implements Command {
             SessionUtility.setCruiseParamsForClient(request,cruise,freeSeats);
             log.debug(Constants.COMMAND_FINISHED);
             return Constants.REDIRECT + Path.ORDER_PAGE;
+        }else {
+            SessionUtility.setCruiseParamsForAdmin(request, cruise);
         }
-        SessionUtility.setCruiseParamsForAdmin(request,cruise);
-
         log.debug(Constants.COMMAND_FINISHED);
 
         return Constants.REDIRECT + Path.EDIT_CRUISE_PAGE;
