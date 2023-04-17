@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import com.example.epamfinalproject.Controllers.Commands.Command;
 import com.example.epamfinalproject.Controllers.Path;
 import com.example.epamfinalproject.Database.Interfaces.*;
-import com.example.epamfinalproject.Database.Queries.CruiseQueries;
 import com.example.epamfinalproject.Entities.*;
 import com.example.epamfinalproject.Entities.Enums.UserRole;
 import com.example.epamfinalproject.Services.*;
@@ -30,8 +29,6 @@ class LoginCommandTest {
   private static HttpServletRequest request;
   private static HttpSession session;
   private static UserService userService;
-  private static CruiseService cruiseService;
-  private static OrderService orderService;
   private static Command command;
 
   @BeforeAll
@@ -39,11 +36,13 @@ class LoginCommandTest {
     request = mock(HttpServletRequest.class);
     session = mock(HttpSession.class);
     userService = new UserService(mock(UserDAO.class));
-    cruiseService = new CruiseService(mock(CruiseDAO.class));
-    orderService = new OrderService(mock(OrderDAO.class));
-    ShipService shipService = new ShipService(mock(ShipDAO.class));
-    RouteService routeService = new RouteService(mock(RouteDAO.class));
-    command = new LoginCommand(userService, cruiseService, orderService, shipService, routeService);
+    command =
+        new LoginCommand(
+            userService,
+            new CruiseService(mock(CruiseDAO.class)),
+            new OrderService(mock(OrderDAO.class)),
+            new ShipService(mock(ShipDAO.class)),
+            new RouteService(mock(RouteDAO.class)));
   }
 
   @Test

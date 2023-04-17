@@ -60,7 +60,7 @@ public class AccessFilter implements Filter {
 
       if (req.getSession().getAttribute("user") == null) {
 
-        //                Set preCommand attribute to track which page to redirect to after
+        // Set preCommand attribute to track which page to redirect to after
         // authorization
         req.getSession().setAttribute("preCommand", request.getParameter("command"));
 
