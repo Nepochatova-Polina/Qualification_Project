@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font: 20px Montserrat, sans-serif;
+            line-height: 1.8;
+            color: #f5f6f7;
+        }
+
+
+        p {
+            font-size: 16px;
+        }
+
+        .margin {
+            margin-bottom: 45px;
+        }
+
+        .bg-1 {
+            background-color: #1abc9c; /* Green */
+            color: #ffffff;
+        }
+
+        .bg-3 {
+            background-color: #ffffff; /* White */
+            color: #555555;
+        }
+
+        .bg-4 {
+            background-color: #2f2f2f; /* Black Gray */
+            color: #fff;
+        }
+
+        .container-fluid {
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .navbar {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border: 0;
+            border-radius: 0;
+            margin-bottom: 0;
+            font-size: 12px;
+            letter-spacing: 5px;
+        }
+
+        .navbar-nav li a:hover {
+            color: #1abc9c !important;
+        }
+        .user-info{
+            border-radius: 50px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+            margin: 120px 40px 40px 40px;
+            padding-bottom: 20px;
+        }
+        .user-info button{
+            border-radius: 50px;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: white;
+            border: 2px solid #1abc9c;
+        }
+        .courses{
+            box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+            border-radius: 50px;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+        .course{
+            border: 2px solid #aaeed2b5;
+            border-radius: 20px;
+            margin: 0 20px 10px 20px;
+        }
+        .panel-header{
+            height: 60px;
+            text-decoration: underline #1abc9c;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .create-button{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            flex-direction: row;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">OllI</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Courses</a></li>
+                <li><a href="/account">Account</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- First Container -->
+<div class="container-fluid bg-1 text-center">
+    <h3 class="margin">OllI Studying</h3>
+    <h3>For those, who keep learning</h3>
+</div>
+
+<!-- Third Container (Grid) -->
+<div class="container-fluid bg-3 text-center">
+    <div class="row">
+        <div class="col-sm-4 user-info">
+            <h3>{User.firstname} {User.lastname}</h3>
+            <h3>{User.email}</h3>
+            <button>Log Out</button>
+        </div>
+        <div class="col-sm-7" >
+            <h3 class="margin">Your Couses</h3><br>
+            <div class="row courses">
+                <div class="create-button">
+                    <a href="/createCourse.html"> Create New Course</a>
+                </div>
+                {#for course in User.courses}
+                    <div class="col-sm-3 panel course">
+                    <div class="panel-header" >
+                        <h3>{course.name}</h3>
+                    </div>
+                    <div class="panel-body">
+                    <p>{course.annotation}</p>
+                    <p>Status : {course.status}</p>
+                    <p>Level : {course.level}</p>
+                    </div>
+                    </div>
+                {/for}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+services:
+  server:
+    container_name: server
+    image: server
+    ports:
+      - 8084:8084
+    depends_on:
+      - db
+    networks:
+      - study-network
+  bff:
+    container_name: bff
+    image: bff
+    ports:
+      - 8082:8082
+    depends_on:
+      - server
+    networks:
+      - study-network
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "15436:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    networks:
+      - study-network
+
+networks:
+  study-network:
+
+volumes:
+  db-data:
+
