@@ -1,0 +1,25 @@
+services:
+#  server:
+#    container_name: server
+#    image: server:latest
+#    ports:
+#      - 8084:8084
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "15436:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+
+volumes:
+  db-data:
+
+
+
